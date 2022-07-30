@@ -1,0 +1,10 @@
+d := 8;
+F := GF(13^5);
+V := VectorSpace(F, d);
+U1 := sub<V|Random(V), Random(V)>;
+_, Q := StabiliserOfSpaces([U1]);
+G := sub<GL(d, F)|Q>;
+U := sub<V|Random(V), Random(V), Random(V)>;
+J1, J2, x, xslp := UnipotentStabiliser(G, U);
+g := Random(G);
+L1, L2, y, yslp := UnipotentStabiliser(G, U^g);

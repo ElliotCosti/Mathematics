@@ -1,0 +1,85 @@
+/* load "C:/Users/Elliot/Documents/Mathematics/MatrixPGroup7.txt"; */
+
+G := SL(9, 3);
+v := SL(3, 3)![0, 1, 0, 0, 0, 1, 1, 0, 0];
+a := Id(G);
+InsertBlock(~a, v, 1, 1);
+b := ZeroMatrix(GF(3), 9, 9);
+for i in [1..6] do
+   b[i, i+3] := 1;
+end for;
+for i in [1..3] do
+   b[6+i, i] := 1;
+end for;
+
+K := sub<G|a, b>;
+
+
+
+G := SL(49, 7);
+v := ZeroMatrix(GF(7), 7, 7);
+for i in [2..7] do
+   v[i, i-1] := 1;
+end for;
+v[1, 7] := 1;
+a := Id(G);
+InsertBlock(~a, v, 1, 1);
+
+b := ZeroMatrix(GF(7), 49, 49);
+for i in [1..42] do
+   b[i, i+7] := 1;
+end for;
+for i in [1..7] do
+   b[42+i, i] := 1;
+end for;
+
+K := sub<G|a, b>;
+
+
+
+G := SL(27, 3);
+v := SL(3, 3)![0, 1, 0, 0, 0, 1, 1, 0, 0];
+a := Id(G);
+InsertBlock(~a, v, 1, 1);
+b := ZeroMatrix(GF(3), 9, 9);
+for i in [1..6] do
+   b[i, i+3] := 1;
+end for;
+for i in [1..3] do
+   b[6+i, i] := 1;
+end for;
+v := Id(G);
+b := InsertBlock(v, b, 1, 1);
+
+c := ZeroMatrix(GF(3), 27, 27);
+for i in [1..18] do
+   c[i, i+9] := 1;
+end for;
+for i in [1..9] do
+   c[18+i, i] := 1;
+end for;
+
+K := sub<G|a, b, c>;
+
+
+
+
+
+
+
+
+
+G := SL(8, 2);
+b := ZeroMatrix(GF(2), 4, 4);
+for i in [1..3] do
+   b[i, i+1] := 1;
+end for;
+b[4, 1] := 1;
+v := Id(G);
+a := InsertBlock(v, b, 1, 1);
+b := ZeroMatrix(GF(2), 8, 8);
+v := Id(SL(4, 2));
+b := InsertBlock(b, v, 1, 5);
+b := InsertBlock(b, v, 5, 1);
+
+K := sub<G|a, b>;

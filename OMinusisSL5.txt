@@ -1,0 +1,547 @@
+load "sminus.m";
+load "CD/Orthogonal8";
+load "SLforOMinus";
+load "Ruth2KWriteNonPrime.txt";
+
+OmegaMinusWordInGen := function(G, A);
+
+F := BaseRing(G);
+d := Dimension(G);
+Q := MinusChosenElements(OmegaMinus(d, F));
+temp := [];
+for i in [1..5] do
+   Append(~temp, GL(d, F)!Q[i]);
+end for;
+Q := temp;
+GGG := sub<GL(d, F)|Q>;
+ww := PrimitiveElement(GF(#F^2));
+w := PrimitiveElement(F);
+sl := SL(2, #F^2);
+QO := CreateOmegaPlusGenerators(OmegaPlus(d, F));
+e := Degree(F);
+ee := Degree(GF(#F^2));
+q := #F;
+Z := IntegerRing();
+
+rr := GL(d, F)!Q[1];
+tt := GL(d, F)!Q[2];
+ddelta := GL(d, F)!Q[3];
+u := GL(d, F)!Q[4];
+v := GL(d, F)!Q[5];
+
+SS := SLPGroup(5);
+
+t := GL(d, F)!(v^-1 * tt*v);
+T := SS.2 ^ SS.5;
+r := GL(d, F)!(v^-1 * rr*v);
+R := SS.1 ^ SS.5;
+
+delta := GL(d, F)!(v^-1 * ddelta*v);
+DELTA := SS.3 ^ SS.5;
+s := r*t^-1*r;
+S := R*T^-1*R;
+
+/* t^n sends col d-1 to d-1 + n*col 1 and col 2 to n^2*col 1 2n*col d-1 + col 2. */
+/* Let a = [1, 1], b = [1, d-1], c = [1, 2]. We need to solve an^2 + 2bn + c = 0 in order to get the power of n we need to kill the [1, 2] position */
+
+P := PolynomialRing(F);
+B := (t^v)^-1*t^((q-1) div 2)*t^v;
+a := B[1, 1];
+b := B[1, d-1];
+c := B[1, 2];
+py := P!(a*P.1^2 + 2*b*P.1 + c);
+n := Z!Roots(py)[1, 1];
+
+t2 := t^n*(t^v)^-1*t^((q-1) div 2)*t^v;
+T2 := T^n*(T^SS.5)^-1*T^((q-1) div 2)*T^SS.5;
+r2 := (r^n*(r^v)^-1*r^((q-1) div 2)*r^v)^-1;
+R2 := (R^n*(R^SS.5)^-1*R^((q-1) div 2)*R^SS.5)^-1;
+
+// B := Submatrix(delta*delta^v, d-1, d-1, 2, 2);
+// m := Order(B);
+// If a := Log[1, 1] then we need to solve ax = 1 mod (q-1). So we solve w^ax = w.
+// a := Log(((delta*delta^v)^m)[1, 1]);
+// x := Log(Root(w, a));
+// delta1 := ((delta*delta^v)^m)^x;
+
+delta2 := (delta*(delta^-1)^v);
+DELTA2 := (DELTA*(DELTA^-1)^SS.5);
+delta1 := ((delta2^u)^s)^u;
+DELTA1 := ((DELTA2^SS.4)^S)^SS.4;
+
+B := ((t*s)^v)^-1*t^((q-1) div 2)*(t*s)^v;
+a := B[1, 1];
+b := B[1, d-1];
+c := B[1, 2];
+py := P!(a*P.1^2 + 2*b*P.1 + c);
+n := Z!Roots(py)[1, 1];
+
+t1 := (t^n*((t*s)^v)^-1*t^((q-1) div 2)*(t*s)^v)^-1;
+T1 := (T^n*((T*S)^SS.5)^-1*T^((q-1) div 2)*(T*S)^SS.5)^-1;
+r1 := (r^n*((r*s)^v)^-1*r^((q-1) div 2)*(r*s)^v);
+R1 := (R^n*((R*S)^SS.5)^-1*R^((q-1) div 2)*(R*S)^SS.5);
+
+S1 := Id(SS);
+S2 := Id(SS);
+
+// Qblob := MinusChosenElements(OmegaMinus(4, F));
+// blob := sub<GL(4, F)|Qblob>;
+// _, phi, phiinv := RecognizeSL2(blob);
+// phi := hom<GGG -> SL(2, FF)|sl![1, 0, 1, 1], sl![1, 1, 0, 1], sl![ww, 0, 0, ww^-1]>;
+
+FF := sub<GF(#F^2)|ww^2>;
+py := FF!ww;
+
+ot := Id(GGG);
+TO := Id(SS);
+for i in [1..ee] do
+   ot := ot*(t^delta^-(i-1))^Z!Eltseq(py)[i];
+   TO := TO*(T^DELTA^-(i-1))^Z!Eltseq(py)[i];
+end for;
+
+ro := Id(GGG);
+RO := Id(SS);
+for i in [1..ee] do
+   ro := ro*(r^delta^(i-1))^Z!Eltseq(py)[i];
+   RO := RO*(R^DELTA^(i-1))^Z!Eltseq(py)[i];
+end for;
+
+FF := sub<F|w^2>;
+py := FF!w;
+
+Ot1 := Id(G);
+ot1 := Id(SS);
+for i in [1..e] do
+   Ot1 := Ot1*(t1^(delta2^-(i-1)))^Z!Eltseq(py)[i];
+   ot1 := ot1*(T1^(DELTA2^-(i-1)))^Z!Eltseq(py)[i];
+end for;
+
+// Or1 := Id(G);
+or1 := Id(SS);
+for i in [1..e] do
+   // Or1 := Or1*(r1^(delta2^(i-1)))^Z!Eltseq(py)[i];
+   or1 := or1*(R1^(DELTA2^(i-1)))^Z!Eltseq(py)[i];
+end for;
+
+zz := Log(-w^2);
+
+// Ot2 := Id(G);
+ot2 := Id(SS);
+if IsEven(zz) then
+   for i in [1..e] do
+      // Ot2 := Ot2*(t2^(delta1^-((zz div 2) + (i-2))))^Z!Eltseq(py)[i];
+      ot2 := ot2*(T2^(DELTA1^-((zz div 2) + (i-2))))^Z!Eltseq(py)[i];
+   end for;
+else
+   // Ot2 := Ot2*(t2^(delta1^-(zz div 2)));
+   ot2 := ot2*(T2^(DELTA1^-(zz div 2)));
+end if;
+
+// Or2 := Id(G);
+or2 := Id(SS);
+if IsEven(zz) then
+   for i in [1..e] do
+      // Or2 := Or2*(r2^(delta1^((zz div 2) + (i-2))))^Z!Eltseq(py)[i];
+      or2 := or2*(R2^(DELTA1^((zz div 2) + (i-2))))^Z!Eltseq(py)[i];
+   end for;
+else
+   // Or2 := Or2*(r2^(delta1^(zz div 2)));
+   or2 := or2*(R2^(DELTA1^(zz div 2)));
+end if;
+
+GetBBTransvection := function(BB);
+
+   // T := t2^-1;
+   TT := T2^-1;
+   // T := T^Z!Eltseq(BB)[1];
+   TT := TT^Z!Eltseq(BB)[1];
+
+   for r in [2..e] do
+      if IsEven(r) then
+         // o := Ot2;
+         oo := ot2;
+         // o := o^(delta2^-Z!((r-2)/2));
+         oo := oo^(DELTA2^-Z!((r-2)/2));
+         // o := o^Z!Eltseq(BB)[r];
+         oo := oo^Z!Eltseq(BB)[r];
+	   // T := T*o;
+         TT := TT*oo;
+      else
+         // o := t2^-1;
+         oo := T2^-1;
+         // o := o^(delta1^-Z!((r-1)/2));
+         oo := oo^(DELTA1^-Z!((r-1)/2));
+         // o := o^Z!Eltseq(BB)[r];
+         oo := oo^Z!Eltseq(BB)[r];
+         // T := T*o;
+         TT := TT*oo;
+      end if;
+   end for;
+
+   return TT;
+
+end function;
+
+/* THERE ARE STILL BUGS IN THIS PROCEDURE! FIX! */
+
+GetAOne := procedure(~A, ~S1, ~S2);
+
+   /* if A[1, 1] eq 0 */
+
+   if A[1, 1] eq 0 then 
+      i := Depth(A[1]);
+      if IsEven(i) then j := i div 2;
+      else j := Z!(i/2 + 1/2); end if; // find which block we need
+      if i eq 2 then
+         // A := A*s;
+	 SwapColumns(~A, 1, 2);
+	 MultiplyColumn(~A, -1, d-1);
+	 S2 := S2*S;
+      else
+         // A := A*(u*v^-1)^(j-2)*(u*v)^(j-2)*u;
+	 /* j odd - swap blocks 1 and j and negate 2..j-1 */
+	 /* j even - swap blocks 1 and j and negate 1(new)..j-1 */
+	 if IsOdd(j) then
+	    SwapColumns(~A, 1, 2*j - 1);
+	    SwapColumns(~A, 2, 2*j);
+	    for y in [3..2*j-2] do
+	       MultiplyColumn(~A, -1, y);
+	    end for;
+	 else
+	    SwapColumns(~A, 1, 2*j - 1);
+	    SwapColumns(~A, 2, 2*j);
+	    for y in [1..2*j-2] do
+	       MultiplyColumn(~A, -1, y);
+	    end for;	    
+	 end if;
+	 S2 := S2*(SS.4*SS.5^-1)^(j-2)*(SS.4*SS.5)^(j-2)*SS.4; 
+      end if;
+      if A[1, 1] eq 0 then
+         // A := A*s;
+	 SwapColumns(~A, 1, 2);
+	 MultiplyColumn(~A, -1, d-1);
+	 S2 := S2*S;
+      end if;
+   end if; 
+
+   i := 2;
+   while A[i, 1] eq 0 do
+      i := i+1;
+      if i eq d+1 then break; end if;
+   end while;
+   
+   /* if A[1, 1] is the only non-zero entry on the first column */
+   if i eq d+1 then
+      // A := r1*A; // sticks values in the first column
+      AddRow(~A, 1, 1, 3);
+      AddRow(~A, -1, 4, 2);
+      S1 := R1*S1;
+      i := 3;
+      while A[i, 1] eq 0 do
+         i := i+1;
+      end while;
+   end if;
+   
+   /* A[4, 1] eq 0 */
+   
+   i := 4;
+   j := 0;
+   if A[4, 1] eq 0 then
+      if A[3, 1] ne 0 then
+         // A := (s^u)*A;
+	 SwapRows(~A, 3, 4);
+	 MultiplyRow(~A, -1, d-1);
+	 S1 := (S^SS.4)*S1;
+      else
+         i := 5;
+         while A[i, 1] eq 0 do
+            i := i+1;
+            if i eq d+1 then break; end if;      
+	 end while;
+      end if;
+      if i eq d+1 then
+         /* if we are here, the only non-zero entries in the first column are in the first two rows */
+	 /* conjecture: this case never occurs */
+      elif A[4, 1] ne 0 then
+         S1 := S1; // i.e. do nothing
+      else
+         if IsEven(i) then j := i div 2;
+         else j := Z!(i/2 + 1/2); end if;
+	 A := ((v*u^-1)^(j-2))*A;
+	 /* B := ZeroMatrix(F, d, d);
+	 B[1] := A[1];
+	 B[2] := A[2];
+	 B[d-1] := A[d-1];
+	 B[d] := A[d];
+	 for y in [3..d-(2*(j-2))-2] do
+	    B[y] := A[y + 2*(j-2)];
+	 end for;
+	 for y in [d-(2*(j-2))+1-2..d-2] do
+	    B[y] := A[y - (d-(2*(j-2))+1) + 3];
+	 end for;
+	 A := B;
+	 if IsOdd(d div 2) then
+	    for m in [d-(2*(j-2))+1..d] do
+	       MultiplyRow(~A, -1, m);
+	    end for;
+	 end if;
+	 */
+	 S1 := ((SS.5*SS.4^-1)^(j-2))*S1;
+	 if A[4, 1] eq 0 then
+	    // A := (s^u)*A;
+	    SwapRows(~A, 3, 4);
+	    MultiplyRow(~A, -1, d-1);
+	    S1 := (S^SS.4)*S1;
+	 end if;
+      end if;
+   end if;
+   
+   BB := (1-A[1, 1])/A[4, 1];
+   TT := GetBBTransvection(BB);
+   // A := T*A;
+   AddRow(~A, BB, 4, 1);
+   AddRow(~A, -BB, 2, 3);
+   S1 := TT*S1;
+
+if j ne 0 then
+   A := ((v*u^-1)^-(j-2))*A;
+   S1 := ((SS.5*SS.4^-1)^-(j-2))*S1;
+   /* B := ZeroMatrix(F, d, d);
+   B[1] := A[1];
+   B[2] := A[2];
+   for y in [3..(2*j-2)] do
+      B[y] := A[y + d-2*j + 5 - 3];
+   end for;
+   for y in [3..d-2*(j-2)] do
+      B[y + 2*(j-2)] := A[y];
+   end for;
+   A := B;
+   if IsOdd(d div 2) then
+      for m in [3..2*j-2] do
+         MultiplyRow(~A, -1, m);
+      end for;
+   end if;
+   */
+end if;
+   
+end procedure;
+
+KillRow := procedure(~A, ~S1, ~S2);
+
+   for i in [2..(d div 2) - 1] do
+      a := A[1, 4];
+      S2 := S2*(T2^Z!Eltseq(a)[1]);
+      // A := A*(t2^Z!Eltseq(a)[1]);
+      AddColumn(~A, -Eltseq(a)[1], 1, 4);
+      AddColumn(~A, Eltseq(a)[1], 3, 2);
+         for r in [2..e] do
+            if IsEven(r) then
+               S2 := S2* ((ot2^-1)^(DELTA2^-Z!((r-2)/2)))^Z!Eltseq(a)[r];
+	       // A := A* ((Ot2^-1)^(delta2^-Z!((r-2)/2)))^Z!Eltseq(a)[r];
+	       AddColumn(~A, -Eltseq(a)[r]*w^(r-1), 1, 4);
+               AddColumn(~A, Eltseq(a)[r]*w^(r-1), 3, 2);
+            else
+	       S2 := S2* ((T2^-1)^(DELTA1^-Z!((r-1)/2)))^-Z!Eltseq(a)[r];
+	       // A := A* ((t2^-1)^(delta1^-Z!((r-1)/2)))^-Z!Eltseq(a)[r];
+	       AddColumn(~A, -Eltseq(a)[r]*w^(r-1), 1, 4);
+               AddColumn(~A, Eltseq(a)[r]*w^(r-1), 3, 2);
+           end if;
+         end for;
+	 
+      a := A[1, 3];
+      S2 := S2*(T1^-Z!Eltseq(a)[1]);
+      // A := A*(t1^-Z!Eltseq(a)[1]);
+      AddColumn(~A, -Eltseq(a)[1], 1, 3);
+      AddColumn(~A, Eltseq(a)[1], 4, 2);
+         for r in [2..e] do
+            if IsEven(r) then
+               S2 := S2* ((ot1^-1)^(DELTA1^-Z!((r-2)/2)))^Z!Eltseq(a)[r];
+	       // A := A* ((Ot1^-1)^(delta1^-Z!((r-2)/2)))^Z!Eltseq(a)[r];
+	       AddColumn(~A, -Eltseq(a)[r]*w^(r-1), 1, 3);
+               AddColumn(~A, Eltseq(a)[r]*w^(r-1), 4, 2);
+            else
+	       S2 := S2* ((T1^-1)^(DELTA2^-Z!((r-1)/2)))^Z!Eltseq(a)[r];
+	       // A := A* ((t1^-1)^(delta2^-Z!((r-1)/2)))^Z!Eltseq(a)[r];
+	       AddColumn(~A, -Eltseq(a)[r]*w^(r-1), 1, 3);
+               AddColumn(~A, Eltseq(a)[r]*w^(r-1), 4, 2);
+	   end if;
+         end for;
+            
+      S2 := S2*SS.5*(SS.4^-1);
+      // A := A*v*(u^-1); // rotates the 2..d/2-1 blocks
+      for m in [((d div 2) -2)..2 by -1] do
+         SwapColumns(~A, 2*m-1, 2*m+1);
+	 SwapColumns(~A, 2*m, 2*m+2);
+      end for;
+      MultiplyColumn(~A, -1, 3);
+      MultiplyColumn(~A, -1, 4);
+   end for;
+
+//   A := A*(u*v^-1)^(d div 2 - 2);   
+//   S2 := S2*(SS.4*SS.5^-1)^(d div 2 - 2);
+   
+end procedure;
+
+KillColumn := procedure(~A, ~S1, ~S2);
+
+   for i in [2..(d div 2) - 1] do
+      a := A[4, 1];
+      S1 := (R2^Z!Eltseq(a)[1])*S1;
+      // A := (r2^Z!Eltseq(a)[1])*A;
+      AddRow(~A, -Eltseq(a)[1], 1, 4);
+      AddRow(~A, Eltseq(a)[1], 3, 2);
+      for r in [2..e] do
+         if IsEven(r) then
+            S1 := ((or2^-1)^(DELTA2^Z!((r-2)/2)))^Z!Eltseq(a)[r] *S1;
+	    // A := ((Or2^-1)^(delta2^Z!((r-2)/2)))^Z!Eltseq(a)[r] *A;
+            AddRow(~A, -Eltseq(a)[r]*w^(r-1), 1, 4);
+            AddRow(~A, Eltseq(a)[r]*w^(r-1), 3, 2);
+          else
+	    S1 := ((R2^-1)^(DELTA1^Z!((r-1)/2)))^-Z!Eltseq(a)[r] *S1;
+	    // A := ((r2^-1)^(delta1^Z!((r-1)/2)))^-Z!Eltseq(a)[r] *A;
+            AddRow(~A, -Eltseq(a)[r]*w^(r-1), 1, 4);
+            AddRow(~A, Eltseq(a)[r]*w^(r-1), 3, 2);
+	  end if;
+      end for;
+	 
+      a := A[3, 1];
+      S1 := (R1^Z!-Eltseq(a)[1])*S1;
+      // A := (r1^Z!-Eltseq(a)[1])*A;
+      AddRow(~A, -Eltseq(a)[1], 1, 3);
+      AddRow(~A, Eltseq(a)[1], 4, 2);
+	 for r in [2..e] do
+            if IsEven(r) then
+               S1 := ((or1^-1)^(DELTA1^Z!((r-2)/2)))^Z!Eltseq(a)[r] *S1;
+	       // A := ((Or1^-1)^(delta1^Z!((r-2)/2)))^Z!Eltseq(a)[r] *A;
+	       AddRow(~A, -Eltseq(a)[r]*w^(r-1), 1, 3);
+               AddRow(~A, Eltseq(a)[r]*w^(r-1), 4, 2);
+            else
+	       S1 := ((R1^-1)^(DELTA2^Z!((r-1)/2)))^Z!Eltseq(a)[r] *S1;
+	       // A := ((r1^-1)^(delta2^Z!((r-1)/2)))^Z!Eltseq(a)[r] *A;
+	       AddRow(~A, -Eltseq(a)[r]*w^(r-1), 1, 3);
+               AddRow(~A, Eltseq(a)[r]*w^(r-1), 4, 2);
+	    end if;
+         end for;      
+      
+      S1 := SS.5*(SS.4^-1)*S1;
+      // A := v*(u^-1)*A;
+      for m in [2..((d div 2) -2)] do
+         SwapRows(~A, 2*m-1, 2*m+1);
+	 SwapRows(~A, 2*m, 2*m+2);
+      end for;
+      MultiplyRow(~A, -1, d-2);
+      MultiplyRow(~A, -1, d-3);
+   end for;
+   
+end procedure;
+
+AA := A;
+
+for i in [1..(d div 2 - 2)] do
+
+   GetAOne(~A, ~S1, ~S2);
+   KillRow(~A, ~S1, ~S2);
+   KillColumn(~A, ~S1, ~S2);
+
+K := sub<SL(d, F)|t, ot, t^(delta^-1), ot^(delta^-1)>;
+
+QG := MinusChosenElements(OmegaMinus(d-2, q));
+
+HH := [];
+for i in [1..#QG] do
+   Append(~HH, InsertBlock(Id(G), QG[i], 3, 3));
+end for;
+Append(~HH, delta);
+
+H := sub<GL(d, q)|HH, r, ro, r^(delta^-1), ro^(delta^-1)>;
+VH := GModule(H);
+_, U := IsIrreducible(VH);
+V := VectorSpace(GF(q), d);
+U := sub<V|[V!VH!U.i : i in [1..Dimension(U)]]>;
+
+_, _, a, aslp := UnipotentStabiliser(K, U^GL(d, F)!A);
+
+A := A*a;
+// S2 := S2*aslp; <--- something along these lines.
+
+A := Transpose(A);
+
+K2 := sub<SL(d, F)|Transpose(r), Transpose(ro), Transpose(r^delta), Transpose(ro^delta)>;
+
+H2 := sub<GL(d, q)|HH, Transpose(t), Transpose(ot), Transpose(t^(delta^-1)), Transpose(ot^(delta^-1))>;
+VH2 := GModule(H2);
+_, U2 := IsIrreducible(VH2);
+U2 := sub<V|[V!VH2!U2.i : i in [1..Dimension(U2)]]>;
+
+_, _, b, bslp := UnipotentStabiliser(K2, U2^GL(d, F)!A);
+
+A := A*b;
+A := Transpose(A);
+// S1 := bslp*S1; <--- something along these lines.
+
+/* we then need to use t, TO and r, RO to kill the last 2 entries in each column / row. Use TO first to kill the last entry then t to kill the penultimate in the top row. Then dualise for RO. You should have now killed the first 2 rows and columns. */
+/* TO adds TO[1, d] times col 1 to col d. So TO^n, where n = -A[1, d]/TO[1, d] kills the [1, d] etry of A. */
+
+/*
+
+   n := F!(-A[1, d]/ot[1, d]);
+   A := A*ot^Z!n;
+   S2 := S2*TO^Z!n;
+   n := Z!(-A[1, d-1]);
+   A := A*t^n;
+   S2 := S2*T^n;
+
+   n := F!(-A[d, 1]/ro[d, 1]);
+   A := ro^Z!n *A;
+   S1 := RO^Z!n *S1;
+   n := F!(-A[d-1, 1]/2);
+   A := r^Z!n *A;
+   S1 := R^Z!n *S1;
+
+*/
+
+   A := v*A*(v^-1);
+   S2 := S2*(SS.5^-1);
+   S1 := SS.5*S1;
+
+end for;
+
+A := v*A*(v^-1);
+S2 := S2*(SS.5^-1);
+S1 := SS.5*S1;
+
+B := GL(4, GF(q^2))!Submatrix(A, d-3, d-3, 4, 4);
+gamma := PrimitiveElement(GF(q^2));
+alpha := gamma^Z!((q+1)/2);
+C := GL(4, GF(q^2))![1, 0, 0, 0, 0, alpha, 1, 0, 0, -alpha, 1, 0, 0, 0, 0, 1];
+C := Transpose(C);
+CC := GL(4, GF(q^2))![1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0];
+
+// ttt := GL(4, GF(q^2))!Submatrix(tt, d-3, d-3, 4, 4);
+// rrr := GL(4, GF(q^2))!Submatrix(rr, d-3, d-3, 4, 4);
+// ddd := GL(4, GF(q^2))!Submatrix(ddelta, d-3, d-3, 4, 4);
+// (ttt^CC)^C now = (1, 1, 0, 1) tensored with itself
+
+_, y := IsProportional((B^CC)^C, 2);
+x := y[1];
+y := y[2];
+det := Determinant(x);
+/* Let BB be the image of B in SL(2, q^2). x tensor y is BB tensor BB^q. As scalars can be carried across the 2 factors,
+x may be a multiple of BB. Hence, we divide x by Root(det, 2) to get BB. */
+
+x := x/Root(det, 2); // this is the image of B in SL(2, q^2)
+_, wword := WordInGen(sl, x, SS);
+QQ := [];
+Append(~QQ, GL(d, F)!Q[3]);
+Append(~QQ, GL(d, F)!Q[2]);
+Append(~QQ, GL(d, F)!Q[1]);
+flag := A * (Evaluate(wword, Q))^-1; // could be A or A with the bottom 4*4 block negated.
+S2 := S2*(wword^-1);
+
+word := (S1^-1)*(S2^-1);
+
+// Evaluate(word, Q) eq AA; // should be true
+
+return flag, word;
+
+end function;

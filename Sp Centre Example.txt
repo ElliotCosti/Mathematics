@@ -1,0 +1,30 @@
+G := Sp(4, 3);
+QQ := SpChosenElements(G);
+CB := ChangeOfBasisMatrix(G);
+n := Degree(QQ[1]);
+Q := [GL(n, 9)!QQ[i] : i in [1..#QQ]];
+EE := sub<GL(n, 9)|Q>;
+h := Random (EE);
+
+Append(~Q, [ W^2, 0, 0, 0, 0, W^2, 0, 0, 0, 0, W^2, 0, 0, 0, 0, W^2 ] where W := GF(3, 2).1);
+q := #BaseRing(G);
+d := Degree(G);
+E := sub<GL(n, 9)|Q>;
+qq := q;
+
+// RandomSchreier (E);
+// CompositionFactors (E);
+Remove(~Q, #Q);
+
+f, w, s := SpAltRepWordInGen (E, Q, h, 4, 3);
+h1 := Evaluate (w, Q);
+h * h1^-1;
+
+x := h * E.6;
+x in EE;
+x in E;
+
+f, w, s := SpAltRepWordInGen (E, Q, x, 4, 3);
+y := Evaluate (w, Q);
+x * y^-1;
+

@@ -1,0 +1,162 @@
+load "C:/Users/Elliot/Documents/Mathematics/sl.m";
+load "C:/Users/Elliot/Documents/Mathematics/standard.m";
+load "C:/Users/Elliot/Documents/Mathematics/Ruth2 - 18.txt";
+
+/* THIS CODE ACTS AS A TEST TO CHECK THAT RUTH2 IS WORKING */
+
+/* Preparing the input */
+
+for d in [4..12] do 
+for p in [7] do
+for e in [6..15] do
+for i in [1..1] do 
+
+G := SL(d, p^e);
+
+VG := GModule(G);
+VE := ExteriorSquare(VG);
+
+n := Dimension(VE);
+n, p, e, i;
+
+q := #BaseRing(G);
+F<w> := GF(q);
+w := PrimitiveElement(F);
+
+Ebar := sub<GL(n, q) | ActionGenerators(VE)[1], ActionGenerators(VE)[2]>;
+
+M := KMatrixSpace(GF(q), d, d);
+b := Basis(M);
+u := M!Id(G) - b[1] - b[2] - b[d+2] + b[d+1];
+   u := G!u;
+v := b[d*d -d +1];
+   for i in [1..(d-1)] do
+      v := v - b[(i-1)*d + i + 1];
+    end for;
+   v := G!v;
+t := M!Id(G) + b[2];
+   t := G!t;
+delta := M!Id(G) -b[1] -b[d+2] + w*b[1] + (w^-1)*b[d+2];
+   delta := G!delta;
+
+P := RandomProcess(Ebar);
+A := Random(P);
+
+Q := [];
+Append(~Q, (ExteriorSquare(delta)));
+Append(~Q, (ExteriorSquare(t)));
+Append(~Q, (ExteriorSquare(u)));
+Append(~Q, (ExteriorSquare(v)));
+
+/* conjugating everything by a random matrix to make the exterior square
+look random */
+_, u1 := WordInGen(G, u);
+u:= Evaluate(u1, Q)^A;
+_, v1 := WordInGen(G, v);
+v:= Evaluate(v1, Q)^A;
+_, t1 := WordInGen(G, t);
+t:= Evaluate(t1, Q)^A;
+_, delta1 := WordInGen(G, delta);
+delta:= Evaluate(delta1, Q)^A;
+
+E := sub<GL(n, q)|delta, t, u, v>;
+
+q := #BaseRing(E);
+omega := PrimitiveElement(GF(q));
+w := omega;
+M := KMatrixSpace(GF(q), d, d);
+b := Basis(M);
+G := SL(d, q);
+n := Degree(E);
+
+Ht := M!Id(G) + b[d+3];
+   Ht := G!Ht;
+Hu := M!Id(G) - b[d+2] - b[d+3] - b[2*d+3] + b[2*d+2];
+   Hu := G!Hu;
+Hv := b[d*d -d +2] + b[1];
+   for i in [1..(d-2)] do
+      Hv := Hv - b[i*d + i + 2];
+    end for;
+   Hv := G!Hv;
+Hdelta := M!Id(G) -b[d+2] -b[2*d+3] + w*b[d+2] + (w^-1)*b[2*d+3];
+   Hdelta := G!Hdelta;
+Htt := M!Id(G) + b[d+1];
+   Htt := G!Htt;
+Hplus := M!Id(G) -b[1] -b[d+2] + w*b[1] + (w^-1)*b[d+2];
+   Hplus := G!Hplus;
+
+H := sub<GL(d, q)|Ht, Hu, Hv, Hdelta, Htt, Hplus>;
+
+/* we now map H to the non-natural representation. */
+
+_, Hu1 := WordInGen(G, Hu);
+Hu1:= Evaluate(Hu1, Q);
+_, Hv1 := WordInGen(G, Hv);
+Hv1:= Evaluate(Hv1, Q);
+_, Ht1 := WordInGen(G, Ht);
+Ht1:= Evaluate(Ht1, Q);
+_, Hdelta1 := WordInGen(G, Hdelta);
+Hdelta1:= Evaluate(Hdelta1, Q);
+_, Htt1 := WordInGen(G, Htt);
+Htt1:= Evaluate(Htt1, Q);
+_, Hplus1 := WordInGen(G, Hplus);
+Hplus1:= Evaluate(Hplus1, Q);
+
+HE := sub<GL(n, q)| Ht1, Hu1, Hv1, Hdelta1, Htt1, Hplus1>; // is reducible
+VPH := GModule(HE);
+flag, U, Uhat := IsIrreducible(VPH);
+/* U above is a non-trivial submodule */
+
+/* we now create an elementary abelian p-group K. The generators of K
+consist of those elements with some power of the primitive element in the
+top row (excluding the first position), 1s down the leading diagonal and 0s
+everywhere else */
+
+gg := <Id(G)>;
+for j in [1..e] do
+   for i in [2..d] do
+      Append(~gg, SL(d, q)!(M!Id(G) + (w^(j-1))*b[i]));
+   end for;
+end for;
+
+K := sub<SL(d, q)|[gg[i] : i in [2..d*e-(e-1)]]>; // Isomorphic to (C_q)^(d-1)
+S := [K.i : i in [1..Ngens(K)]];
+
+/* mapping K to the non-natural representation */
+
+kk := <Id(E)>;
+for i in [2..(d-1)*e+1] do
+   _, blob := WordInGen(G, gg[i]);
+   Append(~kk, Evaluate(blob, Q));
+end for;
+
+KE := sub<GL(n, q)|[kk[i] : i in [2..(d-1)*e+1]]>;
+
+V := VectorSpace(GF(q), n);
+U := sub<V|[V!VPH!U.i : i in [1..Dimension(U)]]>; // Here U has been rewritten in vectors of length n but the module still has its original dimension
+
+g := Random(KE);
+W := sub<VectorSpace(GF(q), n)|[U.i*g : i in [1..Dimension(U)]]>; // creating U^g = W
+
+ComputeBase := false;
+time J1, J2, x, xslp := UnipotentStabiliser(KE, U:ComputeBase := true);
+time L1, L2, y, yslp := UnipotentStabiliser(KE, W:ComputeBase := true);
+assert J2 eq L2;
+
+/*
+for j in [1..10] do
+   h := Random(KE);
+   _, b1, _, _:= UnipotentStabiliser (KE, U^h: ComputeBase:=true); 
+   assert J2 eq b1;
+end for;
+*/
+
+assert U^J1 eq {U}; 
+assert U^x eq J2; 
+W, phi := WordGroup (KE); 
+assert phi (xslp) eq x; 
+
+end for;
+end for;
+end for;
+end for;

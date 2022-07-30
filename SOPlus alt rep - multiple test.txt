@@ -1,0 +1,57 @@
+load "C:/Users/Elliot/Documents/Mathematics/SOPlusALTREP.txt";
+
+for d in [6, 8, 10, 12] do
+for q in [2,3,4,5,7,9,11,13,16,17,19,23,25,81,243] do
+
+/* REASON WHY THIS KEEPS GOING WRONG FOR d := 4 is because the
+   rep is not irreducible and the wrong U keeps being chosen
+*/
+
+G := SOPlus(d, q);
+
+F := GF(q);
+w := PrimitiveElement(F);
+
+QQ := PlusChosenElements(G: SpecialGroup := true);
+QQ := [GL(d, F)!QQ[i] : i in [1..#QQ]];
+CB := ChangeofBasisMatrix(G);
+GG := sub<SL(d, q)|QQ>;
+
+VG := GModule(GG); 
+VE := ExteriorSquare(VG); 
+n := Dimension(VE);
+
+Ebar := sub<GL(n, q) | [ActionGenerators(VE)[i] : i in [1..#ActionGenerators(VE)]]>;
+
+P := RandomProcess(Ebar);
+A := Random(P); 
+
+QQQ := [];
+for i in [1..#QQ] do
+   Append(~QQQ, (ExteriorSquare(QQ[i])));
+end for;
+
+/* conjugating everything by a random matrix to make the exterior square look random */
+Q := [];
+for i in [1..#QQ] do
+   _, word := SOPlusWordInGen(G, QQ[i]^(CB^-1));
+   Append(~Q, Evaluate(word, QQQ)^A);
+end for;
+
+E := sub<GL(n, q)|Q>;
+
+P := RandomProcess(E);
+
+for i in [1..10] do 
+n, q, i; 
+
+gg := Random(GG);
+flag, word := SOPlusWordInGen(SOPlus(d, q), gg^(CB^-1));
+g := Evaluate(word, Q);
+flag, word, scalar := SOPlusAltRepWordInGen(E, Q, g, d, q);
+
+assert flag;
+
+end for; 
+end for; 
+end for; 

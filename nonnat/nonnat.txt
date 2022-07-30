@@ -1,0 +1,10 @@
+{
+      MatrixPGroup.txt
+}
+
+
+rewriting
+{
+	sl-nn.txt
+      GetSLU.txt
+}

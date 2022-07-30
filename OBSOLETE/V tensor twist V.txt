@@ -1,0 +1,25 @@
+/* preparing the input */
+
+G := SL(4, 7);
+
+d := Dimension(G);
+q := #BaseRing(G);
+
+Q := SLChosenElements(G);
+QQ := [GL(d*d, q)!TensorProduct(Q[i], ConjugateMatrix(Q[i])) : i in [1..#Q]];
+n := Dimension(QQ[1]);
+A := Random(GL(n, q));
+
+/* conjugating everything by a random matrix to make the exterior square 
+   look random */
+_, a1 := WordInGen(G, Q[1]);
+_, a2 := WordInGen(G, Q[2]);
+_, a3 := WordInGen(G, Q[3]);
+_, a4 := WordInGen(G, Q[4]);
+Q := [Evaluate(a1, QQ)^A, Evaluate(a2, QQ)^A, Evaluate(a3, QQ)^A, Evaluate(a4, QQ)^A];
+
+E := sub<GL(n, q)|Q>;
+
+g := Random(E);
+
+SLAltRepWordInGen(Q, g, d);

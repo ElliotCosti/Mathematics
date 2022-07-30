@@ -1,0 +1,186 @@
+This is pdfeTeX, Version 3.141592-1.30.6-2.2 (MiKTeX 2.5) (preloaded format=pdflatex 2006.12.15)  28 SEP 2007 17:42
+entering extended mode
+**C:/Documents*and*Settings/Elliot*Costi/My*Documents/Mathematics/AnnCook.tex
+("C:\Documents and Settings\Elliot Costi\My Documents\Mathematics\AnnCook.tex"
+LaTeX2e <2005/12/01>
+Babel <v3.8g> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman, ngerman, french, loaded.
+("C:\Program Files\MiKTeX 2.5\tex\latex\base\article.cls"
+Document Class: article 2005/09/16 v1.4f Standard LaTeX document class
+("C:\Program Files\MiKTeX 2.5\tex\latex\base\size12.clo"
+File: size12.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+("C:\Program Files\MiKTeX 2.5\tex\latex\amsfonts\amssymb.sty"
+Package: amssymb 2002/01/22 v2.2d
+
+("C:\Program Files\MiKTeX 2.5\tex\latex\amsfonts\amsfonts.sty"
+Package: amsfonts 2001/10/25 v2.2f
+\@emptytoks=\toks14
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 132.
+))
+("C:\Program Files\MiKTeX 2.5\tex\latex\base\latexsym.sty"
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
+)
+\c@definition=\count87
+ (AnnCook.aux
+
+LaTeX Warning: Label `' multiply defined.
+
+)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Try loading font information for U+msa on input line 45.
+ ("C:\Program Files\MiKTeX 2.5\tex\latex\amsfonts\umsa.fd"
+File: umsa.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 45.
+
+("C:\Program Files\MiKTeX 2.5\tex\latex\amsfonts\umsb.fd"
+File: umsb.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+lasy on input line 45.
+
+("C:\Program Files\MiKTeX 2.5\tex\latex\base\ulasy.fd"
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+) [1
+
+{psfonts.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 64--67
+
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 70.
+("C:\Program Files\MiKTeX 2.5\tex\latex\base\omscmr.fd"
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 70.
+
+Underfull \hbox (badness 10000) in paragraph at lines 70--72
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 73--86
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 73--86
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 87--100
+
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 118--120
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 121--137
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 121--137
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 138--156
+
+ []
+
+[3]
+Overfull \hbox (30.68912pt too wide) in paragraph at lines 191--192
+[]\OT1/cmr/m/n/12 Then $\OML/cmm/m/it/12 U \OT1/cmr/m/n/12 = \OMS/cmsy/m/n/12 h
+\OML/cmm/m/it/12 e[]; e[]; e[]\OMS/cmsy/m/n/12 i \OML/cmm/m/it/12 < \OT1/cmr/m/
+n/12 (\OML/cmm/m/it/12 F[]\OT1/cmr/m/n/12 )[]$ and $\OML/cmm/m/it/12 gU \OT1/cm
+r/m/n/12 = \OML/cmm/m/it/12 W \OT1/cmr/m/n/12 = \OMS/cmsy/m/n/12 h[]$\OT1/cmr/m
+/n/12 , $[]$,
+ []
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 204--206
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 207--215
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 218--220
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 221--242
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 243--245
+
+ []
+
+[5] (AnnCook.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 661 strings out of 95419
+ 7005 string characters out of 1187297
+ 54444 words of memory out of 1050976
+ 3815 multiletter control sequences out of 60000
+ 14748 words of font info for 61 fonts, out of 1000000 for 2000
+ 14 hyphenation exceptions out of 8191
+ 23i,17n,24p,932b,199s stack positions out of 5000i,500n,10000p,200000b,32768s
+PDF statistics:
+ 49 PDF objects out of 300000
+ 0 named destinations out of 300000
+ 1 words of extra memory for PDF output out of 10000
+<C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmex10.pfb><C:/Program Fi
+les/MiKTeX 2.5/fonts/type1/bluesky/ams/msbm10.pfb><C:/Program Files/MiKTeX 2.5/
+fonts/type1/bluesky/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/blues
+ky/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr8.pfb><C
+:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmsy10.pfb><C:/Program Files/
+MiKTeX 2.5/fonts/type1/bluesky/cm/cmti12.pfb><C:/Program Files/MiKTeX 2.5/fonts
+/type1/bluesky/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/c
+m/cmbx12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr12.pfb><C:/
+Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr17.pfb>
+Output written on AnnCook.pdf (5 pages, 88279 bytes).

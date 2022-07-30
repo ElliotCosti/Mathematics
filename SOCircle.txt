@@ -1,0 +1,22 @@
+load "C:/Users/Elliot/Documents/Mathematics/OmegaCircle3.txt";
+
+SOCircleWordInGen := function(G, A);
+
+   flag, word := OmegaCircleWordInGen(G, A);
+   if flag ne Id(G) then
+      d := Dimension(G);
+      F := BaseRing(G);
+      QQ := SOChosenElements(SO(d, F): SpecialGroup := true);
+      sp := GL(d, F)!QQ[#QQ];
+      A := A*sp;
+      flag, word := OmegaCircleWordInGen(G, A);
+      SS := Parent(word);
+      S := SLPGroup(5);
+      phi := hom<SS -> S | S.1, S.2, S.3, S.4>;
+      word := phi(word);
+      word := word*(S.5^-1);
+   end if;
+
+   return flag, word;
+
+end function;

@@ -1,0 +1,29 @@
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/start";
+// load "C:/Users/Elliot/Documents/Mathematics/Matrix/intersect/class-int/basics.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/basics.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/sl/odd/gen.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/sl/odd/sl.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/sl/odd/projective.m";
+
+// Attach ("C:/Users/Elliot/Documents/Mathematics/Matrix/classical/form.m");
+// Attach ("C:/Users/Elliot/Documents/Mathematics/Matrix/classical/correct_form.m");
+// Attach("C:/Users/Elliot/Documents/Mathematics/Matrix/classical/correct_orth.m");
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/conjugate.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/sp/odd/sp.m";
+
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/su/odd/su.m";
+
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/orthogonal/odd/so-product.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/orthogonal/odd/involution.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/orthogonal/odd/dp.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/orthogonal/odd/soplus.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/orthogonal/odd/soplus-special.m";
+
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/orthogonal/odd/sominus.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/orthogonal/odd/sominus-6.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/orthogonal/odd/sominus-special.m";
+
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/orthogonal/odd/so.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/orthogonal/odd/so-5.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/classical/orthogonal/odd/so-special.m";
+

@@ -1,0 +1,40 @@
+load "C:/Users/Elliot/Documents/Mathematics/OMinus3.txt";
+
+for e in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 32, 64] do
+
+   d := 20;
+   p := 7;
+   Q := MinusChosenElements(OmegaMinus(d, p^e));
+   G := sub<SL(d, p^e)|Q>;
+   P := RandomProcess(G);
+   A := Random(G);
+   d, p, e;
+   time flag, word := OmegaMinusWordInGen(G, A);
+
+end for;
+
+for p in [11, 19, 31, 41, 53, 61, 97, 643, 1063] do
+
+   d := 50;
+   e := 1;
+   Q := MinusChosenElements(OmegaMinus(d, p^e));
+   G := sub<SL(d, p^e)|Q>;
+   P := RandomProcess(G);
+   A := Random(G);
+   d, p, e;
+   time flag, word := OmegaMinusWordInGen(G, A);
+
+end for;
+
+for d in [20, 50, 70, 80, 90, 100, 120] do
+
+   p := 7;
+   e := 10;
+   Q := MinusChosenElements(OmegaMinus(d, p^e));
+   G := sub<SL(d, p^e)|Q>;
+   P := RandomProcess(G);
+   A := Random(G);
+   d, p, e;
+   time flag, word := OmegaMinusWordInGen(G, A);
+
+end for;

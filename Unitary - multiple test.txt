@@ -1,0 +1,31 @@
+load "C:/Users/Elliot/Documents/Mathematics/Unitary7.txt";
+load "C:/Users/Elliot/Documents/Mathematics/standard.m";
+
+for d in [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 30, 50] do
+for p in [2,3,5,7,11,13,17,19,23] do
+for e in [1..5] do
+
+G := SU(d, p^e);
+P := RandomProcess(G);
+Q, CB := CreateUnitaryGenerators(G);
+QQ := SUChosenElements(G);
+
+for i in [1..#QQ] do 
+   d, p, e, "QQ[", i, "]"; 
+   A := QQ[i]^(CB^-1);
+   flag, word := UnitaryWordInGen(G, A);
+   assert flag eq Id(G); 
+   assert A^CB eq Evaluate(word, QQ);
+end for;
+
+for i in [1..10] do 
+   d, p, e, i; 
+   A := Random(P);
+   flag, word := UnitaryWordInGen(G, A);
+   assert flag eq Id(G); 
+   assert A^CB eq Evaluate(word, QQ);
+end for;
+
+end for; 
+end for; 
+end for; 

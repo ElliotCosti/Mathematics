@@ -1,0 +1,43 @@
+/* SL(4, 3) embedded in SL(4, 3^2) */
+
+H := MatrixGroup<4, GF(3, 2) |
+    [ 0, 1, 0, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ] where W := GF(3, 2).1,
+    [ 0, 0, 0, 1, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0 ] where W := GF(3, 2).1,
+    [ 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ] where W := GF(3, 2).1,
+    [ 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ] where W := GF(3, 2).1>;
+RandomSchreier (H);
+CompositionFactors (H);
+
+/* SL(4, 3) with additional generator for centre for SL(4, 3^2) */
+K := MatrixGroup<4, GF(3, 2) |
+    [ 0, 1, 0, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ] where W := GF(3, 2).1,
+    [ 0, 0, 0, 1, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0 ] where W := GF(3, 2).1,
+    [ 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ] where W := GF(3, 2).1,
+    [ 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ] where W := GF(3, 2).1,
+    [ W^2, 0, 0, 0, 0, W^2, 0, 0, 0, 0, W^2, 0, 0, 0, 0, W^2 ] where W := GF(3, 
+    2).1
+        /* order = 24261120 = 2^9 * 3^6 * 5 * 13 */ >
+;
+
+/* K has centre of order 4, H has centre of order 2 */
+
+RandomSchreier (K);
+CompositionFactors (K);
+
+/* first four gens of K are also the gens of H and 
+   these are the standard gens for H */
+E := [K.i: i in [1..4]];
+
+h := Random (H);
+f, s, w := SLAltRepWordInGen (K, E, h, 4, 3);
+h1 := Evaluate (w, E);
+h * h1^-1;
+
+x := h * K.5;
+x in H;
+x in K;
+
+f, s, w := SLAltRepWordInGen (K, E, h, 4, 3);
+y := Evaluate (w, E);
+x * y^-1;
+

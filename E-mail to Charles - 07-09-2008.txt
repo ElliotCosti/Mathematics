@@ -1,0 +1,24 @@
+Hi Charles,
+
+Thank you for the corrections. There are three that I needed to reply back to you about.
+
+> Contents. What has happened to unitary groups in even characteristic 
+> and odd degree?
+ 
+The generating set for the unitary groups in odd degree has a -1/2 as an entry in one of the matrices and so we cannot use it to generate the group. Currently, there is no generating set for the unitary groups in even char and odd dim.
+
+> Section 1.2 Last sentence. No, if G is conjugate to a classical group you find the form that
+> it preserves and conjugate this to the standard form. This is very 
+> easy, and conjugates
+> the group to the standard copy of the classical group.
+
+There is a problem with this. There is a function (TransformForm) in magma that provides a change of basis to take a conjugate of G to the standard form, however it does NOT map the given generators to the standard generators. Hence, the only way to do it is to consider it as a special case of the non-natural algorithm where d = n and q = q^prime. 
+
+
+> p 14. You can't have two competing definitions of A_{ijk}
+
+I can see why this could potentially be very confusing. If a matrix has weight (j0, j1, j2) then if we are using the second definition, the entry we are talking about is A_{j0, j1, j2}. However, if we are using the first definition, the equivalent entry is A_{j0, j0 + j1, j2 - 1}. In order to cut down on such clumsy notation, I was using both definitions depending on which chapter I was in.
+
+If the thesis makes it very clear which definition we are using at each stage, do you think that we can get away with the 2 competing definitions? If not, we should stick with the first definition and I will convert all the A_{j0, j1, j2} symbols into A_{j0, j0 + j1, j2 - 1}.
+
+Elliot

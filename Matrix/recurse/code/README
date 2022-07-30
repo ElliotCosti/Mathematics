@@ -1,0 +1,47 @@
+To start
+
+1/ Edit paths in start
+
+2/ Edit the following import paths
+
+leaf.m:import "/usr/local/magma/package/Group/GrpMat/sl2q/decompose.m":
+leaf.m:import "/usr/local/magma/package/Group/GrpMat/sl2q/natural.m":
+word.m:import "/usr/local/magma/package/Group/GrpMat/sl2q/decompose.m":
+
+3/ Inside magma load files using 
+
+load start;
+
+4/ The file derek-example may help to clarify use of various function.
+
+=========================================
+
+attributes.m lists the attributes stored in individual groups 
+
+G`UserGenerators: list of user-supplied generators
+                  or their images if G is homomorphic image
+
+G`SLPGroup: SLPGroup of same rank as # of user generators
+
+G`SLPGroupHom: homomorphism from SLPGroup to user-generators
+   so G`SLPGroupHom (w) evaluates to matrix
+
+======================================================
+
+chief.m and c9code.m are the new files which
+set up data structures for leaf 
+
+Each leaf now stores a *composition series*,
+set up using function Composite*Leaf
+where * = Matrix, Perm, Abelian, PC
+
+For uniformity, the series is stored even 
+if the leaf is simple.
+
+Given g \in G, where G is a leaf group,
+we can write g as SLP in user-defined
+generators of the  term of the comp series
+containing g. This is done using
+RefinedImageCompositeLeaf.
+This also identifies the term
+of the composition series containing g.

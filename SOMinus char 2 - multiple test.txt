@@ -1,0 +1,37 @@
+load "C:/Users/Elliot/Documents/Mathematics/SOMinus char 2 - 2.txt";
+
+for d in [4, 6, 8, 10, 12, 20, 32, 42] do
+for p in [2] do
+for e in [1..9] do
+
+G := SOMinus(d, p^e);
+Q := MinusChar2Elements(G: SpecialGroup := true);
+Q := [GL(d, p^e)!Q[i] : i in [1..#Q]];
+G := sub<GL(d, p^e)|Q>;
+P := RandomProcess(G);
+
+for i in [1..#Q] do
+d, p, e, "Q[", i, "]";
+
+A := Q[i];
+flag, word := SOMinusWordInGen(G, A);
+
+assert flag eq Id(G);
+assert A eq Evaluate(word, Q);
+
+end for;
+
+for i in [1..10] do 
+d, p, e, i; 
+
+A := Random(P);
+
+flag, word := SOMinusWordInGen(G, A);
+
+assert flag eq Id(G); 
+assert A eq Evaluate(word, Q);
+
+end for;
+end for; 
+end for; 
+end for; 

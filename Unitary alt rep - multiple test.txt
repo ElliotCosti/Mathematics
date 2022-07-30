@@ -1,0 +1,65 @@
+load "C:/Users/Elliot/Documents/Mathematics/UnitaryALTREP5.txt";
+
+for d in [4, 6, 8, 10, 12] do
+for q in [2,3,4,5,7,8,9,11,13,16,17,19,23,25,81,243] do
+
+G := SU(d, q);
+
+F := GF(q^2);
+w := PrimitiveElement(F);
+
+_, CB := CreateUnitaryGenerators(G);
+QQ := SUChosenElements(G);
+GG := sub<SL(d, F)|QQ>;
+
+VG := GModule(GG); 
+VE := ExteriorSquare(VG); 
+n := Dimension(VE);
+
+Ebar := sub<GL(n, F) | [ActionGenerators(VE)[i] : i in [1..#ActionGenerators(VE)]]>;
+
+P := RandomProcess(Ebar);
+A := Random(P);
+
+QQQ := [];
+for i in [1..#QQ] do
+   Append(~QQQ, (ExteriorSquare(QQ[i])));
+end for;
+
+/* conjugating everything by a random matrix to make the exterior square look random */
+Q := [];
+for i in [1..#QQ] do
+   _, word := UnitaryWordInGen(G, QQ[i]^(CB^-1));
+   Append(~Q, Evaluate(word, QQQ)^A);
+end for;
+
+E := sub<GL(n, F)|Q>;
+
+for i in [1..#Q] do
+n, q, "Q[", i, "]";
+
+A := Q[i];
+flag, word, scalar := UnitaryAltRepWordInGen(E, Q, A, d, q^2);
+
+assert flag;
+assert scalar eq 1;
+
+end for;
+
+P := RandomProcess(G);
+
+for i in [1..10] do 
+n, q, i; 
+
+gg := Random(P);
+flag, word := UnitaryWordInGen(G, gg);
+A := Evaluate(word, Q);
+flag, word, scalar := UnitaryAltRepWordInGen(E, Q, A, d, q^2);
+
+assert flag;
+assert scalar eq 1;
+
+end for; 
+end for; 
+end for; 
+

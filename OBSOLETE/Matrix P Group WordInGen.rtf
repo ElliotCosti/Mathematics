@@ -1,0 +1,191 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fmodern\fcharset0 Courier New;}}
+{\colortbl ;\red0\green0\blue0;}
+{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf1\lang2057\f0\fs20 PInvariantFlag := function (V, X)\par
+\par
+    F := BaseRing (X);\par
+    p := #F;\par
+    d := Degree (X);\par
+    MA := MatrixAlgebra (F, d);\par
+    t := Ngens (X);\par
+    Y := [MA!X.j : j in [1..t]];\par
+\par
+    /* clumsy handling of trivial case */\par
+    if t eq 0 then\par
+       B := Basis (V);\par
+       d := #B;\par
+       W := [sub < V | [B[j] : j in [i..d]]> : i in [1..d]];\par
+       Append (~W, sub < V | >);\par
+    else\par
+       W := [V];\par
+       k := 1;\par
+       I := Identity (MA);\par
+       while Dimension (W[k]) ne 0 do\par
+          k +:= 1;\par
+          W[k] := &+[W[k-1] * (Y[j] - I): j in [1..t]];\par
+       end while;\par
+    end if;\par
+\par
+    flag := [];\par
+    for i in [1..#W - 1] do\par
+       F, phi := quo < W[i] | W[i + 1] >;\par
+       BF := Basis (F);\par
+       FB := [BF[j] @@ phi : j in [1..Dimension (F)]];\par
+       flag cat:= FB;\par
+    end for;\par
+\par
+    Spaces := [sub < V | >] cat\par
+            [sub <V | [flag[i]: i in [#flag..j by -1]]>: j in [#flag..1 \par
+by -1]];\par
+    Reverse (~Spaces);\par
+\par
+    CB := (GL (d, p) ! &cat[Eltseq (f): f in flag])^-1;\par
+    return flag, CB, Spaces;\par
+\par
+end function;\par
+\pard\hyphpar0\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf0\fs24\par
+\par
+/*M is the matrix that we are extracting the vector from. j is how many places above the diagonal we are creating the vector from.*/\par
+\par
+VectorExtract := function(j, M);\par
+   v := [];\par
+   n := Degree(M);\par
+   q := #BaseRing(M);\par
+   for i in [1..n-j] do\par
+      Append(~v, M[i, i+j]);\par
+   end for;\par
+   v := VectorSpace(GF(q), n-j)!v;\par
+\par
+   return v;\par
+\par
+end function;\par
+\par
+MatrixWeight := function(M);\par
+   n := Degree(M);\par
+   F := BaseRing(M);\par
+   for z in [1..n-1] do\par
+      if VectorExtract(z, M) ne ZeroMatrix(F, 1, n-z) then k := z; break; end if;\par
+   end for;\par
+   d := Depth(VectorExtract(k, M));\par
+   return [k, d];\par
+end function;\par
+\par
+FindPower := function(s, Y, weight);\par
+\pard\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf1\fs20     p := #BaseRing(Y);\par
+    j0 := weight[1];\par
+    j1 := weight[2];\par
+\par
+    beta := 0;\par
+    while Y[j1, j0 + j1] ne 0 and beta lt p do\par
+       beta +:= 1;\par
+       Y := Y * s;\par
+    end while;\par
+\par
+    if beta eq p then error "error in FindPower"; end if;\par
+\par
+\pard\hyphpar0\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656     return beta, Y;\cf0\fs24\par
+end function;\par
+\par
+FindIncreasePower := function(\cf1\fs20 weight, h, s);\cf0\fs24\par
+\pard\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf1\fs20     p := #BaseRing(s);\par
+    j0 := weight[1];\par
+    j1 := weight[2];\par
+\par
+    if exists (alpha) \{alpha : alpha in [1..p - 1] |\par
+       MatrixWeight(h * s^alpha)[1] gt j0\} eq false then\par
+       if exists (alpha) \{alpha : alpha in [1..p - 1] |\par
+          MatrixWeight(h * s^alpha)[2] gt j1\} then error "error in FindIncreasePower";\par
+    end if; end if;\par
+\par
+\pard\hyphpar0\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656     return alpha;\cf0\fs24\par
+end function;\par
+\par
+/*increases the weight of all the other elements of S using s*/\par
+IncreaseWeight := function(s, S, SSLP, min);\par
+     j0 := min[1];\par
+     j1 := min[2];\par
+     X := [];\par
+     XSLP := [];\par
+\pard\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf1\fs20        for h in S do\par
+          if h ne s then\par
+             if MatrixWeight(h) eq [j0, j1] then\par
+                beta := FindIncreasePower ([j0, j1], h, s);\par
+                hh := h * s^beta;\par
+                hhslp := SSLP[Position(S, h)] * SSLP[Position(S, s)]^beta;\par
+             else\par
+                hh := h;\par
+                hhslp := SSLP[Position(S, h)];\par
+             end if;\par
+             Append (~X, hh);\par
+             Append (~XSLP, hhslp);\par
+          end if;\par
+       end for;\par
+\par
+      return X, XSLP;\par
+\pard\hyphpar0\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf0\fs24 end function;\par
+\par
+KillEntries := function(Y, S, SSLP);\par
+\par
+yslp := Identity(SSLP);\par
+SSLP := [SSLP.i : i in [1..Ngens(SSLP)]];\par
+\par
+weight := [MatrixWeight(S[i]) : i in [1..#S]];\par
+\pard\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf1\fs20 weight1 := [];\par
+   for w in [1..#weight] do\par
+       Append(~weight1, weight[w, 1]);\par
+\pard\hyphpar0\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656    end for;\cf0\fs24\par
+j0 := Minimum(weight1);\par
+\pard\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf1\fs20 weight2 := [];\par
+   for w in [1..#weight] do\par
+       if weight[w, 1] eq j0 then\par
+          Append(~weight2, weight[w, 2]);\par
+       end if;\par
+   end for;\par
+j1 := Minimum (weight2);\par
+\pard\hyphpar0\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf0\fs24\par
+while #S ne 0 do\par
+   s := S[Position(weight, [j0, j1])];\par
+   sslp := SSLP[Position(weight, [j0, j1])];\par
+   beta, Y := FindPower(s, Y, [j0, j1]);\par
+   yslp := yslp * sslp^beta;\par
+\par
+   S, SSLP := IncreaseWeight(s, S, SSLP, [j0, j1]);\par
+   if #S eq 0 then break; end if;\par
+\par
+   weight := [MatrixWeight(S[i]) : i in [1..#S]];\par
+\pard\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf1\fs20    weight1 := [];\par
+      for w in [1..#weight] do\par
+          Append(~weight1, weight[w, 1]);\par
+      end for;\par
+\pard\hyphpar0\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf0\fs24    j0 := Minimum(weight1);\par
+\pard\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf1\fs20    weight2 := [];\par
+      for w in [1..#weight] do\par
+          if weight[w, 1] eq j0 then\par
+             Append(~weight2, weight[w, 2]);\par
+          end if;\par
+      end for;\par
+   j1 := Minimum (weight2);\par
+\pard\hyphpar0\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\cf0\fs24 end while;\par
+\par
+return yslp;\par
+\par
+end function;\par
+\par
+\cf1\fs20 /*Y is an element of the p-group K*/\par
+MatrixPGroupWordInGen := function(Y, K);\par
+\pard\hyphpar0\lang255\fs24 // we firstly upper uni-triangularise the matrices\par
+\par
+   q := #BaseRing(Y);\par
+   V := VectorSpace(GF(q), Degree(Y));\par
+   _, CB := PInvariantFlag(V, K);\par
+\pard\hyphpar0\sl288\slmult0\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx9160\tx10076\tx10992\tx11908\tx12824\tx13740\tx14656\lang2057\fs20    S := [K.i^CB : i in [1..Ngens(K)]];\par
+   Y := Y^CB;\par
+\par
+   \cf0\fs24 SSLP := SLPGroup(#S);\par
+\par
+   yslp := KillEntries(Y, S, SSLP);\par
+\cf1\fs20\par
+   return yslp^-1;\par
+end function;\par
+\par
+}
+ 

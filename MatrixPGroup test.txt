@@ -1,0 +1,30 @@
+load "C:/Users/Elliot/Documents/Mathematics/MatrixPGroup9.txt";
+
+RandomSpace := function (d, q, k) 
+V := VectorSpace (GF(q), d); 
+U := sub < V | [Random (V): i in [1..k]]>; 
+return U; 
+end function; 
+
+for d in [6..10] do 
+for q in [2,3,4,5,7,8,9,11,13,16,17,19,23,25, 64, 81, 128, 243] do for i in [1..10] do 
+d, q, i; 
+S := [RandomSpace (d, q, Random ([1..d div 2])): k in [1..d div 3]]; 
+U := RandomSpace (d, q, Random ([1..d div 2])); 
+A,B := StabiliserOfSpaces (S); 
+H := sub < GL(d, q) | B>; 
+P := RandomProcess(H);
+A := Random(P);
+word := MatrixPGroupWordInGen (A, H); 
+
+W, phi := WordGroup (H);
+if #B ne 0 then
+   assert Evaluate(word, B) eq A;
+else
+   assert word eq W!1;
+end if;
+
+end for; 
+end for; 
+end for; 
+

@@ -1,0 +1,62 @@
+load "C:/Users/Elliot/Documents/Mathematics/AlternativeRep.txt";
+load "C:/Users/Elliot/Documents/Mathematics/OmegaPlusALTREP3.txt";
+
+for e in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16] do
+
+   d := 6;
+   p := 7;
+   q := p^e;
+   G := OmegaPlus(d, q);
+   QQ := PlusChosenElements(G);
+   QQQ := [ExteriorSquare(QQ[i]) : i in [1..#QQ]];
+   n := Nrows(QQQ[1]);
+   A := Random(GL(n, p^e));
+   Q := [GL(n, p^e)!(A^-1*QQQ[i]*A) : i in [1..#QQQ]];
+   E := sub<GL(n, p^e)|Q>;
+   P := RandomProcess(E);
+   g := Random(P);
+   d, p, e;
+   time word, scalar, flag := OmegaPlusAltRepWordInGen(Q, g, d);
+   assert flag eq true;
+
+end for;
+
+for p in [11, 19, 31, 41, 53, 61, 97, 643, 1063] do
+
+   d := 6;
+   e := 1;
+   q := p^e;
+   G := OmegaPlus(d, q);
+   QQ := PlusChosenElements(G);
+   QQQ := [ExteriorSquare(QQ[i]) : i in [1..#QQ]];
+   n := Nrows(QQQ[1]);
+   A := Random(GL(n, p^e));
+   Q := [GL(n, p^e)!(A^-1*QQQ[i]*A) : i in [1..#QQQ]];
+   E := sub<GL(n, p^e)|Q>;
+   P := RandomProcess(E);
+   g := Random(P);
+   d, p, e;
+   time word, scalar, flag := OmegaPlusAltRepWordInGen(Q, g, d);
+   assert flag eq true;
+
+end for;
+
+for d in [6, 8, 10, 12, 14, 16, 18, 20, 22] do
+
+   e := 1;
+   p := 7;
+   q := p^e;
+   G := OmegaPlus(d, q);
+   QQ := PlusChosenElements(G);
+   QQQ := [SymmetricSquare(QQ[i]) : i in [1..#QQ]];
+   n := Nrows(QQQ[1]);
+   A := Random(GL(n, p^e));
+   Q := [GL(n, p^e)!(A^-1*QQQ[i]*A) : i in [1..#QQQ]];
+   E := sub<GL(n, p^e)|Q>;
+   P := RandomProcess(E);
+   g := Random(P);
+   d, p, e;
+   time word, scalar, flag := OmegaPlusAltRepWordInGen(Q, g, d);
+   assert flag eq true;
+
+end for;

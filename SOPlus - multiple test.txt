@@ -1,0 +1,38 @@
+load "C:/Users/Elliot/Documents/Mathematics/standard.m";
+load "C:/Users/Elliot/Documents/Mathematics/SOPlus.txt";
+
+for d in [4, 6, 8, 10] do
+for p in [2, 3, 5, 7, 11, 13, 17, 19] do
+for e in [1..5] do
+
+G := SOPlus(d, p^e);
+P := RandomProcess(G);
+CB := ChangeofBasisMatrix(G);
+Q := PlusChosenElements(G: SpecialGroup := true);
+Q := [GL(d, p^e)!Q[i] : i in [1..#Q]];
+
+for i in [1..#Q] do
+d, p, e, "Q[", i, "]";
+
+A := Q[i];
+flag, word := SOPlusWordInGen(G, A^(CB^-1));
+
+assert flag eq Id(G);
+assert A eq Evaluate(word, Q);
+
+end for;
+
+for i in [1..10] do 
+d, p, e, i; 
+
+A := Random(P);
+
+flag, word := SOPlusWordInGen(G, A);
+
+assert flag eq Id(G); 
+assert A^CB eq Evaluate(word, Q);
+
+end for;
+end for; 
+end for; 
+end for; 

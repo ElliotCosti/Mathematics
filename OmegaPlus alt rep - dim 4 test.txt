@@ -1,0 +1,62 @@
+load "C:/Users/Elliot/Documents/Mathematics/OmegaPlusALTREP6.txt";
+load "C:/Users/Elliot/Documents/Mathematics/AlternativeRep.txt";
+
+for d in [4] do
+for q in [2,3,4,5,7,8,9,11,13,16,17,19,23,25,81,243] do
+
+G := OmegaPlus(d, q);
+
+Q, E := ClassicalSymmetricPower(G, "O+", 4);
+if #Q eq 0 then
+   "skipping ", n, q;
+   continue;
+end if;
+
+n := Degree(Q[1]);
+
+if #Q ne 6 then
+   "skipping ", n, q;
+   continue;
+end if;
+
+Append(~Q, Id(SL(n, BaseRing(Q[1]))));
+Append(~Q, Q[4]);
+
+if #Q ne 8 then
+   continue;
+end if;
+
+P := RandomProcess(E);
+A := Random(P);
+
+for i in [1..#Q] do
+n, q, "Q[", i, "]";
+
+A := Q[i];
+flag, word, scalar := OmegaPlusAltRepWordInGen(E, Q, A, d, q);
+
+assert flag;
+assert scalar eq 1;
+
+end for;
+
+P := RandomProcess(E);
+
+for i in [1..10] do 
+n, q, i; 
+
+/*
+gg := Random(GG);
+flag, word := OmegaPlusWordInGen(GG, gg^(CB^-1));
+g := Evaluate(word, Q);
+*/
+
+g := Random(P);
+flag, word, scalar := OmegaPlusAltRepWordInGen(E, Q, g, d, q);
+
+assert flag;
+assert scalar eq 1;
+
+end for; 
+end for; 
+end for; 

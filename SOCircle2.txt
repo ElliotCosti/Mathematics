@@ -1,0 +1,25 @@
+load "C:/Users/Elliot/Documents/Mathematics/OmegaCircle4.txt";
+
+SOCircleWordInGen := function(G, A);
+
+   _, _, J := OrthogonalForm(G);
+   sn := SpinorNorm(A, J);
+   if sn eq 0 then
+      flag, word := OmegaCircleWordInGen(G, A);
+   else
+      d := Dimension(G);
+      F := BaseRing(G);
+      QQ := SOChosenElements(SO(d, F): SpecialGroup := true);
+      sp := GL(d, F)!QQ[#QQ];
+      A := A*sp;
+      flag, word := OmegaCircleWordInGen(G, A);
+      SS := Parent(word);
+      S := SLPGroup(5);
+      phi := hom<SS -> S | S.1, S.2, S.3, S.4>;
+      word := phi(word);
+      word := word*(S.5^-1);
+   end if;
+
+   return flag, word;
+
+end function;

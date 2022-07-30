@@ -1,0 +1,16 @@
+// load start;
+
+G := GL(2, 5);
+G := ConstructGroup (G, Sym (2));
+H := WreathProduct (G, CyclicGroup(3));
+T:=CompositionTree (H);
+t, o, s := TreeFactors (T);
+
+G := NormaliserOfExtraSpecialGroup (3, 7);
+G := ConstructGroup (G, Sym (3));       
+// H := WreathProduct (G, CyclicGroup (3));
+// H := WriteOverLarge (H, 3);
+G := WreathProduct (G, Sym (3));       
+T:=CompositionTree (G);
+
+

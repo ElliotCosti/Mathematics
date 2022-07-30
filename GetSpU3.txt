@@ -1,0 +1,751 @@
+
+/* additional element to generate all of Sp */
+
+SpAdditionalElement := function (F)
+   M := MatrixAlgebra (F, 4);
+   I := Identity (M);
+
+   I[2][3] := 1;
+   I[4][1] := 1;
+
+   I := GL (4, F)!I;
+   return I;
+end function;
+
+/* canonical basis for Sp(d, q) */
+
+SpChosenElements := function (G )
+
+   d := Degree (G);
+   F := BaseRing (G); 
+
+   w := PrimitiveElement (F);
+   M := MatrixAlgebra (F, d);
+   a := Identity (M);
+   a[1][1] := 0;
+   a[1][2] := 1;
+   a[2][1] := -1;
+   a[2][2] := 0;
+
+   t := Identity (M);
+   t[1][2] := 1;
+
+   delta := Identity (M);
+   delta[1][1] := w;
+   delta[2][2] := w^-1;
+
+   if d ge 4 then 
+      p := Zero (M);
+      p[1][3] := 1; p[2][4] := 1; p[3][1] := 1; p[4][2] := 1;
+      for i in [5..d] do p[i][i] := 1; end for;
+   else
+      p := Identity (M);
+   end if;
+
+   if d ge 4 then 
+      b := Zero (M);
+      n := d div 2;
+      for i in [1..d - 3 by 2] do
+         b[i][i + 2] := 1;
+      end for; 
+      b[d - 1][1] := 1;
+      for i in [2..d - 2 by 2] do
+         b[i][i + 2] := 1;
+      end for; 
+      b[d][2] := 1;
+   else 
+      b := Identity (M);
+   end if;
+
+   P := GL(d, F);
+   a := P!a; b := P!b; p := P!p; t := P!t; delta := P!delta;
+   if d gt 4 then 
+      v := P!(DiagonalJoin (Identity (MatrixAlgebra (F, d - 4)),
+                            SpAdditionalElement (F)));
+   elif d eq 4 then 
+      v := SpAdditionalElement (F);
+   else
+      v := Identity (P);
+   end if;
+
+   return [a, b, t, delta, p, v];
+end function;
+ChangeOfBasisMatrix := function(G);
+
+   F := BaseRing (G);
+   d := Dimension(G);
+   M := KMatrixSpace(F, d, d); 
+   b := Basis(M);
+   Z := IntegerRing();
+   G := SL(d, F);
+
+   CB := ZeroMatrix(F, d, d);
+   for i in [1..(d div 2)] do
+      CB := CB + b[(i-1)*d + 2*i - 1];
+   end for;
+   for i in [1..(d div 2)] do
+      CB := CB + b[(d div 2)*d + i*d - 2*i + 2];
+   end for;
+   return G!CB;
+
+end function;
+
+   /* BB is an element of GF(q). This algorithm returns the
+      transvection with BB in the [2, 1] position
+   */
+
+GetBBTransvection := function(BB, SLP);
+
+   F := Parent(BB);
+   e := Degree(F);
+   Z := IntegerRing();
+   w := PrimitiveElement(F);
+
+   FF := sub<F|w^2>;
+   // FF.1 eq (F.1)^2; <- this will be true
+   py := FF!F.1;
+
+   // O := Id(G);
+   OO := Id(SLP);
+   for i in [1..e] do
+      // O := O*(t^delta^-(i-1))^Z!Eltseq(py)[i];
+      OO := OO*(SLP.3^SLP.1^-(i-1))^Z!Eltseq(py)[i];
+   end for;
+
+   // T := t^-1;
+   TT := SLP.3^-1;
+   // T := (T^s)^Z!Eltseq(BB)[1];
+   TT := (TT^SLP.2)^Z!Eltseq(BB)[1];
+
+   for r in [2..e] do
+      if IsEven(r) then
+         // o := O^-1;
+         oo := OO^-1;
+         // o := o^(delta^-Z!((r-2)/2));
+         oo := oo^(SLP.1^-Z!((r-2)/2));
+         // o := (o^s)^Z!Eltseq(BB)[r];
+         oo := (oo^SLP.2)^Z!Eltseq(BB)[r];
+         // T := T*o;
+         TT := TT*oo;
+      else
+         // o := t^-1;
+         oo := SLP.3^-1;
+         // o := o^(delta^-Z!((r-1)/2));
+         oo := oo^(SLP.1^-Z!((r-1)/2));
+         // o := (o^s)^Z!Eltseq(BB)[r];
+         oo := (oo^SLP.2)^Z!Eltseq(BB)[r];
+         // T := T*o;
+         TT := TT*oo;
+      end if;
+   end for;
+
+   return TT;
+
+end function;
+
+/* This function gets a 1 in the [1, 1] position of A. S1 and S2
+   are SLPs. */
+
+GetAOne := procedure(~A, ~S1, ~S2);
+
+   SLP := Parent(S1);
+   F := BaseRing(A);
+   w := PrimitiveElement(F);
+   d := Nrows(A);
+   Z := IntegerRing();
+
+   if A[1, 1] ne 1 then
+      i := 2;
+      while A[1, i] eq 0 do
+         i := i+1;
+         if i eq d+1 then break; end if;
+      end while;
+
+      if i eq d+1 then
+         // A := A*t;
+         AddColumn(~A, 1, 1, 2);
+         S2 := S2*SLP.3;
+         i := 2;
+      end if;
+   
+      if i eq 2 then
+      /* here we add the necessary multiple of column 2
+         to column 1 to make A[1, 1] = 1 */
+
+         BB := (1-A[1, 1])/A[1, 2];
+         TT := GetBBTransvection(BB, SLP);
+         AddColumn(~A, BB, 2, 1);
+         // A := A*T;
+         S2 := S2*TT;
+
+      else
+         /* the case where A[1, 2] = 0 */
+         /* we move the non-zero entry to position 4 */
+         BB := (1-A[1, 1])/A[1, i];
+         TT := GetBBTransvection(BB, SLP);
+
+         /* deciding which block the non-zero entry is in */
+         if IsEven(i) then j := i div 2;
+         else j := Z!(i/2 + 1/2); end if;
+
+         /* we get the non-zero entry into the second block*/
+         if j eq 2 then
+            A := A;
+         else
+            /* A := A*(u*v^-1)^(j-2)*(u*v)^(j-2)*(u*v^-1)
+               ^(j-2)*(u*v)^(j-2)*u;
+	         swaps block 2 with block j to get the block
+               with the non-zero entry as the second block
+               of A
+            */
+            SwapColumns(~A, 3, 2*j - 1);
+            SwapColumns(~A, 4, 2*j);
+            S2 := S2*(SLP.4*SLP.5^-1)^(j-2)*(SLP.4*SLP.5)
+              ^(j-2)*(SLP.4*SLP.5^-1)
+              ^(j-2)*(SLP.4*SLP.5)^(j-2)*SLP.4;
+         end if;
+
+         /* A := A*s;
+           puts the entry you wish to make equal to 1 in A[1, 2] */
+         MultiplyColumn(~A, -1, 1);
+         SwapColumns(~A, 1, 2);
+         S2 := S2*SLP.2;
+         /* A := A*u;
+           puts the entry you wish to make equal to 1 in A[1, 4]
+         */
+         SwapColumns(~A, 1, 3);
+         SwapColumns(~A, 2, 4);
+         S2 := S2 * SLP.4;
+      
+         /* we now add column 4 to 1 and column 2 to 3 in order that,
+            when we stick all the columns back again, there will be a
+            non-zero entry in the A[1, 2] position
+         */
+         if IsEven(i) then 
+            // A := A*x;
+            AddColumn(~A, 1, 4, 1);
+            AddColumn(~A, 1, 2, 3);
+            S2 := S2*SLP.6;
+         else
+            // A := A*s*x*(s^-1);
+            MultiplyColumn(~A, -1, 1); // s
+            SwapColumns(~A, 1, 2); // s
+            AddColumn(~A, 1, 4, 1); // x
+            AddColumn(~A, 1, 2, 3); // x
+            SwapColumns(~A, 1, 2); // s^-1
+	      MultiplyColumn(~A, -1, 1); // s^-1
+            S2 := S2*SLP.2*SLP.6*(SLP.2 ^-1);
+         end if;
+      
+         /* we now proceed to stick all the columns back again */
+         // A := A*(u^-1);
+         SwapColumns(~A, 1, 3);
+         SwapColumns(~A, 2, 4);
+         S2 := S2*(SLP.4 ^-1);
+         // A := A*(s^-1);
+         SwapColumns(~A, 1, 2); // s^-1
+         MultiplyColumn(~A, -1, 1); // s^-1
+         S2 := S2*(SLP.2 ^-1);
+         if j ne 2 then
+            /* A := A*(((u*v^-1)^(j-2)*(u*v)^(j-2)*(u*v^-1)
+                  ^(j-2)*(u*v)^(j-2)*u)^-1);
+               swaps block 2 with block j
+            */
+	      SwapColumns(~A, 3, 2*j -1);
+	      SwapColumns(~A, 4, 2*j);
+            S2 := S2*(((SLP.4*SLP.5^-1)^(j-2)*(SLP.4*SLP.5)
+               ^(j-2)*(SLP.4*SLP.5^-1)
+               ^(j-2)*(SLP.4*SLP.5)^(j-2)*SLP.4)^-1);
+         end if;
+         BB := (1-A[1, 1])/A[1, 2];
+         TT := GetBBTransvection(BB, SLP);
+         // A := A*T;
+         AddColumn(~A, BB, 2, 1);
+         S2 := S2*TT;
+      end if;
+   end if;
+
+assert A[1, 1] eq 1;
+end procedure;
+
+SymplecticWordInGen := function(G, A);
+
+   W := SLPGroup(6);
+   d := Dimension(G);
+   F := BaseRing(G);
+   w := PrimitiveElement(F);
+   G := SL(d, F);
+   e := Degree(F);
+   CB := ChangeOfBasisMatrix(G);
+   A := G!(A^CB);
+
+   // GG := sub<SL(d, q)|delta, s, t, u, v, x>;
+   SLP := SLPGroup(6);
+   S1 := Id(SLP);
+   S2 := Id(SLP);
+   Z := IntegerRing();
+
+   /* Originally the algorithm was defined on a different
+      generating set. This algorithm maps the old generating
+      set to the new one. */
+   phi := hom<SLP -> W|W.4, W.1^-1, W.3, W.5, W.2, W.6^(W.2^2)>;
+
+   /* We wish to find the matrix whose top row is [1 w 0 .. 0],
+      has 1s on the leading diagonal and 0s everywhere else.
+      We construct the subfield FF of F generated by w^2. This
+      subfield has order greater than half of the order of F
+      and hence is equal to F. By then coercing w into FF, magma
+      will write w as a polynomial py in powers of the generator
+      of FF. So w is written as a polynomial in w^2.
+      t^(delta^-1) gives us the matrix with [1 w^2 0 .. 0] on
+      the top row and t^(delta^-a) gives you the matrix with
+      [1 w^2a 0 .. 0] on the top row. Hence, you can use py to
+      find the powers of t^(delta^-1) needed to give the matrix
+      with [1 w 0 .. 0] on the top row.
+   */
+
+   FF := sub<F|w^2>;
+   /* FF.1 eq (F.1)^2;
+      this will be true due to above comment */
+   py := FF!F.1;
+
+   /*py is now a polynomial in w^2 that is equal to w*/
+
+   // O := Id(G);
+   OO := Id(SLP);
+   for i in [1..e] do
+      // O := O*(t^delta^-(i-1))^Z!Eltseq(py)[i];
+      OO := OO*(SLP.3^SLP.1^-(i-1))^Z!Eltseq(py)[i];
+   end for;
+
+   /* the number of blocks preserved by the Weyl group */
+   block := d div 2;
+
+   /* kills the A[1, 3] entry */
+
+   KillPlace := procedure(~A, ~S1, ~S2);
+
+      aa := Eltseq(A[1, 3]);
+      for r in [1..e] do
+         S2 := S2*((SLP.6^(SLP.1^(r-1)))^Z!aa[r]);
+         // A := A*((x^(delta^(r-1)))^Z!aa[r]);
+      end for;
+
+      AddColumn(~A, A[1, 3], 4, 1);
+      AddColumn(~A, A[1, 3], 2, 3);
+
+   end procedure;
+
+   for k in [1..block] do
+
+      GetAOne(~A, ~S1, ~S2);
+
+      /* A := A*s;
+         swaps first two columns */
+      MultiplyColumn(~A, -1, 1); // s
+      SwapColumns(~A, 1, 2); // s
+      S2 := S2*SLP.2;
+
+      for l in [1..block-1] do
+         KillPlace(~A, ~S1, ~S2);
+         /* A := A*u*s*u;
+            swaps the third and fourth columns so that we can work on the f part of the block. */
+         SwapColumns(~A, 3, 4);
+         MultiplyColumn(~A, -1, 4);
+         S2 := S2*SLP.4*SLP.2*SLP.4;
+
+         KillPlace(~A, ~S1, ~S2);
+         /* A := A*((u*s*u)^-1);
+            swaps the third and fourth columns back again */
+         MultiplyColumn(~A, -1, 4);
+         SwapColumns(~A, 3, 4);
+         S2 := S2*((SLP.4*SLP.2*SLP.4)^-1);
+         /* A := A*(v*u);
+            vu is the (2..d/2) cycle on the blocks */
+         for i in [2..(d/2 - 1)] do
+            SwapColumns(~A, 2*i - 1, d-1);
+            SwapColumns(~A, 2*i, d);
+         end for;
+         S2 := S2*(SLP.5*SLP.4);
+      end for;
+
+      /* A := A*(s^-1);
+         swaps first two columns back again */
+      SwapColumns(~A, 1, 2); // s^-1
+      MultiplyColumn(~A, -1, 1); // s^-1
+      S2 := S2*(SLP.2^-1);
+      S2 := S2*(SLP.3^Z!-Eltseq(A[1, 2])[1]);
+
+      // A := A*(t^Z!-Eltseq(A[1, 2])[1]);
+      // T := Id(G);
+      TT := Id(SLP);
+      for r in [2..e] do
+         if IsEven(r) then
+            // o := O^(delta^-((r-2) div 2));
+            oo := OO^(SLP.1^-((r-2) div 2));
+            // o := o^Z!Eltseq(A[1, 2])[r];
+            oo := oo^Z!Eltseq(A[1, 2])[r];
+            // T := T*o;
+            TT := TT*oo;
+         else
+            // o := t^(delta^-Z!((r-1) div 2));
+            oo := SLP.3^(SLP.1^-Z!((r-1) div 2));
+            // o := o^Z!Eltseq(A[1, 2])[r];
+            oo := oo^Z!Eltseq(A[1, 2])[r];
+            // T := T*o;
+            TT := TT*oo;
+         end if;
+      end for;
+      // A := A*(T^-1);
+      for r in [1..e] do
+         AddColumn(~A, -Eltseq(A[1, 2])[r]*w^(r-1), 1, 2);
+      end for;
+      S2 := S2*(TT^-1);
+
+      /* now we do the second row */
+
+      // A := s*A; // swaps the first two rows
+      SwapRows(~A, 1, 2);
+      MultiplyRow(~A, -1, 1);
+      S1 := SLP.2*S1;
+
+      for l in [1..block-1] do
+         KillPlace(~A, ~S1, ~S2);
+         /* A := A*u*s*u;
+            swaps the third and fourth columns so that we can work on the f part of the block. */
+         SwapColumns(~A, 3, 4);
+         MultiplyColumn(~A, -1, 4);
+         S2 := S2*SLP.4*SLP.2*SLP.4;
+
+         KillPlace(~A, ~S1, ~S2);
+         /* A := A*((u*s*u)^-1);
+            swaps the third and fourth columns back again */
+         MultiplyColumn(~A, -1, 4);
+         SwapColumns(~A, 3, 4);
+         S2 := S2*((SLP.4*SLP.2*SLP.4)^-1);
+
+         // A := A*(v*u);
+         for i in [2..(d/2 - 1)] do
+            SwapColumns(~A, 2*i - 1, d-1);
+            SwapColumns(~A, 2*i, d);
+         end for;
+         S2 := S2*(SLP.5*SLP.4);
+      end for;
+
+   /* A := A*(s^-1);
+      swaps first two columns back again */
+   SwapColumns(~A, 1, 2);
+   MultiplyColumn(~A, -1, 1);
+   S2 := S2*(SLP.2 ^-1);
+
+   S2 := S2*(SLP.3^Z!-Eltseq(A[1, 2])[1]);
+   // A := A*(t^Z!-Eltseq(A[1, 2])[1]);
+   // T := Id(G);
+   TT := Id(SLP);
+   for r in [2..e] do
+      if IsEven(r) then
+         // o := O^(delta^-((r-2) div 2));
+         oo := OO^(SLP.1^-((r-2) div 2));
+         // o := o^Z!Eltseq(A[1, 2])[r];
+         oo := oo^Z!Eltseq(A[1, 2])[r];
+         // T := T*o;
+         TT := TT*oo;
+      else
+         // o := t^(delta^-((r-1) div 2));
+         oo := SLP.3^(SLP.1^-((r-1) div 2));
+         // o := o^Z!Eltseq(A[1, 2])[r];
+         oo := oo^Z!Eltseq(A[1, 2])[r];
+         // T := T*o;
+         TT := TT*oo;
+      end if;
+   end for;
+   // A := A*(T^-1);
+   S2 := S2*(TT^-1);
+   for r in [1..e] do
+      AddColumn(~A, -Eltseq(A[1, 2])[r]*w^(r-1), 1, 2);
+   end for;
+
+   // A := A^(v^-1);
+   B := Transpose(A);
+   C := ZeroMatrix(F, d, d);
+   for i in [1..d-2] do
+      C[i] := B[i + 2];
+   end for;
+   C[d-1] := B[1];
+   C[d] := B[2];
+   A := Transpose(C);
+
+   C := ZeroMatrix(F, d, d);
+   B := A;
+   for i in [1..d-2] do
+      C[i] := B[i + 2];
+   end for;
+   C[d-1] := B[1];
+   C[d] := B[2];
+   A := C;
+
+   S2 := S2*(SLP.5^-1);
+   S1 := (SLP.5)*S1;
+
+end for;
+
+word := (S1^-1)*(S2^-1);
+word := phi(word);
+
+return A, word;
+
+end function;
+
+
+
+   /* creating H. H is the subgroup of G that fixes the first basis
+      element of the natural module. As this has a p-local subgroup, it
+      affords a 1-dimensional submodule in the natural dimension.
+   */
+
+
+intrinsic GetSpU(E::GrpMat, Q::SeqEnum, d::RngIntElt, qq::RngIntElt) -> ModTupFld, ModTupFld
+{Returns two submodules};
+
+   q := #BaseRing(Q[1]);
+   F := GF(q);
+   w := PrimitiveElement(F); 
+   M := KMatrixSpace(F, d, d);
+   b := Basis(M);
+   G := SL(d, qq);
+   n := Degree(Q[1]);
+   e := Degree(F);
+   QQ := SpChosenElements(Sp(d, qq));
+
+   if assigned E`Module then
+      return E`Module;
+   end if;
+
+   CB := ChangeOfBasisMatrix(Sp(d, qq));
+
+   s := Q[1];
+   v := Q[2];
+   t := Q[3];
+   delta := Q[4];
+   u := Q[5];
+   x := Q[6];
+
+   HEQ := [s^v, v*u, u^v, t^v, delta^v, x, delta, x^v];
+   if d eq 6 then
+      HEQ := [s^v, u^v, t^v, delta^v, x, delta, x^v];
+   end if;
+   if d eq 4 then
+      HEQ := [s^v, t^v, delta^v, delta, x^v];
+   end if;
+   if d eq 2 then
+      HEQ := [delta, t^s];
+   end if;
+
+   HE := sub<GL(n, q)|HEQ>;
+   VPH := GModule(HE);
+   U := CompositionSeries(VPH)[1];
+
+   V := VectorSpace(GF(q), n);
+   U1 := sub<V|[V!VPH!U.i : i in [1..Dimension(U)]]>;
+   /* Here U has been rewritten in vectors of length n but
+      the module still has its original dimension
+   */
+
+   if d ne 2 then
+      splodge1:= ((x^(v^2))^(u^s))^(v^-1);
+   else
+      splodge1:= t;
+   end if;
+   Remove(~HEQ, #HEQ);
+   Append(~HEQ, splodge1);
+   HE2 := sub<GL(n, q)| HEQ>;
+   VPH2 := GModule(HE2);
+   U := CompositionSeries(VPH2)[1];
+   U2 := sub<V|[V!VPH2!U.i : i in [1..Dimension(U)]]>;
+
+   E`Module := [U1, U2];
+   return E`Module;
+
+end intrinsic;
+
+
+GetO := function(Q, d, qq)
+
+   q := #BaseRing(Q[1]);
+   F := GF(q);
+   w := PrimitiveElement(GF(qq));
+   t := Q[3];
+   delta := Q[4];
+   Z := IntegerRing();
+   e := Factorization(qq)[1][2];
+
+   FF := sub<F|w^2>;
+   py := FF!w;
+   
+   /* py is now a polynomial in w^2 that is equal to w */
+   
+   O := Id(Parent(Q[1]));
+   for i in [1..e] do
+      O := O*(t^delta^-(i-1))^Z!Eltseq(py)[i];
+   end for;
+
+   return O;
+
+end function;
+
+
+   /* we now create an elementary abelian p-group K. The generators of
+      K consist of those elements with some power of the primitive
+      element in the top row (excluding the first position), 1s down
+      the leading diagonal and 0s everywhere else
+   */
+
+intrinsic GetSpK(E::GrpMat, Q::SeqEnum, d::RngIntElt, qq::RngIntElt) -> SeqEnum, SeqEnum
+{Returns the image of the p-groups under the representation};
+
+   q := #BaseRing(Q[1]);
+   F := GF(q);
+   w := PrimitiveElement(GF(qq)); 
+   M := KMatrixSpace(GF(qq), d, d);
+   b := Basis(M);
+   G := SL(d, qq);
+   n := Degree(Q[1]);
+   e := Degree(F);
+   QQ := SpChosenElements(Sp(d, qq));
+
+   CB := ChangeOfBasisMatrix(Sp(d, qq));
+
+   if assigned E`PG1 then
+      return E`PG1, E`PG2, E`PG3;
+   end if;
+
+   s := QQ[1];
+   v := QQ[2];
+   t := QQ[3];
+   delta := QQ[4];
+   u := QQ[5];
+   x := QQ[6]^(QQ[2]^2);
+
+   KQ := [];
+   for j in [0..(e-1)] do
+      Append(~KQ, x^(delta^j));
+   end for;
+   for i in [1..(d div 2) - 2] do
+      for j in [0..(e-1)] do
+         Append(~KQ, (x^(delta^j))^((v*u)^i));
+      end for;
+   end for;
+   for j in [0..(e-1)] do
+      Append(~KQ, (x^(delta^j))^(s^u));
+   end for;
+   for i in [1..(d div 2) - 2] do
+      for j in [0..(e-1)] do
+         Append(~KQ, (x^(delta^j))^((s^u)*(v*u)^i));
+      end for;
+   end for;
+   Append(~KQ, Transpose(t));
+   for j in [1..(e-1)] do
+      temp := M!Transpose(t);
+      temp[2, 1] := w^j;
+      Append(~KQ, temp);
+   end for;
+
+   for i in [1..#KQ] do
+      KQ[i] := Transpose(KQ[i]);
+   end for;
+
+   K := sub<SL(d, qq)|KQ>;
+
+   S := [K.i : i in [1..Ngens(K)]];
+
+   /* mapping K to the non-natural representation */
+
+   s := Q[1];
+   v := Q[2];
+   t := Q[3];
+   delta := Q[4];
+   u := Q[5];
+   x := (Q[6]^(Q[2]^2))^(Q[5]^Q[1]);
+
+   kk := [];
+   for j in [0..(e-1)] do
+      Append(~kk, x^(delta^-j));
+   end for;
+   for i in [1..(d div 2) - 2] do
+      for j in [0..(e-1)] do
+         Append(~kk, (x^(delta^-j))^((v*u)^i));
+      end for;
+   end for;
+   for j in [0..(e-1)] do
+      Append(~kk, (x^(delta^-j))^(s^u));
+   end for;
+   for i in [1..(d div 2) - 2] do
+      for j in [0..(e-1)] do
+         Append(~kk, (x^(delta^-j))^((s^u)*(v*u)^i));
+      end for;
+   end for;
+
+   O := GetO(Q, d, qq);
+
+   for j in [1..e] do
+      if IsOdd(j) then
+         T := t^(delta^-((j-1) div 2));
+         Append(~kk, T);
+      else
+         T := O^(delta^-((j-1) div 2));
+         Append(~kk, T);
+      end if;
+   end for;
+
+   KE := sub<GL(n, q)|[kk[i] : i in [1..#kk]]>;
+
+   for i in [1..#KQ] do
+      KQ[i] := Transpose(KQ[i]);
+   end for;
+
+   K := sub<SL(d, qq)|[KQ[i] : i in [1..#KQ]]>;
+   S1 := [K.i : i in [1..Ngens(K)]];
+
+   s := Q[1];
+   v := Q[2];
+   t := (Q[3]^Q[1])^-1;
+   delta := Q[4];
+   u := Q[5];
+   x := Q[6]^(Q[2]^2);
+
+   kk2 := [];
+   for j in [0..(e-1)] do
+      Append(~kk2, x^(delta^j));
+   end for;
+   for i in [1..(d div 2) - 2] do
+      for j in [0..(e-1)] do
+         Append(~kk2, (x^(delta^j))^((v*u)^i));
+      end for;
+   end for;
+   for j in [0..(e-1)] do
+      Append(~kk2, (x^(delta^j))^(s^u));
+   end for;
+   for i in [1..(d div 2) - 2] do
+      for j in [0..(e-1)] do
+         Append(~kk2, (x^(delta^j))^((s^u)*(v*u)^i));
+      end for;
+   end for;
+
+   for j in [1..e] do
+      if IsOdd(j) then
+         T := t^(delta^((j-1) div 2));
+         Append(~kk2, T);
+      else
+         T := ((O^Q[1])^-1)^(delta^((j-1) div 2));
+         Append(~kk2, T);
+      end if;
+   end for;
+
+   KE2 := sub<GL(n, q)|[kk2[i] : i in [1..#kk2]]>;
+
+   E`PG1 := [KE, KE2];
+   E`PG2 := kk;
+   E`PG3 := [S, S1];
+   return E`PG1, E`PG2, E`PG3;
+
+end intrinsic;

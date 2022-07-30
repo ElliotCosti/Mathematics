@@ -1,0 +1,12 @@
+Hi Eamonn,
+I'm back! I thought I'd comment on the the below first as I know why it works already. If x is already in E < SL(n, q') then the algorithm will just give x as a word. If x = lambda*g then consider the following.
+
+Let V = (F_q)^d be the natural vector space with basis {e_1, ..., e_d} on which G = SL(d, q) acts. Let H = Stab_{SL(d, q)}(e_1). Map H to E < SL(n, q') by the known representation phi. H^phi is irreducible and so it affords a non trivial submodule U. Now, we use Ruth2 to give us an element y in our p-group K such that y*x is in Stab_{GL(n, q')}(U). This y exists because there exists an element in K for g.
+We then dualise the above process so that we consider a basis {f_1, ..., f_d} for V' to get a submodule U' such that there exists a y' such that y'*y*x is in both Stab_{SL(n, q')}(U) and Stab_{SL(n, q')}(U').
+
+We now consider how x acts on the image of the p-group K in E. K is defined as the set of all matrices of the form: [1 * ... *] on the top row and looking like the identity everywhere else. I'm paraphrasing but does that make sense? It might be best if you look at the worked example for this in my thesis as it's quite hard to explain. I've attached a draft of my thesis and the full example is on pages 62 - 66. The way x acts on K^phi is explained from the bottom of page 65.
+
+As this process only ever produces a word for a scalar multiple of g, we can work out what the correct scalar multiple should be (assuming that g is in E) by re-evaluating this word on the generators for E and seeing if this evaluates to g or not. If it does not evaluate correctly, we consider all possible scalar multiples of g such that both its image is in G and its pre-image is in E (at most d possibilites) until the correct scalar multiple is found. As x = lambda * g is not in E, all d possiblities will be gone through and no answer will be found. Hence, the algorithm will find words for multiples of x that are in E but not x itself. Hence, you can take one of these words, evaluate it to some x' on the generators of E and then perform x * (x')^-1 to get a candidate for lambda. As this is possibly multivalued, there may be more than one answer for lambda.
+
+Does this make sense? If not, get back to me and I'll try and re explain.
+Elliot

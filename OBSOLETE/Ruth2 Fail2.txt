@@ -1,0 +1,344 @@
+F := GF(8);
+
+H := GL(10, F);
+
+X := [];
+
+A := H![ 1 ,F.1^3 ,F.1^4 ,F.1^6 ,F.1^6 ,F.1^5 ,F.1^5 ,F.1^6 ,F.1^2 ,F.1^3,
+F.1^3 ,F.1^5 ,F.1^6 ,F.1^5   ,F.1 ,F.1^2 ,F.1^4,0 ,F.1^2 ,F.1^6,
+F.1^3,0 ,F.1^2 ,F.1^3,1 ,F.1^3 ,F.1^5 ,F.1^6 ,F.1^3 ,F.1^3,
+F.1^5 ,F.1^6 ,F.1^4 ,F.1^3 ,F.1^2,1,0 ,F.1^6 ,F.1^3   ,F.1,
+0,0 ,F.1^3 ,F.1^4 ,F.1^2 ,F.1^6,1,1,1,0,
+0,0,0,0,0,1,0,0,0,0,
+0,0 ,F.1^2 ,F.1^3 ,F.1^5 ,F.1^5 ,F.1^2 ,F.1^6 ,F.1^6,0,
+    0,0 ,F.1^4 ,F.1^5,1,1   ,F.1 ,F.1^3   ,F.1,0,
+    0,0 ,F.1^6,1 ,F.1^2 ,F.1^2 ,F.1^3 ,F.1^3   ,F.1,0,
+    0,0 ,F.1^4 ,F.1^5,1,1   ,F.1   ,F.1   ,F.1,1];
+
+Append(~X, A);
+
+A := H![F.1 ,F.1^6 ,F.1^2 ,F.1^5 ,F.1^6,1 ,F.1^6,1 ,F.1^2 ,F.1^4,
+    0,1,0,0,0,0,0,0,0,0,
+F.1^4,1   ,F.1 ,F.1^6,1   ,F.1,1   ,F.1 ,F.1^3 ,F.1^5,
+    0,0,0,1,0,0,0,0,0,0,
+    0,0,0,0,1,0,0,0,0,0,
+    0,0,0,0,0,1,0,0,0,0,
+    0,0,0,0,0,0,1,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,
+    0,0,0,0,0,0,0,0,1,0,
+    0,0,0,0,0,0,0,0,0,1];
+
+Append(~X, A);
+
+A := H![F.1 ,F.1^4 ,F.1^6 ,F.1^5   ,F.1 ,F.1^2 ,F.1^4,0 ,F.1^2 ,F.1^6,
+    0,1 ,F.1^4 ,F.1^5,1,1   ,F.1   ,F.1   ,F.1,0,
+F.1^4 ,F.1^5 ,F.1^2 ,F.1^4 ,F.1^3 ,F.1^2   ,F.1 ,F.1^6 ,F.1^4,1,
+    1   ,F.1 ,F.1^6   ,F.1 ,F.1^4 ,F.1^2,0   ,F.1 ,F.1^5 ,F.1^3,
+F.1^6,1 ,F.1^4 ,F.1^4,1,1 ,F.1^4 ,F.1^5,0 ,F.1^2,
+    0,0,1   ,F.1 ,F.1^3   ,F.1 ,F.1^4 ,F.1^4 ,F.1^4,0,
+    0,0   ,F.1 ,F.1^2 ,F.1^4 ,F.1^4 ,F.1^4 ,F.1^5 ,F.1^5,0,
+    0,0 ,F.1^2 ,F.1^3 ,F.1^5 ,F.1^5 ,F.1^6 ,F.1^2 ,F.1^6,0,
+    0,0 ,F.1^5 ,F.1^6   ,F.1   ,F.1 ,F.1^2 ,F.1^2 ,F.1^6,0,
+    0,0 ,F.1^2 ,F.1^3 ,F.1^5 ,F.1^5 ,F.1^6 ,F.1^6 ,F.1^6,1];
+
+Append(~X, A);
+
+A := H![F.1^5,0 ,F.1^6 ,F.1^6 ,F.1^6,1,0 ,F.1^2 ,F.1^3 ,F.1^4,
+    0,1   ,F.1 ,F.1^2 ,F.1^4 ,F.1^4 ,F.1^5 ,F.1^5 ,F.1^5,0,
+F.1^5,0 ,F.1^6,0 ,F.1^6 ,F.1^4 ,F.1^3,0 ,F.1^6 ,F.1^5,
+  F.1,0,1 ,F.1^4 ,F.1^6,0 ,F.1^5   ,F.1 ,F.1^4   ,F.1,
+    1,0 ,F.1^3,1 ,F.1^5,1 ,F.1^2 ,F.1^3,1,1,
+    0,0 ,F.1^4 ,F.1^5,1,0   ,F.1   ,F.1   ,F.1,0,
+    0,0 ,F.1^5 ,F.1^6   ,F.1   ,F.1 ,F.1^6 ,F.1^2 ,F.1^2,0,
+    0,0 ,F.1^6,1 ,F.1^2 ,F.1^2 ,F.1^3   ,F.1 ,F.1^3,0,
+    0,0 ,F.1^2 ,F.1^3 ,F.1^5 ,F.1^5 ,F.1^6 ,F.1^6 ,F.1^2,0,
+    0,0 ,F.1^6,1 ,F.1^2 ,F.1^2 ,F.1^3 ,F.1^3 ,F.1^3,1];
+
+Append(~X, A);
+
+A := H![F.1^6 ,F.1^3 ,F.1^3 ,F.1^6 ,F.1^4 ,F.1^6 ,F.1^4 ,F.1^6 ,F.1^5 ,F.1^5,
+F.1^5 ,F.1^2,1 ,F.1^5 ,F.1^4 ,F.1^3 ,F.1^2,1 ,F.1^5   ,F.1,
+F.1^6,1 ,F.1^2,0 ,F.1^6 ,F.1^2 ,F.1^5 ,F.1^4,1 ,F.1^2,
+F.1^6,1   ,F.1 ,F.1^2 ,F.1^5 ,F.1^4 ,F.1^3   ,F.1 ,F.1^6 ,F.1^2,
+    0,0 ,F.1^3 ,F.1^4 ,F.1^2 ,F.1^6,1,1,1,0,
+F.1^6,1 ,F.1^4 ,F.1^4,0,0 ,F.1^4 ,F.1^5,0 ,F.1^2,
+    0,0 ,F.1^6,1 ,F.1^2 ,F.1^2   ,F.1 ,F.1^3 ,F.1^3,0,
+    0,0,0,0,0,0,0,1,0,0,
+    0,0,1   ,F.1 ,F.1^3 ,F.1^3 ,F.1^4 ,F.1^4 ,F.1^5,0,
+    0,0,1   ,F.1 ,F.1^3 ,F.1^3 ,F.1^4 ,F.1^4 ,F.1^4,1];
+
+Append(~X, A);
+
+  A := H![F.1,0   ,F.1 ,F.1^4 ,F.1^3,1 ,F.1^3,1 ,F.1^5 ,F.1^3,
+F.1^6,1 ,F.1^3,0,1 ,F.1^5 ,F.1^4,0,1 ,F.1^6,
+    1,0 ,F.1^3 ,F.1^3 ,F.1^6   ,F.1   ,F.1 ,F.1^6 ,F.1^5,1,
+    1,0 ,F.1^4,1   ,F.1 ,F.1^6 ,F.1^5,0   ,F.1,1,
+    0,0,1   ,F.1   ,F.1 ,F.1^3 ,F.1^4 ,F.1^4 ,F.1^4,0,
+    1,0 ,F.1^3,1 ,F.1^4,0 ,F.1^2 ,F.1^3,1,1,
+    0,0 ,F.1^3 ,F.1^4 ,F.1^6 ,F.1^6,0,1,1,0,
+    0,0,0,0,0,0,0,1,0,0,
+    0,0 ,F.1^4 ,F.1^5,1,1   ,F.1   ,F.1 ,F.1^3,0,
+    0,0 ,F.1^4 ,F.1^5,1,1   ,F.1   ,F.1   ,F.1,1];
+
+Append(~X, A);
+
+A := H![F.1^6 ,F.1^3 ,F.1^5 ,F.1^4,1   ,F.1 ,F.1^3,0   ,F.1 ,F.1^5,
+F.1^5 ,F.1^2 ,F.1^5,0 ,F.1^5   ,F.1 ,F.1^4 ,F.1^3 ,F.1^6   ,F.1,
+F.1^4 ,F.1^5 ,F.1^6 ,F.1^2,0 ,F.1^5 ,F.1^2 ,F.1^3,0,1,
+F.1^5 ,F.1^6,1 ,F.1^4 ,F.1^4 ,F.1^3 ,F.1^2,1 ,F.1^5   ,F.1,
+    0,0,0,0,1,0,0,0,0,0,
+    0,0,1   ,F.1 ,F.1^3   ,F.1 ,F.1^4 ,F.1^4 ,F.1^4,0,
+F.1^6,1   ,F.1 ,F.1^6 ,F.1^5 ,F.1^4   ,F.1   ,F.1 ,F.1^6 ,F.1^2,
+    0,0 ,F.1^2 ,F.1^3 ,F.1^5 ,F.1^5 ,F.1^6 ,F.1^2 ,F.1^6,0,
+    0,0   ,F.1 ,F.1^2 ,F.1^4 ,F.1^4 ,F.1^5 ,F.1^5 ,F.1^4,0,
+    0,0 ,F.1^4 ,F.1^5,1,1   ,F.1   ,F.1   ,F.1,1];
+
+Append(~X, A);
+
+A := H![F.1,0 ,F.1^5 ,F.1^5 ,F.1^5 ,F.1^6,0   ,F.1 ,F.1^2 ,F.1^3,
+F.1^6,1,1 ,F.1^2 ,F.1^5,1,1 ,F.1^5 ,F.1^4 ,F.1^6,
+F.1^5,0 ,F.1^3 ,F.1^5 ,F.1^2 ,F.1^5,1   ,F.1 ,F.1^5 ,F.1^5,
+F.1^6,0 ,F.1^3,1,1 ,F.1^5 ,F.1^4,0,1 ,F.1^6,
+    0,0,0,0,1,0,0,0,0,0,
+    0,0 ,F.1^4 ,F.1^5,1,0   ,F.1   ,F.1   ,F.1,0,
+    1,0 ,F.1^4,0   ,F.1 ,F.1^6 ,F.1^4,0   ,F.1,1,
+    0,0 ,F.1^6,1 ,F.1^2 ,F.1^2 ,F.1^3   ,F.1 ,F.1^3,0,
+    0,0 ,F.1^5 ,F.1^6   ,F.1   ,F.1 ,F.1^2 ,F.1^2 ,F.1^6,0,
+    0,0   ,F.1 ,F.1^2 ,F.1^4 ,F.1^4 ,F.1^5 ,F.1^5 ,F.1^5,1];
+
+Append(~X, A);
+
+ A := H![F.1 ,F.1^4,1 ,F.1^2 ,F.1^6 ,F.1^3 ,F.1^3 ,F.1^6,1 ,F.1^6,
+  F.1 ,F.1^6 ,F.1^5,1 ,F.1^4   ,F.1   ,F.1 ,F.1^4 ,F.1^5 ,F.1^4,
+    0,0,1,0,0,0,0,0,0,0,
+  F.1 ,F.1^2 ,F.1^5,0 ,F.1^4   ,F.1   ,F.1 ,F.1^4 ,F.1^5 ,F.1^4,
+  F.1 ,F.1^2 ,F.1^5,1 ,F.1^5   ,F.1   ,F.1 ,F.1^4 ,F.1^5 ,F.1^4,
+F.1^3 ,F.1^4,1 ,F.1^2 ,F.1^6   ,F.1 ,F.1^3 ,F.1^6,1 ,F.1^6,
+F.1^5 ,F.1^6 ,F.1^2 ,F.1^4   ,F.1 ,F.1^5 ,F.1^4   ,F.1 ,F.1^2   ,F.1,
+F.1^6,1 ,F.1^3 ,F.1^5 ,F.1^2 ,F.1^6 ,F.1^6 ,F.1^6 ,F.1^3 ,F.1^2,
+    0,0,0,0,0,0,0,0,1,0,
+    0,0,0,0,0,0,0,0,0,1];
+
+Append(~X, A);
+
+A := H![F.1^5,0,0 ,F.1^2,1 ,F.1^6 ,F.1^3 ,F.1^5,0 ,F.1^4,
+F.1^2,1,0,1 ,F.1^5 ,F.1^4   ,F.1 ,F.1^3,0 ,F.1^2,
+    0,0,1,0,0,0,0,0,0,0,
+F.1^2,0,0,0 ,F.1^5 ,F.1^4   ,F.1 ,F.1^3,0 ,F.1^2,
+F.1^2,0,0,1 ,F.1^4 ,F.1^4   ,F.1 ,F.1^3,0 ,F.1^2,
+F.1^4,0,0 ,F.1^2,1 ,F.1^2 ,F.1^3 ,F.1^5,0 ,F.1^4,
+F.1^6,0,0 ,F.1^4 ,F.1^2   ,F.1 ,F.1^4,1,0 ,F.1^6,
+    1,0,0 ,F.1^5 ,F.1^3 ,F.1^2 ,F.1^6 ,F.1^3,0,1,
+    0,0,0,0,0,0,0,0,1,0,
+    0,0,0,0,0,0,0,0,0,1];
+
+Append(~X, A);
+
+A := H![F.1^6 ,F.1^3 ,F.1^6   ,F.1 ,F.1^5 ,F.1^2 ,F.1^2 ,F.1^5 ,F.1^6 ,F.1^5,
+    0,1,0,0,0,0,0,0,0,0,
+F.1^3 ,F.1^4,0 ,F.1^2 ,F.1^6 ,F.1^3 ,F.1^3 ,F.1^6,1 ,F.1^6,
+  F.1 ,F.1^2 ,F.1^5,0 ,F.1^4   ,F.1   ,F.1 ,F.1^4 ,F.1^5 ,F.1^4,
+F.1^2 ,F.1^3 ,F.1^6   ,F.1 ,F.1^4 ,F.1^2 ,F.1^2 ,F.1^5 ,F.1^6 ,F.1^5,
+F.1^4 ,F.1^5   ,F.1 ,F.1^3,1 ,F.1^5 ,F.1^4,1   ,F.1,1,
+F.1^4 ,F.1^5   ,F.1 ,F.1^3,1 ,F.1^4 ,F.1^5,1   ,F.1,1,
+    0,0,0,0,0,0,0,1,0,0,
+F.1^6,1 ,F.1^3 ,F.1^5 ,F.1^2 ,F.1^6 ,F.1^6 ,F.1^2   ,F.1 ,F.1^2,
+    0,0,0,0,0,0,0,0,0,1];
+
+Append(~X, A);
+
+A := H![F.1,0,0   ,F.1 ,F.1^6 ,F.1^5 ,F.1^2 ,F.1^4,0 ,F.1^3,
+    0,1,0,0,0,0,0,0,0,0,
+F.1^4,0,1 ,F.1^2,1 ,F.1^6 ,F.1^3 ,F.1^5,0 ,F.1^4,
+F.1^2,0,0,0 ,F.1^5 ,F.1^4   ,F.1 ,F.1^3,0 ,F.1^2,
+F.1^3,0,0   ,F.1 ,F.1^2 ,F.1^5 ,F.1^2 ,F.1^4,0 ,F.1^3,
+F.1^5,0,0 ,F.1^3   ,F.1,0 ,F.1^4 ,F.1^6,0 ,F.1^5,
+F.1^5,0,0 ,F.1^3   ,F.1,1 ,F.1^5 ,F.1^6,0 ,F.1^5,
+    0,0,0,0,0,0,0,1,0,0,
+    1,0,0 ,F.1^5 ,F.1^3 ,F.1^2 ,F.1^6   ,F.1,1,1,
+    0,0,0,0,0,0,0,0,0,1];
+
+Append(~X, A);
+
+A := H![F.1 ,F.1^4,1 ,F.1^2 ,F.1^6 ,F.1^3 ,F.1^3 ,F.1^6,1 ,F.1^6,
+    0,1,0,0,0,0,0,0,0,0,
+F.1^6,1   ,F.1 ,F.1^5 ,F.1^2 ,F.1^6 ,F.1^6 ,F.1^2 ,F.1^3 ,F.1^2,
+  F.1 ,F.1^2 ,F.1^5,0 ,F.1^4   ,F.1   ,F.1 ,F.1^4 ,F.1^5 ,F.1^4,
+    0,0,0,0,1,0,0,0,0,0,
+F.1^2 ,F.1^3 ,F.1^6   ,F.1 ,F.1^5 ,F.1^6 ,F.1^2 ,F.1^5 ,F.1^6 ,F.1^5,
+    1   ,F.1 ,F.1^4 ,F.1^6 ,F.1^3,1,0 ,F.1^3 ,F.1^4 ,F.1^3,
+    0,0,0,0,0,0,0,1,0,0,
+    0,0,0,0,0,0,0,0,1,0,
+F.1^6,1 ,F.1^3 ,F.1^5 ,F.1^2 ,F.1^6 ,F.1^6 ,F.1^2 ,F.1^3 ,F.1^6];
+
+Append(~X, A);
+
+A := H![F.1^5,0,0 ,F.1^2,1 ,F.1^6 ,F.1^3 ,F.1^5,0 ,F.1^4,
+    0,1,0,0,0,0,0,0,0,0,
+    1,0,1 ,F.1^5 ,F.1^3 ,F.1^2 ,F.1^6   ,F.1,0,1,
+F.1^2,0,0,0 ,F.1^5 ,F.1^4   ,F.1 ,F.1^3,0 ,F.1^2,
+    0,0,0,0,1,0,0,0,0,0,
+F.1^3,0,0   ,F.1 ,F.1^6 ,F.1^4 ,F.1^2 ,F.1^4,0 ,F.1^3,
+  F.1,0,0 ,F.1^6 ,F.1^4 ,F.1^3,0 ,F.1^2,0   ,F.1,
+    0,0,0,0,0,0,0,1,0,0,
+    0,0,0,0,0,0,0,0,1,0,
+    1,0,0 ,F.1^5 ,F.1^3 ,F.1^2 ,F.1^6   ,F.1,0,0];
+
+Append(~X, A);
+
+G := MatrixGroup<10, GF(8) | X>;
+
+V := VectorSpace(F, 10);
+
+B := [];
+Append(~B, V![F.1^5 ,F.1^4   ,F.1 ,F.1^4 ,F.1^2,0,1   ,F.1   ,F.1 ,F.1^4]);
+Append(~B, V![F.1^5 ,F.1^5 ,F.1^3 ,F.1^4 ,F.1^2 ,F.1^4 ,F.1^3,0 ,F.1^3 ,F.1^3]);
+Append(~B, V![F.1^3   ,F.1 ,F.1^3 ,F.1^5   ,F.1   ,F.1   ,F.1 ,F.1^4 ,F.1^3 ,F.1^6]);
+Append(~B, V![1,0 ,F.1^6 ,F.1^6,1,0 ,F.1^4 ,F.1^3 ,F.1^3 ,F.1^4]);
+Append(~B, V![F.1 ,F.1^2 ,F.1^6 ,F.1^2,1 ,F.1^6   ,F.1,1   ,F.1 ,F.1^5]);
+
+U := sub<V|B>;
+
+H := G;
+
+a,b,c,w:= MyUnipotentStabiliser (H, U);
+
+for j in [1..10] do
+   h := Random(H);
+   _, b1, _, _:= MyUnipotentStabiliser (H, U^h); 
+   assert b eq b1;
+end for;
+
+C := GL(10, F)![F.1^4   ,F.1 ,F.1^4, 1   ,F.1 ,F.1^2   ,F.1 ,F.1^2 ,F.1^4 ,F.1^6
+,1   ,F.1 ,F.1^6 ,F.1^2 ,F.1^3 ,F.1^4 ,F.1^3 ,F.1^4 ,F.1^6   ,F.1
+,F.1^4, 1   ,F.1 ,F.1^6, 1   ,F.1, 1   ,F.1 ,F.1^3 ,F.1^5
+,F.1^6 ,F.1^2 ,F.1^5 ,F.1^3 ,F.1^2 ,F.1^3 ,F.1^2 ,F.1^3 ,F.1^5, 1
+,1 ,F.1^3 ,F.1^6 ,F.1^2   ,F.1 ,F.1^4 ,F.1^3 ,F.1^4 ,F.1^6   ,F.1
+,F.1^4, 1 ,F.1^3 ,F.1^6, 1 ,F.1^3, 1   ,F.1 ,F.1^3 ,F.1^5
+,1 ,F.1^3 ,F.1^6 ,F.1^2 ,F.1^3 ,F.1^4   ,F.1 ,F.1^4 ,F.1^6   ,F.1
+,F.1^4, 1 ,F.1^3 ,F.1^6, 1   ,F.1, 1 ,F.1^3 ,F.1^3 ,F.1^5
+,F.1^3 ,F.1^6 ,F.1^2 ,F.1^5 ,F.1^6, 1 ,F.1^6, 1 ,F.1^6 ,F.1^4
+,F.1^6 ,F.1^2 ,F.1^5   ,F.1 ,F.1^2 ,F.1^3 ,F.1^2 ,F.1^3 ,F.1^5, 0];
+
+/* b^C eq b1 so they ARE in the same orbit */
+
+/* very last vector isn't being canonised properly - look into it. */
+
+U := b1;
+
+G := H;
+W, psi := WordGroup(G);
+d := Degree (U); F := BaseRing (U);
+S := G;
+S := sub < GL (d, F) | S >;
+V := VectorSpace (F, d);
+flag, CB := PInvariantFlag (V, S);
+S := [S.i^CB : i in [1..Ngens(S)]];
+SSLP := [W.i : i in [1..#S]];
+S, XSLP := PChiefSeriesGenerators(S, SSLP);
+
+CBinv := CB^-1;
+U := U^CB;
+X := S;
+d := Degree (U); F := BaseRing (U);
+V := VectorSpace (F, d);
+UB := Basis (U); /* the unique echelonized basis for U. */
+t := #UB;
+CF, trans, transslp, X, XSLP := VectorCF (X, XSLP, UB[t]); 
+U := U * trans; 
+UB := Basis (U);
+depths := [];
+depths[t] := DepthPlus (UB[t]);
+
+for i in [t - 1..4 by -1] do
+   if #X eq 0 then break; end if;
+   temp, tempslp, U, depths, X, XSLP := NextSubspaceCF (X, XSLP, V, U,
+depths, i);
+   trans *:= temp;
+   transslp *:= tempslp;
+end for;
+
+assert sub<GL(d, F)|X> eq Stabiliser(sub<GL(d, F)|S>, sub<U|[Basis(U)[i] : i in [4..5]]>);
+
+
+UU := U;
+index := 3;
+U := Basis (UU);
+d := Degree (UU);
+p := #BaseRing (UU);
+t := #U;
+v := U[index];
+subU := sub < V | [U[i] : i in [index + 1..t]]>;
+    depth := [SubspaceDepth (depths, v - v * g, subU) : g in X];
+    depth1 := [depth[x, 1] : x in [1..#depth]];
+    j0 := Minimum (depth1);
+    depth2 := [];
+    for x in [1..#depth] do
+        if depth[x, 1] eq j0 then
+           Append(~depth2, depth[x, 2]);
+        end if;
+    end for;
+    j1 := Minimum (depth2);
+
+    x := X[1]^0; /* we start with the identity element */
+    xslp := Identity(Parent(XSLP[1]));
+    Y := X;
+    YSLP := XSLP;
+
+       g := X[Position (depth, [j0, j1])]; /* the element of X with depth
+[j0, j1] */
+       gslp := XSLP[Position (depth, [j0, j1])];
+       v := EcheloniseVector (v, depths, subU);
+       alpha, v := SpaceMultiple (p, v, depths, subU, g, [j0, j1]); /*
+returns the power of g that kills the necessary part of v and the
+appropriately altered v. */
+       x := x * g^alpha; /* keep a note of what's been done in x */
+       xslp := xslp * gslp^alpha;
+       Y := []; /* we will now multiply each element of X by a power of g
+such that each element now has weight with respect to v greater than that of
+g. */
+       YSLP := [];
+
+
+
+
+       for h in X do
+          if h ne g then
+             if SubspaceDepth (depths, v - v * h, subU) eq [j0, j1] then
+                beta := BFindMultiple (depths, Factorisation(p)[1][1], v,
+[j0, j1], h, g, subU); /* finds the power of g needed to make h have a
+greater depth than g. */
+                hh := h * g^beta;
+                hhslp := XSLP[Position(X, h)] * gslp^beta;
+             else
+                hh := h; /* for those elements of X that already have depth
+greater than g. */
+                hhslp := XSLP[Position(X, h)];
+             end if;
+             Append (~Y, hh);
+             Append (~YSLP, hhslp);
+          end if;
+       end for;
+       X := Y;
+       XSLP := YSLP;
+       depth := [SubspaceDepth (depths, v - v * g, subU) : g in X]; /*
+calculating the new depth vector and finding the new minimal one. */
+       depth1 := [depth[x, 1] : x in [1..#depth]];
+       j0 := Minimum (depth1);
+       depth2 := [];
+       for x in [1..#depth] do
+         if depth[x, 1] eq j0 then
+           Append(~depth2, depth[x, 2]);
+         end if;
+       end for;
+    j1 := Minimum (depth2);
+
+BB := sub<GL(d, F)|X>;
+bb := Ngens(BB);
+for k in [1..bb] do
+   blob := sub<BB|[BB.j : j in [bb-1..bb]]>;
+   blib := sub<BB|[BB.j : j in [bb-2..bb]]>;
+   assert IsNormal(BB, blob);
+   assert IsNormal(blib, blob);
+end for;
+

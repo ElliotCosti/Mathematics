@@ -1,0 +1,47 @@
+load "C:/Users/Elliot/Documents/Mathematics/UnitaryALTREP6.txt";
+load "C:/Users/Elliot/Documents/Mathematics/AlternativeRep.txt";
+
+/* preparing the input */
+
+for d in [2, 4, 6, 8, 10] do
+for q in [3,5,7,9,11,13,17,19,23] do
+
+G := SU(d, q);
+
+print "Symmetric Power";
+for i in [2, 3] do
+
+   d, q, i;
+   Q, E := ClassicalSymmetricPower(G, "SU", i);
+
+   if #Q ne 7 then
+      "skipping ", n, q;
+      continue;
+   end if;
+
+   P := RandomProcess(E);
+   gg := Random(G);
+   _, word := UnitaryWordInGen(G, gg);
+   g := Evaluate(word, Q);
+   time flag, word, scalar := UnitaryAltRepWordInGen(E, Q, g, d, q^2);
+   assert flag;
+
+end for;
+
+   Q, E := ConstructDelta(G, "SU");
+   if #Q eq 7 then
+      print "V tensor V^Frobenius";
+      d, q;
+      n := Nrows(Q[1]);
+      Q := [GL(n, BaseRing(Q[1]))!Q[i] : i in [1..#Q]];
+      P := RandomProcess(E);
+      g := Random(P);
+      time flag, word, scalar := UnitaryAltRepWordInGen(E, Q, g, d,
+         q^2);
+      assert flag;
+   end if;
+
+end for;
+end for;
+
+

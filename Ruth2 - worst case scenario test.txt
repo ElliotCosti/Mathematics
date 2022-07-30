@@ -1,0 +1,29 @@
+for e in [1..20] do
+
+d := 6;
+q := 7^e;
+F := GF(q);
+M := MatrixAlgebra(F, d);
+w := PrimitiveElement(F);
+
+Q := [];
+for j in [1..9] do
+   for i in [1..d-j] do
+      for k in [1..e] do
+         A := Id(M);
+         A[i, i+j] := w^(k-1);
+         Append(~Q, A);
+      end for;
+   end for;
+end for;
+
+K := sub<GL(d, q)|Q>;
+A := Random(GL(d, q));
+K := K^A;
+
+A := Random(GL(d, q));
+U := VectorSpace(F, d)^A;
+
+time a,b,c,w:= UnipotentStabiliser (K, U: ComputeBase:=true); 
+
+end for;

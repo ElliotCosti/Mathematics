@@ -1,0 +1,37 @@
+G := SU(7, 7);
+
+d := Dimension(G);
+F := BaseRing(G);
+w := PrimitiveElement(F);
+G := SL(d, F);
+e := Degree(F);
+
+Z := IntegerRing();
+p := Characteristic(F);
+q := p^(e div 2);
+M := KMatrixSpace(GF(q), d, d);
+V := VectorSpace(GF(q), d);
+b := Basis(M);
+a := w^((q+1) div 2);
+
+Q := SUChosenElements(SU(d, F));
+QQ := SUChosenElements(SU(d-1, F));
+xx := InsertBlock(Id(G), QQ[6]^(QQ[2]^2), 1, 1);
+s := Q[1];
+v := Q[2];
+t := Q[3];
+delta := Q[4];
+u := Q[5];
+xhat := Q[6];
+y := Q[7];
+x := xhat^v;
+sss := (q^2 + q) div 2;
+ss := s*(y^v)^sss;
+/* ss should be:
+[0, 1]
+[1, 0]*/
+
+beta := (x*u)^-1 *u*ss*u;
+
+beta := x^-1*ss*((x*u)^-1)*(u*ss*u)*ss*u*x^-1;
+beta := ((beta^u *ss*x^-1)^(u*ss*u))^-1;

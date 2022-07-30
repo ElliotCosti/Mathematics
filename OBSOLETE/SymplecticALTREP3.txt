@@ -1,0 +1,404 @@
+load "C:/Documents and Settings/Elliot Costi/My Documents/Mathematics/Ruth2 - 17.m";
+load "C:/Documents and Settings/Elliot Costi/My Documents/Mathematics/SymplecticClean5.txt";
+load "C:/Documents and Settings/Elliot Costi/My Documents/Mathematics/MatrixPGroup5.txt";
+
+/* preparing the input */
+
+G := Sp(6, 7);
+
+d := Dimension(G);
+q := #BaseRing(G);
+F := GF(q);
+w := PrimitiveElement(F);
+
+G := SL(d, q);
+
+M := KMatrixSpace(GF(q), d, d);
+V := VectorSpace(GF(q), d);
+b := Basis(M);
+
+CB := ZeroMatrix(GF(q), d, d);
+for i in [1..IntegerRing()!(d/2)] do
+   CB := CB + b[(i-1)*d + 2*i - 1];
+end for;
+for i in [1..IntegerRing()!(d/2)] do
+   CB := CB + b[IntegerRing()!(d/2)*d + i*d - 2*i + 2];
+end for;
+   CB := SL(d, q)!CB;
+
+if d ne 2 then
+   u := M!Id(G) - b[1] - b[d+2]- b[(d-1)*d-1] - b[d*d] + b[2] + b[d+1] + b[(d-1)*d] + b[d*d-1];
+      u := G!u;
+else
+   u := -b[2]+b[3];
+end if;
+
+v := ZeroMatrix(GF(q), d, d);
+for i in [1..IntegerRing()!(d/2 - 1)] do
+   v := v + b[(2*i-2)*d + 2*i + 1];
+end for;
+v := v + b[d*d - 2*d + 1];
+for i in [1..IntegerRing()!(d/2 -1)] do
+   v := v + b[(2*i -1)*d + 2*i + 2];
+end for;
+v := v + b[d*d - d + 2];
+   v := SL(d, q)!v;
+
+x := M!Id(G) + b[d+3] + b[3*d+1];
+   x := G!x;
+
+t := M!Id(G) + b[d];
+   t := G!t;
+
+delta := M!Id(G) - b[1] - b[d*d] + w*b[1] + (w^-1)*(b[d*d]);
+   delta := G!delta;
+
+delta := delta^CB;
+t := t^CB;
+u := u^CB;
+
+s := M!Id(G) - b[1] - b[2] - b[d+2] + b[d+1]; 
+   s := G!s; 
+
+GG := sub<SL(d, q)|delta, s, t, u, v, x>;
+QQ := [delta, s, t, u, v, x];
+
+VG := GModule(GG); 
+VE := ExteriorSquare(VG); 
+n := Dimension(VE);
+
+Ebar := sub<GL(n, q) | [ActionGenerators(VE)[i] : i in [1..#ActionGenerators(VE)]]>;
+
+P := RandomProcess(Ebar);
+A := Random(P); 
+
+Q := [];
+Append(~Q, (ExteriorSquare(delta)));
+Append(~Q, (ExteriorSquare(s)));
+Append(~Q, (ExteriorSquare(t)));
+Append(~Q, (ExteriorSquare(u)));
+Append(~Q, (ExteriorSquare(v)));
+Append(~Q, (ExteriorSquare(x)));
+
+/* conjugating everything by a random matrix to make the exterior square look random */
+_, u1 := SymplecticWordInGen(G, u^(CB^-1));
+u:= Evaluate(u1, Q)^A;
+_, v1 := SymplecticWordInGen(G, v^(CB^-1));
+v:= Evaluate(v1, Q)^A;
+_, t1 := SymplecticWordInGen(G, t^(CB^-1));
+t:= Evaluate(t1, Q)^A;
+_, delta1 := SymplecticWordInGen(G, delta^(CB^-1));
+delta:= Evaluate(delta1, Q)^A;
+_, x1 := SymplecticWordInGen(G, x^(CB^-1));
+x:= Evaluate(x1, Q)^A;
+_, s1 := SymplecticWordInGen(G, s^(CB^-1));
+s:= Evaluate(s1, Q)^A;
+
+E := sub<GL(n, q)|v, delta, t, u, s, x>;
+Q := [delta, s, t, u, v, x];
+
+/* Q is the set of generators of E - the alternative representation; g is the element that we need to find in terms of the generators and d is the dimension of the natural representation */
+
+AltRepWordInGen := function(Q, g, d);
+
+q := #BaseRing(Q[1]);
+F := GF(q);
+omega := PrimitiveElement(F); 
+w := omega;
+M := KMatrixSpace(F, d, d);
+b := Basis(M);
+G := SL(d, q);
+n := Dimension(Q[1]);
+e := Degree(F);
+QQ := CreateSymplecticGenerators(Sp(d, F));
+
+CB := ZeroMatrix(GF(q), d, d);
+for i in [1..IntegerRing()!(d/2)] do
+   CB := CB + b[(i-1)*d + 2*i - 1];
+end for;
+for i in [1..IntegerRing()!(d/2)] do
+   CB := CB + b[IntegerRing()!(d/2)*d + i*d - 2*i + 2];
+end for;
+   CB := SL(d, q)!CB;
+
+/* creating H. H is the subgroup of G that fixes the first two bases elements of the natural module. As this has a p-local subgroup, it affords a 2-dimensional submodule in the natural dimension. */
+
+QG := CreateSymplecticGenerators(Sp(d-2, q));
+
+Ht := InsertBlock(Id(G), QG[3], 3, 3);
+   Ht := G!Ht; 
+Hu := InsertBlock(Id(G), QG[4], 3, 3);
+   Hu := G!Hu;
+Hv := InsertBlock(Id(G), QG[5], 3, 3);
+   Hv := G!Hv;
+Hdelta := InsertBlock(Id(G), QG[1], 3, 3);
+   Hdelta := G!Hdelta;
+// Htt := M!Id(G) + b[d+1];
+//   Htt := G!Htt; 
+Hx := InsertBlock(Id(G), QG[6], 3, 3);
+   Hx := G!Hx;
+Hs := InsertBlock(Id(G), QG[2], 3, 3);
+   Hs := G!Hs;
+Hplus := M!Id(G) -b[1] -b[d+2] + w*b[1] + (w^-1)*b[d+2];
+   Hplus := G!Hplus;
+// the element that will make H q^(d-1):GL(d, q) as opposed to q^(d-1):SL(d, q)
+Htt := Id(G);
+
+H := sub<GL(d, q)|Ht, Hu, Hv, Hdelta, Htt, Hplus, Hx, Hs, QQ[6]>; // H is the stabiliser of the first basis vector of the natural module
+
+/*
+VH := GModule(H);
+_, U := IsIrreducible(VH);
+g := Random(Sp(d, F))^CB;
+V := VectorSpace(F, d);
+U := sub<V|[V!VH!U.i : i in [1..Dimension(U)]]>;
+W := U^g;
+J1, J2, x, xslp := UnipotentStabiliser(K, U);
+L1, L2, y, yslp := UnipotentStabiliser(K, W);
+*/
+
+/* we now map H to the non-natural representation. */
+
+/* Q := [];
+for i in [1..Ngens(E)] do
+   Append(~Q, E.i);
+end for;
+v := Q[1];
+*/
+
+_, Hu1 := SymplecticWordInGen(G, Hu^(CB^-1));
+Hu1:= Evaluate(Hu1, Q);
+_, Hv1 := SymplecticWordInGen(G, Hv^(CB^-1));
+Hv1:= Evaluate(Hv1, Q);
+_, Ht1 := SymplecticWordInGen(G, Ht^(CB^-1));
+Ht1:= Evaluate(Ht1, Q);
+_, Hdelta1 := SymplecticWordInGen(G, Hdelta^(CB^-1));
+Hdelta1:= Evaluate(Hdelta1, Q);
+// _, Htt1 := SymplecticWordInGen(G, Htt^(CB^-1));
+// Htt1:= Evaluate(Htt1, Q);
+_, Hplus1 := SymplecticWordInGen(G, Hplus^(CB^-1));
+Hplus1:= Evaluate(Hplus1, Q);
+_, Hx1 := SymplecticWordInGen(G, Hx^(CB^-1));
+Hx1:= Evaluate(Hx1, Q);
+_, Hs1 := SymplecticWordInGen(G, Hs^(CB^-1));
+Hs1:= Evaluate(Hs1, Q);
+
+HE := sub<GL(n, q)| Ht1, Hu1, Hv1, Hdelta1, Hplus1, Hx1, Hs1, Q[6]>; // is reducible
+VPH := GModule(HE);
+flag, U, Uhat := IsIrreducible(VPH);
+/* U above is a non-trivial submodule */
+while (Dimension(U) eq 1) or (Dimension(Uhat) eq 1) do
+   flag, U, Uhat := IsIrreducible(VPH);
+end while;
+
+/* we now create an elementary abelian p-group K. The generators of K consist of those elements with some power of the primitive element in the top row (excluding the first position), 1s down the leading diagonal and 0s everywhere else */
+
+s := QQ[2];
+t := QQ[3];
+u := QQ[4];
+v := QQ[5];
+x := QQ[6];
+
+KQ := [];
+Append(~KQ, x);
+for i in [1..(d div 2) - 2] do
+   Append(~KQ, x^((v*u)^i));
+end for;
+Append(~KQ, x^(s^u));
+for i in [1..(d div 2) - 2] do
+   Append(~KQ, x^((s^u)*(v*u)^i));
+end for;
+Append(~KQ, Transpose(t));
+
+for i in [1..#KQ] do
+   KQ[i] := Transpose(KQ[i]);
+end for;
+
+K := sub<SL(d, F)|KQ>;
+
+S := [K.i : i in [1..Ngens(K)]];
+
+/* mapping K to the non-natural representation */
+
+kk := <Id(Parent(Q[1]))>;
+for i in [1..#S] do
+   _, blob := SymplecticWordInGen(G, S[i]^(CB^-1));
+   Append(~kk, Evaluate(blob, Q));
+end for;
+
+KE := sub<GL(n, q)|[kk[i] : i in [1..#kk]]>;
+
+V := VectorSpace(GF(q), n);
+U := sub<V|[V!VPH!U.i : i in [1..Dimension(U)]]>; // Here U has been rewritten in vectors of length n but the module still has its original dimension
+
+W := U^g;
+
+Conj := function(W, k)
+return sub<VectorSpace(GF(q), n)|[W.i*k : i in [1..Dimension(W)]]>; // creating W^k
+end function;
+
+/* Ruth2. This function maps U and W to a canonical subspace of U and W in the orbit of the p-group KE. If the preimage of g in G has a non-zero entry in the (1, 1) position, then U and W are in the same orbit of KE and hence U^x eq W^y. If the (1, 1) entry is zero however, then U^x ne W^y and so we permutes the columns of g until we get a non-zero entry in the (1, 1) position.  */
+
+ComputeBase := false;
+J1, J2, x, xslp := UnipotentStabiliser(KE, U);
+L1, L2, y, yslp := UnipotentStabiliser(KE, W);
+
+Ubar := U;
+
+// U^g*y*x^-1 eq U should be true.
+
+/* This code permutes the columns of g until we get a non-zero entry in the (1, 1) position of the natural module. */
+
+vpower := 0;
+bool := (Conj(W, y*x^-1) eq U);
+temp := g;
+v := Q[5];
+while bool eq false do
+   g := g*v;
+   vpower := vpower + 1;
+   W := U^g;
+   J1, J2, x, xslp := UnipotentStabiliser(KE, U);
+   L1, L2, y, yslp := UnipotentStabiliser(KE, W);
+       bool := (Conj(W, y*x^-1) eq U);
+end while; // should be true
+
+// g*y*x^-1 should now be in H
+
+/* the above bit will have to be changed to allow for the fact that we have a different Weyl group */
+
+/* We have now killed the top row of the preimage of g. We now do the same to the second row */
+
+for i in [1..#KQ] do
+   KQ[i] := Transpose(KQ[i]);
+end for;
+
+K := sub<SL(d, q)|[KQ[i] : i in [1..#KQ]]>;
+S1 := [K.i : i in [1..Ngens(K)]];
+
+kk2 := <Id(Parent(Q[1]))>;
+for i in [1..#S1] do
+   _, blob := SymplecticWordInGen(G, S1[i]^(CB^-1));
+   Append(~kk2, Evaluate(blob, Q));
+end for;
+
+KE2 := sub<GL(n, q)|[kk2[i] : i in [1..#kk2]]>;
+
+H := sub<GL(d, q)|Ht, Hu, Hv, Hdelta, Hplus, Hx, Hs, Transpose(QQ[6])>;
+
+_, splodge := SymplecticWordInGen(Sp(d, F), Transpose(QQ[6])^(CB^-1));
+splodge1:= Evaluate(splodge, Q);
+
+HE2 := sub<GL(n, q)| Ht1, Hu1, Hv1, Hdelta1, Hplus1, Hx1, Hs1, splodge1>; // is reducible
+
+VPH2 := GModule(HE2);
+flag, U, Uhat := IsIrreducible(VPH2);
+while (Dimension(U) eq 1) or (Dimension(Uhat) eq 1) do
+   flag, U, Uhat := IsIrreducible(VPH2);
+end while;
+U := sub<V|[V!VPH2!U.i : i in [1..Dimension(U)]]>;
+
+h := g*y*x^-1;
+
+W := sub<VectorSpace(GF(q), n)|[U.i*h : i in [1..Dimension(U)]]>; // creating U^h = W
+
+ComputeBase := false;
+J1, J2, x, xslp1 := UnipotentStabiliser(KE2, U);
+L1, L2, y, yslp1 := UnipotentStabiliser(KE2, W);
+
+// No need to perform the checks as before as we know that the top left hand corner cannot now be 0 in the natural representation.
+
+a := h*y*x^-1; // this has zeroes in the first two rows and columns in the natural rep (except the 1, 1 place)
+
+Y := [];
+for i in [1..Ngens(KE)] do
+   Append(~Y, KE.i^a); // these all should be multiples of the generators of KE meaning you can solve the equation (x_1 .. x_d) = (y_1 .. y_d)A in the lower dimension, where A is the untouched d-1 * d-1 portion of the matrix g
+end for;
+
+// So Y[1], for example, is the image of a matrix whose second row is the top row of A. Hence it will be some linear combination of generators of KE.
+
+// psi := hom<Sp(d, F) -> E | (E!(ActionGenerators(VE)[1])^A), (E!(ActionGenerators(VE)[2])^A)>;
+// (psi^-1)(a);
+// GG := sub<SL(d, F)|QQ>;
+// psi := hom<E -> GG | GG.4, GG.1, GG.3, GG.2, GG.5>;
+
+/* we calculate what each Y[i] is in the natural representation */
+Z := [];
+for i in [1..d-1] do
+   Z[i] := Evaluate(MatrixPGroupWordInGen(Y[i], KE), S);
+end for;
+
+/* put Z into the correct order */
+
+ZZ := [];
+Append(~ZZ, Z[#Z]);
+zz := (#Z - 1) div 2;
+for i in [1..zz] do
+   Append(~ZZ, Z[i + zz]);
+   Append(~ZZ, Z[i]);
+end for;
+
+Z := ZZ;
+
+/* constructing the preimage of a */
+aa := M!b[1];
+for i in [1..d-1] do;
+   for j in [2..d] do;
+      aa := aa + Z[i][1, j] * b[d*i + j];
+   end for;
+end for;
+
+// aa * Evaluate(xslp1, S1) * Evaluate(yslp1^-1, S1) * Evaluate(xslp, S) * Evaluate(yslp^-1, S);
+
+bool := false;
+// QQ := [Q[i] : i in [1..#Q]];
+det := Determinant(aa);
+g := temp;
+p := Factorisation(q)[1][1];
+Scalars := <>;
+for i in [1..p-1] do
+   for j in [0..e-1] do
+      Append(~Scalars, ScalarMatrix(n, i)*w^j);
+   end for;
+end for;
+Scalars := sub<GL(n, q)|[Scalars[i] : i in [1..#Scalars]]>;
+
+while bool eq false do
+   sq := Root(det, d); // may give wrong answer as multivalued.
+   word := sq^-1 * aa * Evaluate(xslp1, S1) * Evaluate(yslp1^-1, S1) * Evaluate(xslp, S) * Evaluate(yslp^-1, S);
+   flag, word := SymplecticWordInGen(Sp(d, F), word^(CB^-1));
+   if Determinant(aa) ne 1 then
+      while flag ne Id(Sp(d, F)) do
+         sq := Root(det, d); // may give wrong answer as multivalued.
+         word := sq^-1 * aa * Evaluate(xslp1, S1) * Evaluate(yslp1^-1, S1) * Evaluate(xslp, S) * Evaluate(yslp^-1, S);
+         flag, word := SymplecticWordInGen(Sp(d, F), word^(CB^-1));
+      end while;
+   end if;
+
+   bool := Evaluate(word, Q) eq g * (v^-1)^-vpower;
+   scalar := Id(Parent(Q[1]));
+   if bool eq false then
+   for ss in Scalars do
+      if Evaluate(word, Q)/ss eq g* (v^-1)^-vpower then scalar := ss; bool := true; break; end if;
+      if Evaluate(word, Q)/ss eq g* (v^-1)^-vpower then break; end if;
+   end for;
+   end if;
+   
+   if (bool eq false) and (Determinant(aa) eq 1) then
+      _, J := SymplecticForm(Sp(d, F));
+      J := CB^-1*J*CB;
+      j := Root((Transpose(aa)*J*aa)[1, 2], 2);
+      aa := aa/j;
+   end if;
+
+end while;
+
+word := word * ((Parent(word).5)^-1)^vpower;
+
+if scalar eq Id(Parent(Q[1])) then
+   flag := Evaluate(word, Q) eq g;
+else
+   flag := Evaluate(word, Q)/scalar eq g;
+end if;
+return word, scalar[1, 1], flag;
+		
+end function;

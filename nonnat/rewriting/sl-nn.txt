@@ -1,0 +1,165 @@
+/*
+load "C:/Users/Elliot/Documents/Mathematics/nonnat/MatrixPGroup.txt";
+load "C:/Users/Elliot/Documents/Mathematics/nonnat/Ruth2.m";
+load "C:/Users/Elliot/Documents/Mathematics/nonnat/rewriting/sl.m";
+Attach("C:/Users/Elliot/Documents/Mathematics/nonnat/rewriting/GetSLU.txt");
+*/
+
+AddAttribute(Category(GL(2, 2)), "Module");
+AddAttribute(Category(GL(2, 2)), "PG1");
+AddAttribute(Category(GL(2, 2)), "PG2");
+AddAttribute(Category(GL(2, 2)), "PG3");
+
+/* preparing the input */
+
+/* E is a non-natural representation of G and the generators have to be
+   set up so that they are in the above order; g is the element that we
+   need to find in terms of the generators, d is the dimension of the
+   natural representation and qq is the ground field of the natural
+   dimension.
+*/
+
+intrinsic SLAltRepWordInGen(E:: GrpMat, Q:: SeqEnum, g:: GrpMatElt, d:: RngElt, qq:: RngElt) -> BoolElt, RngElt, GrpSLPElt
+{write g as an SLP in Q the image of the standard generating set}
+
+   q := #BaseRing(Q[1]);
+   F := GF(q);
+   w := PrimitiveElement(GF(qq));
+   M := KMatrixSpace(GF(qq), d, d);
+   b := Basis(M);
+   G := SL(d, qq);
+   n := Degree(Q[1]);
+
+   U := GetU(E, Q, d, qq);
+   U1 := U[1];
+   U2 := U[2];
+
+   K, kk, S := GetK(E, Q, d, qq);
+   KE := K[1];
+   KE2 := K[2];
+   S1 := S[2];
+   S := S[1];
+
+   W := U1^g;
+
+   /* Ruth2. This function maps U and W to a canonical subspace of U
+      and W in the orbit of the p-group KE. If the preimage of g in G
+      has a non-zero entry in the (1, 1) position, then U and W are in
+      the same orbit of KE and hence U^x eq W^y. If the (1, 1) entry is
+      zero however, then U^x ne W^y and so we permutes the columns of g
+      until we get a non-zero entry in the (1, 1) position.
+   */
+
+   J1, J2, x, xslp := UnipotentStabiliser(KE, U1);
+   L1, L2, y, yslp := UnipotentStabiliser(KE, W);
+
+   /* This code fragment is only invoked if J2 ne L2. This means that
+      either the pre-image of g had a 0 in the top left hand corner or
+	that the element g is not in E. So we permute the columns of g
+      using v until we get a non-zero entry in the pre-image of g. We
+      keep a record of the power of v needed in vpower.
+   */
+
+   v := Q[2];
+   vpower := 0;
+   bool := J2 eq L2;
+   temp := g;
+   while bool eq false do
+      g := g*v;
+      vpower := vpower + 1;
+      W := U1^g;
+      J1, J2, x, xslp := UnipotentStabiliser(KE, U1);
+      L1, L2, y, yslp := UnipotentStabiliser(KE, W);
+      bool := J2 eq L2;
+      if vpower gt d then return false, _, _; end if;
+   end while;
+
+   /* g*y*x^-1 should now be in H. We have now killed the top row of
+      the preimage of g. We know dualise this and do the same to first
+      column.
+   */
+
+   h := g*y*x^-1;
+   W := U2^h;
+   J1, J2, x, xslp1 := UnipotentStabiliser(KE2, U2);
+   L1, L2, y, yslp1 := UnipotentStabiliser(KE2, W);
+
+   /* We check that J2 eq L2. We do not need to perform the vpower
+      while loop above because we know that the top left hand corner of
+      the pre-image of g cannot now be 0.
+   */
+
+   if J2 ne L2 then return false, _, _; end if;
+
+   a := h*y*x^-1;
+   /* this has zeroes in the first row and column in the natural 
+      rep (except the 1, 1 place) */
+
+   Y := [kk[i]^a : i in [1..d-1]];
+
+   /* these all should be multiples of the generators of KE meaning you
+      can solve the equation (x_1 .. x_d) = (y_1 .. y_d)A in the lower
+      dimension, where A is the untouched d-1 * d-1 portion of the
+      matrix g. So Y[1], for example, is the image of a matrix whose
+      top row is the top row of A. Hence it will be some linear
+      combination of generators of KE.
+   */
+
+   /* we calculate what each Y[i] is in the natural representation */
+   Zbar := [MatrixPGroupWordInGen(Y[i], KE: ComputeBase :=
+   false) : i in [1..#Y]];
+   
+   if Evaluate(Zbar[1], [KE.i : i in [1..Ngens(KE)]]) ne Y[1]
+   then return false, _, _; end if;
+
+   Z := [Evaluate(Zbar[i], S) : i in [1..#Zbar]];
+
+   /* constructing the preimage of a */
+   aa := M!b[1];
+   for i in [1..d-1] do;
+      for j in [2..d] do;
+         aa := aa + Z[i][1, j] * b[d*i + j];
+      end for;
+   end for;
+
+   det := Determinant(aa);
+   P := PolynomialRing(GF(q));
+   py := P.1^d - det;
+   sq := Root(det, d); /* may give wrong answer as multivalued. */
+   g := temp;
+
+   word := sq^-1 * aa * Evaluate(xslp1, S1) * Evaluate(yslp1^-1, S1) * 
+   Evaluate(xslp, S) * Evaluate(yslp^-1, S);
+   _, word := SLWordInGen(G, G!word);
+   bool := Evaluate(word, Q) eq g * (v^-1)^-vpower;
+
+   scalar := Id(Parent(g));
+   if bool eq false then
+      scalar := Evaluate(word, Q)/(g* (v^-1)^-vpower);
+      if not IsScalar(scalar) then
+         bool := false;
+      else
+         roots := Roots(py);
+         for j in [1..#roots] do
+            word := roots[j, 1]^-1 * aa * Evaluate(xslp1, S1) *
+            Evaluate(yslp1^-1, S1) * Evaluate(xslp, S) *
+            Evaluate(yslp^-1, S);
+            _, word := SLWordInGen(G, G!word);
+            bool := Evaluate(word, Q) eq g * (v^-1)^-vpower;
+            if bool then scalar := Id(Parent(g)); break j; end if;
+         end for;
+      end if;
+   end if;
+
+   word := word * ((Parent(word).2)^-1)^vpower;
+
+   if scalar eq Id(Parent(g)) then
+      flag := Evaluate(word, Q) eq g;
+   else
+      flag := false;
+   end if;
+
+   return flag, scalar[1, 1], word;
+
+end intrinsic;
+

@@ -1,0 +1,23 @@
+/* construct SL2 x SL2 as subgroup of Sp */
+
+SL2S := function (q)
+   G := StandardSp (4, q);
+   P := RandomProcess (G);
+   nmr := 0; found := false;
+   repeat
+      z := ElementOfOrder (P, q^2 - 1, 20: Word:=false);
+      nmr +:= 1;
+      if Type (z) cmpeq GrpMatElt then
+         ES := Eigenvalues (z);
+         if #ES eq 0 then 
+            x := z^(q - 1);
+            y := x^Random (P);
+            H := sub < GL(4, q) | x, y>;
+            S := Sections (H);
+            IdentifySections (Sections (H));
+            found := #S eq 2;
+         end if;
+      end if;
+   until found;
+   return H, z, nmr;
+end function;

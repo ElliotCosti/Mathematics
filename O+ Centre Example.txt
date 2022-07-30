@@ -1,0 +1,43 @@
+G := OmegaPlus(4, 3);
+QQ := PlusChosenElements(G);
+d := 4;
+qq := 3;
+   M := KMatrixSpace(GF(qq), d, d);
+   b := Basis(M);
+
+   CB := ZeroMatrix(GF(3), d, d);
+   for i in [1..IntegerRing()!(d/2)] do
+      CB := CB + b[(i-1)*d + 2*i - 1];
+   end for;
+   for i in [1..IntegerRing()!(d/2)] do
+      CB := CB + b[IntegerRing()!(d/2)*d + i*d - 2*i + 2];
+   end for;
+   CB := SL(d, qq)!CB;
+
+n := Dimension(QQ[1]);
+Q := [GL(n, 9)!QQ[i] : i in [1..#QQ]];
+EE := sub<GL(n, 9)|Q>;
+h := Random (EE);
+
+Append(~Q, [ W^2, 0, 0, 0, 0, W^2, 0, 0, 0, 0, W^2, 0, 0, 0, 0, W^2 ] where W := GF(3, 2).1);
+q := #BaseRing(G);
+d := Degree(G);
+E := sub<GL(n, 9)|Q>;
+qq := q;
+
+// RandomSchreier (E);
+// CompositionFactors (E);
+Remove(~Q, #Q);
+
+f, w, s := SpAltRepWordInGen (E, Q, h, 4, 3);
+h1 := Evaluate (w, Q);
+h * h1^-1;
+
+x := h * E.6;
+x in EE;
+x in E;
+
+f, w, s := SpAltRepWordInGen (E, Q, x, 4, 3);
+y := Evaluate (w, Q);
+x * y^-1;
+

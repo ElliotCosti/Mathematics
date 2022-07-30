@@ -1,0 +1,2356 @@
+This is pdfTeX, Version 3.141592-1.40.4 (MiKTeX 2.7) (preloaded format=pdflatex 2008.3.7)  8 DEC 2009 12:14
+entering extended mode
+**C:/Users/Elliot/Documents/Mathematics/Paper.tex
+(C:/Users/Elliot/Documents/Mathematics/Paper.tex
+LaTeX2e <2005/12/01>
+Babel <v3.8h> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman, ngerman, french, loaded.
+("C:\Program Files\MiKTeX 2.7\tex\latex\base\report.cls"
+Document Class: report 2005/09/16 v1.4f Standard LaTeX document class
+("C:\Program Files\MiKTeX 2.7\tex\latex\base\size12.clo"
+File: size12.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+("C:\Program Files\MiKTeX 2.7\tex\latex\amsfonts\amssymb.sty"
+Package: amssymb 2002/01/22 v2.2d
+
+("C:\Program Files\MiKTeX 2.7\tex\latex\amsfonts\amsfonts.sty"
+Package: amsfonts 2001/10/25 v2.2f
+\@emptytoks=\toks14
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 132.
+))
+("C:\Program Files\MiKTeX 2.7\tex\latex\base\latexsym.sty"
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
+)
+("C:\Program Files\MiKTeX 2.7\tex\latex\float\float.sty"
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count88
+\float@exts=\toks15
+\float@box=\box26
+\@float@everytoks=\toks16
+\@floatcapt=\box27
+)
+("C:\Program Files\MiKTeX 2.7\tex\latex\algorithm2e\algorithm2e.sty"
+Package: algorithm2e 2005/10/04 v3.9 algorithms environments
+\c@AlgoLine=\count89
+
+("C:\Program Files\MiKTeX 2.7\tex\latex\base\ifthen.sty"
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+("C:\Program Files\MiKTeX 2.7\tex\latex\tools\xspace.sty"
+Package: xspace 2006/05/08 v1.12 Space after command names (DPC,MH)
+)
+********************************************************
+Package `algorithm2e' Release 3.9 -- october 04 2005 --
+- algorithm2e-announce@lirmm.fr mailing list for announcement about releases
+- algorithm2e-discussion@lirmm.fr mailing list for discussion about package
+subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
+- Author: Christophe Fiorio (fiorio@lirmm.fr)
+********************************************************
+\skiptotal=\skip43
+\skiprule=\skip44
+\skiphlne=\skip45
+\skiptext=\skip46
+\skiplength=\skip47
+\algomargin=\skip48
+\skipalgocfslide=\skip49
+\algowidth=\dimen103
+\inoutsize=\dimen104
+\inoutline=\dimen105
+\algocf@inoutbox=\box28
+\algocf@inputbox=\box29
+\AlCapSkip=\skip50
+\AlCapHSkip=\skip51
+\algocf@capbox=\box30
+\c@algocfline=\count90
+\c@algocf=\count91
+\algocf@algoframe=\box31
+\algocf@algobox=\box32
+) ("C:\Program Files\MiKTeX 2.7\tex\latex\graphics\lscape.sty"
+Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
+
+("C:\Program Files\MiKTeX 2.7\tex\latex\graphics\graphics.sty"
+Package: graphics 2006/02/20 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.7\tex\latex\graphics\trig.sty"
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+("C:\Program Files\MiKTeX 2.7\tex\latex\00miktex\graphics.cfg"
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 90.
+
+("C:\Program Files\MiKTeX 2.7\tex\latex\graphics\pdftex.def"
+File: pdftex.def 2007/06/12 v0.04h Graphics/color for pdfTeX
+\Gread@gobject=\count92
+)))
+("C:\Program Files\MiKTeX 2.7\tex\latex\stmaryrd\stmaryrd.sty"
+Package: stmaryrd 1994/03/03 St Mary's Road symbol package
+\symstmry=\mathgroup7
+LaTeX Font Info:    Overwriting symbol font `stmry' in version `bold'
+(Font)                  U/stmry/m/n --> U/stmry/b/n on input line 89.
+)
+\c@definition=\count93
+
+("C:\Program Files\MiKTeX 2.7\tex\latex\setspace\setspace.sty"
+Package: setspace 2000/12/01 6.7 Contributed and Supported LaTeX2e package
+
+Package: `setspace' 6.7 <2000/12/01>
+) (Paper.aux
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `main' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `standard-table' multiply defined.
+
+
+LaTeX Warning: Label `orthog-table' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `alg1:even' multiply defined.
+
+
+LaTeX Warning: Label `ruth' multiply defined.
+
+
+LaTeX Warning: Label `timings' multiply defined.
+
+
+LaTeX Warning: Label `timings' multiply defined.
+
+
+LaTeX Warning: Label `timings' multiply defined.
+
+
+LaTeX Warning: Label `timings' multiply defined.
+
+)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 49.
+LaTeX Font Info:    ... okay on input line 49.
+ ("C:\Program Files\MiKTeX 2.7\tex\context\base\supp-pdf.tex"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count94
+\scratchdimen=\dimen106
+\scratchbox=\box33
+\nofMPsegments=\count95
+\nofMParguments=\count96
+\MPscratchCnt=\count97
+\MPscratchDim=\dimen107
+\MPnumerator=\count98
+\everyMPtoPDFconversion=\toks17
+) [1
+
+{C:/ProgramData/MiKTeX/2.7/pdftex/config/pdftex.map}]
+LaTeX Font Info:    Try loading font information for U+msa on input line 76.
+
+("C:\Program Files\MiKTeX 2.7\tex\latex\amsfonts\umsa.fd"
+File: umsa.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 76.
+
+("C:\Program Files\MiKTeX 2.7\tex\latex\amsfonts\umsb.fd"
+File: umsb.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+lasy on input line 76.
+
+("C:\Program Files\MiKTeX 2.7\tex\latex\base\ulasy.fd"
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+LaTeX Font Info:    Try loading font information for U+stmry on input line 76.
+
+("C:\Program Files\MiKTeX 2.7\tex\latex\stmaryrd\ustmry.fd")
+! Missing $ inserted.
+<inserted text> 
+                $
+l.77 
+     
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Display math should end with $$.
+<to be read again> 
+                   \par 
+l.77 
+     
+The `$' that I just saw supposedly matches a previous `$$'.
+So I shall assume that you typed `$$' both times.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 78--80
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 81--84
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 81--84
+
+ []
+
+[1] (Paper.toc [2
+
+] [3])
+\tf@toc=\write3
+ [4] [5]
+Chapter 1.
+[6
+
+]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 118.
+
+ ("C:\Program Files\MiKTeX 2.7\tex\latex\base\omscmr.fd"
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 118.
+LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 129.
+ [7] [8] [9]
+Chapter 2.
+[10
+
+]
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   \relax 
+l.188 \hspace{10}
+                 
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+[11] [12]
+! Undefined control sequence.
+l.330 Group&$s$&$t$&$\delta$&$u$&$v\w
+                                     $ \rule{0cm}{3.0ex}\\ \hline
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.355 Group&$t$&$t^\prime$&$\delta$&$u$&$v\w
+                                            $
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.375 Group&$s$&$t$&$\delta$&$u$&$v\w
+                                     $
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Overfull \hbox (20.78838pt too wide) in paragraph at lines 326--395
+ [] 
+ []
+
+[13]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.404 
+      
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.414 0 & 0 &  &  &  \cr}
+                         
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.414 0 & 0 &  &  &  \cr}
+                         
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+[14
+
+
+
+
+] [15]
+Overfull \hbox (33.32399pt too wide) in paragraph at lines 467--468
+[]\OT1/cmr/m/n/12 By keep-ing track of the ma-trix mul-ti-pli-ca-tions per-form
+ed, we get that $\OML/cmm/m/it/12 x[] [] x[]Ax[] [] x[]$
+ []
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.477 0 & 0 &  &  &  \cr}
+                         
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.477 0 & 0 &  &  &  \cr}
+                         
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.477 0 & 0 &  &  &  \cr}
+                         
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.477 0 & 0 &  &  &  \cr}
+                         
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+[16]
+Underfull \hbox (badness 10000) in paragraph at lines 491--493
+
+ []
+
+[17]
+! Missing } inserted.
+<inserted text> 
+                }
+l.518 \end{enumerate}
+                     
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+[18]
+Underfull \hbox (badness 10000) detected at line 560
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 531--561
+
+ []
+
+[19]
+Underfull \hbox (badness 10000) detected at line 595
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 562--596
+
+ []
+
+[20]
+! Missing { inserted.
+<to be read again> 
+                   \mathaccent 
+l.632 }
+       
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.632 }
+       
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Underfull \hbox (badness 10000) detected at line 633
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 597--634
+
+ []
+
+[21]
+Underfull \hbox (badness 10000) detected at line 670
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 635--671
+
+ []
+
+[22]
+Underfull \hbox (badness 10000) detected at line 707
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 672--708
+
+ []
+
+[23]
+Underfull \hbox (badness 10000) detected at line 743
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 709--744
+
+ []
+
+[24] [25] [26] [27] [28]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.813 
+      
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[29]
+Underfull \hbox (badness 10000) in paragraph at lines 851--852
+
+ []
+
+[30]
+! Missing { inserted.
+<to be read again> 
+                   \overline 
+l.889 }
+       
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.889 }
+       
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Underfull \hbox (badness 10000) detected at line 890
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 865--891
+
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 909
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 892--910
+
+ []
+
+[31]
+Underfull \hbox (badness 10000) detected at line 928
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 911--929
+
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 947
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 930--948
+
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 966
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 949--967
+
+ []
+
+[32]
+Underfull \hbox (badness 10000) detected at line 985
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 968--986
+
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 1004
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 987--1005
+
+ []
+
+[33]
+Underfull \hbox (badness 10000) detected at line 1026
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1006--1027
+
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 1045
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1028--1046
+
+ []
+
+[34]
+Underfull \hbox (badness 10000) detected at line 1069
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1047--1070
+
+ []
+
+[35]
+Underfull \hbox (badness 10000) detected at line 1107
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1073--1108
+
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 1146
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1109--1147
+
+ []
+
+[36]
+Underfull \hbox (badness 10000) detected at line 1177
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1148--1178
+
+ []
+
+[37]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1224 }
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1224 }
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Underfull \hbox (badness 10000) detected at line 1225
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1179--1226
+
+ []
+
+[38]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1269 }
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1269 }
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+Underfull \hbox (badness 10000) detected at line 1270
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1227--1271
+
+ []
+
+[39]
+Underfull \hbox (badness 10000) detected at line 1295
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1272--1296
+
+ []
+
+[40]
+Underfull \hbox (badness 10000) detected at line 1326
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1297--1327
+
+ []
+
+[41]
+Underfull \hbox (badness 10000) detected at line 1376
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1330--1377
+
+ []
+
+[42] [43] [44]
+Underfull \hbox (badness 10000) in paragraph at lines 1409--1412
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1422--1424
+
+ []
+
+[45]
+Underfull \hbox (badness 10000) in paragraph at lines 1459--1460
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1469--1472
+
+ []
+
+[46]
+Underfull \hbox (badness 10000) in paragraph at lines 1494--1496
+
+ []
+
+[47] [48] [49] [50]
+Underfull \hbox (badness 10000) in paragraph at lines 1649--1650
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1655--1658
+
+ []
+
+[51] [52]
+
+! LaTeX Error: Environment tablular undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1715 \begin{tablular}
+                       {}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1718 \left
+            (\matrix{ 1 & \zeta^q & \theta^q \cr
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+l.1721 }
+        &
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Misplaced alignment tab character &.
+l.1721 }&
+         
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.1726 }&
+         
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.1730 }&
+         
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced \crcr.
+\endtabular ->\crcr 
+                    \egroup \egroup $\egroup 
+l.1736 \end{tabular}
+                    
+I can't figure out why you would want to use a tab mark
+or \cr or \span just now. If something like a right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Extra }, or forgotten $.
+\endtabular ->\crcr \egroup 
+                            \egroup $\egroup 
+l.1736 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\endtabular ->\crcr \egroup \egroup 
+                                    $\egroup 
+l.1736 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: \begin{center} on input line 1714 ended by \end{tabular}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1736 \end{tabular}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[53]
+
+! LaTeX Error: Environment tablular undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1740 \begin{tablular}
+                       {}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1742 { \Rightarrow
+                    
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+l.1746 }
+        &
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Misplaced alignment tab character &.
+l.1746 }&
+         
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced \crcr.
+\endtabular ->\crcr 
+                    \egroup \egroup $\egroup 
+l.1752 \end{tabular}
+                    
+I can't figure out why you would want to use a tab mark
+or \cr or \span just now. If something like a right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Extra }, or forgotten $.
+\endtabular ->\crcr \egroup 
+                            \egroup $\egroup 
+l.1752 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\endtabular ->\crcr \egroup \egroup 
+                                    $\egroup 
+l.1752 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: \begin{center} on input line 1739 ended by \end{tabular}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1752 \end{tabular}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1755--1757
+
+ []
+
+[54]
+Underfull \hbox (badness 10000) in paragraph at lines 1778--1780
+
+ []
+
+[55] [56] [57
+
+
+]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1946 }
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1946 }
+        
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+[58]
+Underfull \hbox (badness 10000) in paragraph at lines 1963--1964
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1975--1978
+
+ []
+
+[59]
+Underfull \hbox (badness 10000) in paragraph at lines 1992--1994
+
+ []
+
+[60]
+Underfull \hbox (badness 10000) in paragraph at lines 2046--2047
+
+ []
+
+[61] [62] [63] [64] [65]
+Underfull \hbox (badness 10000) in paragraph at lines 2152--2154
+
+ []
+
+[66] [67]
+Underfull \hbox (badness 10000) in paragraph at lines 2203--2206
+
+ []
+
+[68] [69]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2234 0 & 0 & 0 & 1 \cr}
+                         
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2234 0 & 0 & 0 & 1 \cr}
+                         
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2234 0 & 0 & 0 & 1 \cr}
+                         
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2234 0 & 0 & 0 & 1 \cr}
+                         
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2241 0 & 0 & $\gamma + \gamma^q$ & 0 \cr}
+                                           
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2241 0 & 0 & $\gamma + \gamma^q$ & 0 \cr}
+                                           
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2241 0 & 0 & $\gamma + \gamma^q$ & 0 \cr}
+                                           
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2241 0 & 0 & $\gamma + \gamma^q$ & 0 \cr}
+                                           
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Environment tablular undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2247 \begin{tablular}
+                       {}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2249 {\left
+             (\matrix{0 & 1 \cr
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+l.2251 \right) }
+                
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Misplaced alignment tab character &.
+l.2252 &
+        
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.2256 &
+        
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2258 0 & $\gamma^{-1}$ \cr}
+                             
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2258 0 & $\gamma^{-1}$ \cr}
+                             
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2258 0 & $\gamma^{-1}$ \cr}
+                             
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2258 0 & $\gamma^{-1}$ \cr}
+                             
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2260 
+       
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.2260 
+       
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.2260 
+       
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Misplaced \crcr.
+\endtabular ->\crcr 
+                    \egroup \egroup $\egroup 
+l.2261 \end{tabular}
+                    
+I can't figure out why you would want to use a tab mark
+or \cr or \span just now. If something like a right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Extra }, or forgotten \endgroup.
+\endtabular ->\crcr \egroup 
+                            \egroup $\egroup 
+l.2261 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten \endgroup.
+\endtabular ->\crcr \egroup \egroup 
+                                    $\egroup 
+l.2261 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+<recently read> \egroup 
+                        
+l.2261 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: \begin{center} on input line 2246 ended by \end{tabular}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2261 \end{tabular}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2261 \end{tabular}
+                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2279 0 & 0 & 0 & \omega \cr}
+                              
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2279 0 & 0 & 0 & \omega \cr}
+                              
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+[70] [71] [72] [73
+
+
+] [74]
+Underfull \hbox (badness 10000) in paragraph at lines 2393--2395
+
+ []
+
+[75] [76]
+Underfull \hbox (badness 10000) in paragraph at lines 2457--2459
+
+ []
+
+[77] [78]
+Chapter 3.
+[79
+
+] [80] [81]
+Underfull \hbox (badness 10000) in paragraph at lines 2524--2527
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2528--2530
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2531--2533
+
+ []
+
+! Double superscript.
+l.2542 ... for $K$ is: $\{t^{\delta^{-(j-1) / 2}}^
+                                                  {(sv)^{-i}} : 0 \le i \le ...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Double superscript.
+l.2542 ... \le e\} \cup \{O^{\delta^{-(j-1) / 2}}^
+                                                  {(sv)^{-i}} : 0 \le i \le ...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+[82]
+! Extra }, or forgotten $.
+l.2548 ...g all instances of $t$ with $(t^s)^{-1}}
+                                                  $ and $O$ with $(O^s)^{-1}...
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+l.2548 ... $(t^s)^{-1}}$ and $O$ with $(O^s)^{-1}}
+                                                  $ in the above generating ...
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Double superscript.
+l.2552 ... \le d\}$. We apply this to $K^{\phi}_i^
+                                                  g$. Hence, we can map thes...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2552--2554
+
+ []
+
+[83]
+! Double superscript.
+l.2574 ...of the algorithm, we have $\{K^{\phi}_i^
+                                                  g\}$ as elements of the gr...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+[84] [85] [86]
+! Double superscript.
+l.2686 {$K_2 = t^\prime^
+                        {(u^\prime v^\prime)^2} = \left(\matrix
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Double superscript.
+l.2693 $$K_3 = t^\prime^
+                        {u^\prime v^\prime} = \left(\matrix
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+[87] [88]
+! Double superscript.
+l.2779 ...al pre-image of $a$. As $g = a y^\prime^
+                                                  {-1} y^{-1}$, and we have ...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Double superscript.
+l.2779 ...{\phi^{-1}} = 5 a^{\phi^{-1}} (y^\prime^
+                                                  {-1})^{\phi^{-1}} (y^{-1})...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Double superscript.
+l.2781 $$g^\prime = a y^\prime^
+                               {-1} y^{-1} = \left(\matrix
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+[89] [90]
+Underfull \hbox (badness 10000) detected at line 2855
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2824--2856
+
+ []
+
+[91]
+Underfull \hbox (badness 10000) detected at line 2887
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2857--2888
+
+ []
+
+[92]
+Underfull \hbox (badness 10000) detected at line 2913
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2889--2914
+
+ []
+
+[93]
+Underfull \hbox (badness 10000) detected at line 2947
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2915--2948
+
+ []
+
+[94]
+Underfull \hbox (badness 10000) detected at line 2979
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2949--2980
+
+ []
+
+[95]
+Underfull \hbox (badness 10000) detected at line 3041
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3005--3042
+
+ []
+
+[96] [97] [98]
+! Double superscript.
+l.3088 ...The generating set of $K$ is $\{x^{v^2}^
+                                                  {\delta^j}^{(s^u)^m (v^u)^...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Double superscript.
+l.3088 ...ing set of $K$ is $\{x^{v^2}^{\delta^j}^
+                                                  {(s^u)^m (v^u)^i} : i \in ...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+[99] [100]
+! Double superscript.
+l.3108 ...in to make sure the equation $g^\prime ^
+                                                  T J g^\prime = J$ holds, w...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Double superscript.
+l.3108 ... equation doesn't hold, then $g^\prime ^
+                                                  T J g^\prime$ will be a mu...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+[101]
+! Double superscript.
+l.3127 ... generating set of $K$ is $\{x^{y^{-j}}^
+                                                  {(v^u)^i}, x^{y^{-(j-2)}}^...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Double superscript.
+l.3127 ...$\{x^{y^{-j}}^{(v^u)^i}, x^{y^{-(j-2)}}^
+                                                  {us(v^u)^i},$ ${x_\omega^{...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Double superscript.
+l.3127 ...-2)}}^{us(v^u)^i},$ ${x_\omega^{y^{-j}}^
+                                                  {(v^u)^i}, x_\omega^{y^{-{...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Double superscript.
+l.3127 ...-j}}^{(v^u)^i}, x_\omega^{y^{-{(j-2)}}}^
+                                                  {us(v^u)^i}, t^{y^{-j}} : ...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.3127 ...: i \in \{0, \ldots, \frac{d}{2} - 2\},$
+                                                   $j \in \{0, \ldots, \frac...
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Overfull \hbox (25.08498pt too wide) in paragraph at lines 3127--3128
+\OT1/cmr/m/n/12 prod-ucts of the gen-er-a-tors $\OML/cmm/m/it/12 s; u$ \OT1/cmr
+/m/n/12 and $\OML/cmm/m/it/12 v$\OT1/cmr/m/n/12 . The gen-er-at-ing set of $\OM
+L/cmm/m/it/12 K$ \OT1/cmr/m/n/12 is $\OMS/cmsy/m/n/12 f\OML/cmm/m/it/12 x[][]; 
+x[][];$
+ []
+
+[102] [103]
+! Double superscript.
+l.3174 ...ating set of $K$ is $\{\bar{x}^{y^{-j}}^
+                                                  {(v^u)^i}, \bar{x}^{y^{-(j...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Double superscript.
+l.3174 ...y^{-j}}^{(v^u)^i}, \bar{x}^{y^{-(j-2)}}^
+                                                  {us(v^u)^i},$ ${\bar{x}_\o...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Double superscript.
+l.3174 ...{us(v^u)^i},$ ${\bar{x}_\omega^{y^{-j}}^
+                                                  {(v^u)^i}, \bar{x}_\omega^...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Double superscript.
+l.3174 ...^{(v^u)^i}, \bar{x}_\omega^{y^-{(j-2)}}^
+                                                  {us(v^u)^i}, t^{y^{-j}}, x...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.3174 ...)}}^{us(v^u)^i}, t^{y^{-j}}, x^{y^{-j}}$
+                                                   $: i \in \{0, \ldots, \fr...
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Overfull \hbox (2.82155pt too wide) in paragraph at lines 3174--3175
+\OT1/cmr/m/n/12 The gen-er-at-ing set of $\OML/cmm/m/it/12 K$ \OT1/cmr/m/n/12 i
+s $\OMS/cmsy/m/n/12 f[][]\OML/cmm/m/it/12 ; [][];$ $[]$
+ []
+
+[104]
+! Double superscript.
+l.3187 ...ng the (1, 4) entry of the $x^{(y^v)^2}^
+                                                  {us}$ and dividing every r...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+[105] [106]
+
+! LaTeX Error: Environment tablular undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3248 \begin{tablular}
+                       {}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Misplaced alignment tab character &.
+l.3257 &
+        
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+[107]
+
+! LaTeX Error: \begin{center} on input line 3247 ended by \end{tablular}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3268 \end{tablular}
+                     
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Double superscript.
+l.3283 ...element so that the equation $A^\prime ^
+                                                  T J A^\prime = J$ holds, w...
+I treat `x^1^2' essentially like `x^1{}^2'.
+
+[108] [109] [110] [111]
+Underfull \hbox (badness 10000) in paragraph at lines 3355--3358
+
+ []
+
+[112]
+Underfull \hbox (badness 10000) in paragraph at lines 3398--3401
+
+ []
+
+[113] [114]
+Chapter 4.
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3454 
+       
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[115
+
+]
+
+LaTeX Warning: Command \textcircled invalid in math mode on input line 3469.
+
+
+LaTeX Warning: Command \textcircled invalid in math mode on input line 3469.
+
+[116]
+
+LaTeX Warning: Command \textcircled invalid in math mode on input line 3477.
+
+
+LaTeX Warning: Command \textcircled invalid in math mode on input line 3477.
+
+[117]
+
+LaTeX Warning: Command \textcircled invalid in math mode on input line 3504.
+
+
+LaTeX Warning: Command \textcircled invalid in math mode on input line 3504.
+
+[118]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3522 
+       
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3534--3536
+
+ []
+
+[119]
+
+! LaTeX Error: Environment tablular undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3545 \begin{tablular}
+                       {}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3547 {$g_1 =$ \left
+                     (\matrix{1 & \omega & 2 & 1  \cr
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+l.3551 \right),}
+                
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Misplaced alignment tab character &.
+l.3552 &
+        
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.3553 {$
+         g_2 =$ \left(\matrix{1 & 0 & 4 & 3  \cr
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3553 {$g_
+           2 =$ \left(\matrix{1 & 0 & 4 & 3  \cr
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3553 {$g_2 =$ \left
+                     (\matrix{1 & 0 & 4 & 3  \cr
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+l.3557 \right),}
+                
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Misplaced alignment tab character &.
+l.3558 &
+        
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.3559 {$
+         g_3 =$ \left(\matrix{1 & 0 & 0 & 6\omega  \cr
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3559 {$g_
+           3 =$ \left(\matrix{1 & 0 & 0 & 6\omega  \cr
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3559 {$g_3 =$ \left
+                     (\matrix{1 & 0 & 0 & 6\omega  \cr
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+l.3563 \right).}
+                
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3564 
+       
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.3564 
+       
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Misplaced \crcr.
+\endtabular ->\crcr 
+                    \egroup \egroup $\egroup 
+l.3565 \end{tabular}
+                    
+I can't figure out why you would want to use a tab mark
+or \cr or \span just now. If something like a right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Extra }, or forgotten \endgroup.
+\endtabular ->\crcr \egroup 
+                            \egroup $\egroup 
+l.3565 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten \endgroup.
+\endtabular ->\crcr \egroup \egroup 
+                                    $\egroup 
+l.3565 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+<recently read> \egroup 
+                        
+l.3565 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: \begin{center} on input line 3544 ended by \end{tabular}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3565 \end{tabular}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3565 \end{tabular}
+                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+! LaTeX Error: Environment tablular undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3569 \begin{tablular}
+                       {}
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3571 {$g_4 =$ \left
+                     (\matrix{1 & 0 & 0 & \omega^2  \cr
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+l.3575 \right),}
+                
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Misplaced alignment tab character &.
+l.3576 &
+        
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.3577 {$
+         g_5 =$ \left(\matrix{1 & 0 & \omega & 6\omega  \cr
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3577 {$g_
+           5 =$ \left(\matrix{1 & 0 & \omega & 6\omega  \cr
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3577 {$g_5 =$ \left
+                     (\matrix{1 & 0 & \omega & 6\omega  \cr
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+l.3581 \right).}
+                
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3582 
+       
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.3582 
+       
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Misplaced \crcr.
+\endtabular ->\crcr 
+                    \egroup \egroup $\egroup 
+l.3583 \end{tabular}
+                    
+I can't figure out why you would want to use a tab mark
+or \cr or \span just now. If something like a right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Extra }, or forgotten \endgroup.
+\endtabular ->\crcr \egroup 
+                            \egroup $\egroup 
+l.3583 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten \endgroup.
+\endtabular ->\crcr \egroup \egroup 
+                                    $\egroup 
+l.3583 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+<recently read> \egroup 
+                        
+l.3583 \end{tabular}
+                    
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: \begin{center} on input line 3568 ended by \end{tabular}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3583 \end{tabular}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3583 \end{tabular}
+                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+[120] [121] [122]
+Overfull \hbox (6.32011pt too wide) in paragraph at lines 3642--3643
+\OT1/cmr/m/n/12 and weight cal-cu-la-tion for each el-e-ment. This has a cost o
+f O$(\OMS/cmsy/m/n/12 j\OML/cmm/m/it/12 X\OMS/cmsy/m/n/12 j\OML/cmm/m/it/12 d[]
+\OT1/cmr/m/n/12 )$. \OT1/cmtt/m/n/12 IncreaseDepthPair
+ []
+
+[123]
+
+LaTeX Warning: Float too large for page by 41.20187pt on input line 3705.
+
+[124] [125]
+Chapter 5.
+[126
+
+] [127]
+Underfull \hbox (badness 10000) detected at line 3792
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3752--3793
+
+ []
+
+[128]
+Underfull \hbox (badness 10000) detected at line 3827
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3794--3828
+
+ []
+
+[129]
+Underfull \hbox (badness 10000) detected at line 3866
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3829--3867
+
+ []
+
+[130] [131]
+Underfull \hbox (badness 10000) in paragraph at lines 3885--3888
+
+ []
+
+[132]
+! Double subscript.
+l.3908 ...matrix weight, also noting that $h_1^p _
+                                                  {[j_0, j_1, j_2]} = 0$. We...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3914--3916
+
+ []
+
+[133] [134]
+Underfull \hbox (badness 10000) in paragraph at lines 3943--3945
+
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 3963
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3948--3964
+
+ []
+
+[135]
+Underfull \hbox (badness 10000) detected at line 4001
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3965--4002
+
+ []
+
+[136]
+Underfull \hbox (badness 10000) detected at line 4038
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4003--4039
+
+ []
+
+[137] [138]
+! Undefined control sequence.
+l.4048 \subsectionng
+                     table shows a list of timings for various input groups....
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Float too large for page by 41.20187pt on input line 4097.
+
+[139] [140]
+Chapter 6.
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4150 \newpage
+               
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[141
+
+] [142]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4189 \newpage
+               
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[143]
+
+LaTeX Warning: Float too large for page by 5.86847pt on input line 4243.
+
+[144] [145]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4280 \newpage
+               
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[146]
+Overfull \hbox (44.74709pt too wide) in paragraph at lines 4286--4318
+ [] 
+ []
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4322 \newpage
+               
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[147]
+
+! LaTeX Error: \begin{thebibliography} on input line 4324 ended by \end{documen
+t}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4359 \end{document}
+                     
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+[148
+
+] (Paper.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ )
+(\end occurred inside a group at level 1)
+
+### semi simple group (level 1) entered at line 4324 (\begingroup)
+### bottom level 
+Here is how much of TeX's memory you used:
+ 2536 strings out of 95340
+ 30084 string characters out of 1184194
+ 117761 words of memory out of 1500000
+ 5704 multiletter control sequences out of 110000
+ 22028 words of font info for 95 fonts, out of 1200000 for 2000
+ 14 hyphenation exceptions out of 8191
+ 32i,25n,25p,1447b,438s stack positions out of 5000i,500n,10000p,200000b,5000s
+<C:/Program Files/MiKTeX 2.7/fonts/type1/bluesky/cm/cmbx12.pfb>
+<C:/Program Files/MiKTeX 2.7/fonts/type1/bluesky/cm/cmbx8.pfb><C:/Program Files
+/MiKTeX 2.7/fonts/type1/bluesky/cm/cmcsc10.pfb><C:/Program Files/MiKTeX 2.7/fon
+ts/type1/bluesky/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/bluesky
+/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/bluesky/cm/cmmi12.pfb><
+C:/Program Files/MiKTeX 2.7/fonts/type1/bluesky/cm/cmmi6.pfb><C:/Program Files/
+MiKTeX 2.7/fonts/type1/bluesky/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.7/fonts/
+type1/bluesky/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/bluesky/cm/
+cmr12.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/bluesky/cm/cmr17.pfb><C:/Pro
+gram Files/MiKTeX 2.7/fonts/type1/bluesky/cm/cmr6.pfb><C:/Program Files/MiKTeX 
+2.7/fonts/type1/bluesky/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/bl
+uesky/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/bluesky/cm/cmsy10.pf
+b><C:/Program Files/MiKTeX 2.7/fonts/type1/bluesky/cm/cmsy6.pfb><C:/Program Fil
+es/MiKTeX 2.7/fonts/type1/bluesky/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.7/fon
+ts/type1/bluesky/cm/cmti12.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/bluesky
+/cm/cmtt12.pfb><C:/Program Files/MiKTeX 2.7/fonts/type1/bluesky/cm/cmtt8.pfb><C
+:/Program Files/MiKTeX 2.7/fonts/type1/bluesky/latex-fonts/lasy10.pfb><C:/Progr
+am Files/MiKTeX 2.7/fonts/type1/bluesky/ams/msbm10.pfb><C:/Program Files/MiKTeX
+ 2.7/fonts/type1/hoekwater/stmaryrd/stmary10.pfb><C:/Program Files/MiKTeX 2.7/f
+onts/type1/hoekwater/stmaryrd/stmary8.pfb>
+Output written on Paper.pdf (149 pages, 518459 bytes).
+PDF statistics:
+ 578 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 131072)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

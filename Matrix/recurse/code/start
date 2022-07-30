@@ -1,0 +1,42 @@
+Attach ("C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/attributes.m");
+Attach ("C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/intrinsics.m");
+AttachSpec("C:/Program Files/Magma/package/Group/GrpMat/sl2q/spec");
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/basics.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/is-classical.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/derived.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/sections.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/unipotent.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/reducible.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/c9code.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/leaf.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/imprimitive.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/absolute.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/semilinear.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/tensor.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/induced.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/extra.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/smaller.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/determinant.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/action.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/word.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/crisis.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/scalars.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/node.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/present.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/bray.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/ryba.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/classical-ryba.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/general.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/pcmat.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/normaliser.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/order.m";
+load "C:/Users/Elliot/Documents/Mathematics/Matrix/recurse/code/chief.m";
+
+// SetVerbose ("RandomSchreier", 1);
+// SetVerbose ("STCS", 1);
+
+SetVerbose ("User1", 1);
+// SetVerbose ("User2", 1);
+// SetVerbose ("User3", 1);
+// SetVerbose ("User4", 1);
+

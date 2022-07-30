@@ -1,0 +1,93 @@
+MinusChar2Elements := function(G: SpecialGroup := false);
+
+   if Dimension(G) eq 2 then
+      i := Id(G);
+      return [i, i, G.1, i, i];
+   end if;
+
+   d := Dimension(G);
+   F := BaseRing(G);
+   q := #F;
+   alpha := PrimitiveElement(GF(q^2))^(q+1);
+   M := MatrixAlgebra(GF(q^2), d);
+   gamma := PrimitiveElement(GF(q^2));
+   w := PrimitiveElement(F);
+
+   A := MatrixAlgebra (GF (q), 2);
+   if d eq 2 then 
+      Gens := [Identity (A):  i in [1..3]];
+      // flag := exists (x){ x : x in Generators (G) | IsEven (Order (x))};
+      // assert flag;
+      x := OmegaMinus(d, q).1;
+      Gens := [Identity (A):  i in [1..5]];
+      Gens[2] := x;
+      if SpecialGroup then 
+         Gens[#Gens + 1] := -Identity (GL(2, F)); 
+      end if;
+   else 
+
+   C := GL(4, GF(q^2))![1, 0, 0, 0, 0, gamma, 1, 0, 0, gamma^q, 1, 0, 0, 0, 0, 1];
+   C := Transpose(C);
+   CC := GL(4, GF(q^2))![1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0];
+
+   sl := SL(2, GF(q^2));
+   t := sl![1, 1, 0, 1];
+   r := sl![1, 0, 1, 1];
+   delta := sl![gamma, 0, 0, gamma^-1];
+   deltaq := sl![gamma^q, 0, 0, gamma^-q];
+
+   G := GL(4, GF(q^2));
+
+   t1 := (G!TensorProduct(t, t)^(C^-1))^(CC^-1);
+   r1 := (G!TensorProduct(r, r)^(C^-1))^(CC^-1);
+   d1 := (G!TensorProduct(delta, deltaq)^(C^-1))^(CC^-1);
+
+   GG := GL(d, GF(q));
+   tt := InsertBlock(Id(GG), GL(4, GF(q))!t1, d-3, d-3);
+   rr := InsertBlock(Id(GG), GL(4, GF(q))!r1, d-3, d-3);
+   dd := InsertBlock(Id(GG), GL(4, GF(q))!d1, d-3, d-3);
+
+   Gens := [tt, rr, dd];
+   I := Id(GL(2, GF(q^2)));
+
+   if d gt 4 then
+      p := Zero (M);
+      InsertBlock (~p, I, 1, 3);
+      InsertBlock (~p, -I, 3, 1);
+      for i in [5..d] do p[i][i] := 1; end for;
+   else
+      p := Id(GG);
+   end if;
+   Append (~Gens, GG!p);
+
+   if d gt 6 then 
+      h := Zero (M);
+      m := d - 2;
+      for i in [1..m div 2 - 1] do
+         x := (i - 1) * 2 + 1;
+         y := x + 2;
+         InsertBlock (~h, I, x, y);
+      end for;
+      II := IsEven(d div 2) select I else -I;
+      InsertBlock (~h, II, m - 1, 1);
+      InsertBlock (~h, I, d - 1, d - 1);
+      Append (~Gens, h);
+   else
+      Append (~Gens, GG!p);
+   end if;
+
+      if SpecialGroup then 
+         a :=  Identity (M);
+         a[1][1] := 0;
+         a[2][2] := 0;
+         a[1][2] := 1;
+         a[2][1] := 1;
+         Append (~Gens, a);
+      end if;
+
+end if;
+
+   return Gens; 
+
+end function;
+

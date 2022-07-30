@@ -1,0 +1,302 @@
+This is pdfeTeX, Version 3.141592-1.30.6-2.2 (MiKTeX 2.5) (preloaded format=pdflatex 2006.12.15)  22 FEB 2008 12:06
+entering extended mode
+**C:/Documents*and*Settings/Elliot*Costi/My*Documents/Mathematics/Generators.te
+x
+
+("C:\Documents and Settings\Elliot Costi\My Documents\Mathematics\Generators.te
+x"
+LaTeX2e <2005/12/01>
+Babel <v3.8g> and hyphenation patterns for english, dumylang, nohyphenation, ge
+rman, ngerman, french, loaded.
+("C:\Program Files\MiKTeX 2.5\tex\latex\base\article.cls"
+Document Class: article 2005/09/16 v1.4f Standard LaTeX document class
+("C:\Program Files\MiKTeX 2.5\tex\latex\base\size12.clo"
+File: size12.clo 2005/09/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+("C:\Program Files\MiKTeX 2.5\tex\latex\amsfonts\amssymb.sty"
+Package: amssymb 2002/01/22 v2.2d
+
+("C:\Program Files\MiKTeX 2.5\tex\latex\amsfonts\amsfonts.sty"
+Package: amsfonts 2001/10/25 v2.2f
+\@emptytoks=\toks14
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 132.
+))
+("C:\Program Files\MiKTeX 2.5\tex\latex\base\latexsym.sty"
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
+)
+("C:\Program Files\MiKTeX 2.5\tex\latex\float\float.sty"
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count87
+\float@exts=\toks15
+\float@box=\box26
+\@float@everytoks=\toks16
+\@floatcapt=\box27
+)
+("C:\Program Files\MiKTeX 2.5\tex\latex\algorithm2e\algorithm2e.sty"
+Package: algorithm2e 2005/10/04 v3.9 algorithms environments
+\c@AlgoLine=\count88
+
+("C:\Program Files\MiKTeX 2.5\tex\latex\base\ifthen.sty"
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+("C:\Program Files\MiKTeX 2.5\tex\latex\tools\xspace.sty"
+Package: xspace 2006/05/08 v1.12 Space after command names (DPC,MH)
+)
+********************************************************
+Package `algorithm2e' Release 3.9 -- october 04 2005 --
+- algorithm2e-announce@lirmm.fr mailing list for announcement about releases
+- algorithm2e-discussion@lirmm.fr mailing list for discussion about package
+subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
+- Author: Christophe Fiorio (fiorio@lirmm.fr)
+********************************************************
+\skiptotal=\skip43
+\skiprule=\skip44
+\skiphlne=\skip45
+\skiptext=\skip46
+\skiplength=\skip47
+\algomargin=\skip48
+\skipalgocfslide=\skip49
+\algowidth=\dimen103
+\inoutsize=\dimen104
+\inoutline=\dimen105
+\algocf@inoutbox=\box28
+\algocf@inputbox=\box29
+\AlCapSkip=\skip50
+\AlCapHSkip=\skip51
+\algocf@capbox=\box30
+\c@algocfline=\count89
+\c@algocf=\count90
+\algocf@algoframe=\box31
+\algocf@algobox=\box32
+)
+\c@definition=\count91
+
+No file Generators.aux.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Try loading font information for U+msa on input line 48.
+("C:\Program Files\MiKTeX 2.5\tex\latex\amsfonts\umsa.fd"
+File: umsa.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 48.
+
+("C:\Program Files\MiKTeX 2.5\tex\latex\amsfonts\umsb.fd"
+File: umsb.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+lasy on input line 48.
+
+("C:\Program Files\MiKTeX 2.5\tex\latex\base\ulasy.fd"
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   \relax 
+l.53 \hspace{10}
+                
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+
+! LaTeX Error: Environment landscape undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.54 \begin{landscape}
+                      
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Environment centewr undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.56 \begin{centewr}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+Overfull \hbox (135.78477pt too wide) in paragraph at lines 57--167
+[][] 
+ []
+
+
+! LaTeX Error: \begin{table} on input line 55 ended by \end{center}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.168 \end{center}
+                  
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: \begin{document} ended by \end{landscape}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.170 \end{landscape}
+                     
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Environment landscape undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.173 \begin{landscape}
+                       
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Undefined control sequence.
+l.180 Group&$s$&$t$&$\delta$&$u$&$v\w
+                                     $ \rule{0cm}{3.0ex}\\ \hline
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.205 Group&$t$&$t^\prime$&$\delta$&$u$&$v\w
+                                            $
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.224 Group&$s$&$t$&$\delta$&$u$&$v\w
+                                     $
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Overfull \hbox (55.13274pt too wide) in paragraph at lines 176--243
+ [] 
+ []
+
+
+! LaTeX Error: \begin{document} ended by \end{landscape}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.250 \end{landscape}
+                     
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.252 
+      
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Illegal unit of measure (pt inserted).
+<to be read again> 
+                   \relax 
+l.253 \hspace{25}
+                  {Suppose that the field that these matrices are defined ov...
+Dimensions can be in units of em, ex, in, pt, pc,
+cm, mm, dd, cc, nd, nc, bp, or sp; but yours is a new one!
+I'll assume that you meant to say pt, for printer's points.
+To recover gracefully from this error, it's best to
+delete the erroneous units; e.g., type `2' to delete
+two letters. (See Chapter 27 of The TeXbook.)
+
+[1
+
+{psfonts.map}] [2] (Generators.aux)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 1721 strings out of 95419
+ 19957 string characters out of 1187297
+ 108612 words of memory out of 1088760
+ 4860 multiletter control sequences out of 60000
+ 12579 words of font info for 54 fonts, out of 1000000 for 2000
+ 14 hyphenation exceptions out of 8191
+ 23i,24n,24p,553b,301s stack positions out of 5000i,500n,10000p,200000b,32768s
+PDF statistics:
+ 49 PDF objects out of 300000
+ 0 named destinations out of 300000
+ 1 words of extra memory for PDF output out of 10000
+<C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmmi5.pfb><C:/Program Fil
+es/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr5.pfb><C:/Program Files/MiKTeX 2.5/font
+s/type1/bluesky/cm/cmsy5.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/c
+m/cmsy6.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmex10.pfb><C:/
+Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmsy10.pfb><C:/Program Files/Mi
+KTeX 2.5/fonts/type1/bluesky/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.5/fonts/ty
+pe1/bluesky/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cm
+r6.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmmi6.pfb><C:/Progra
+m Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr8.pfb><C:/Program Files/MiKTeX 2.5
+/fonts/type1/bluesky/cm/cmmi12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/blu
+esky/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.5/fonts/type1/bluesky/cm/cmr17.pfb
+>
+Output written on Generators.pdf (2 pages, 61356 bytes).

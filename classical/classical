@@ -1,0 +1,13 @@
+rewriting
+{
+	orth.mag
+	unitary.mag
+	unitary_odd.mag
+	orth_minus.mag
+	orth_circle.mag
+	orth.mag
+	sl.mag
+	symplectic.mag
+	standard.mag
+}
+

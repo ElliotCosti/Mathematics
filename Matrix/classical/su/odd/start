@@ -1,0 +1,18 @@
+/* May 2007 version */
+
+load "/home/obrien/Matrix/recurse/code/start";
+load "/home/obrien/Matrix/other/bubble.m";
+load "/home/obrien/Matrix/classical/sl/odd/gen.m";
+load "/home/obrien/Matrix/classical/conjugate.m";
+Attach ("/home/obrien/Matrix/classical/form.m");
+Attach ("/home/obrien/Matrix/classical/correct_form.m");
+Attach("/home/obrien/Matrix/classical/correct_orth.m");
+load "su.m";
+SetVerbose ("User1", 0);
+
+/* 
+d := 6; q:=5;
+G := SU (d, q);
+E, W, CB := SolveSU (G);
+Verify (G, E, W, CB);
+*/

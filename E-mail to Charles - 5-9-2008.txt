@@ -1,0 +1,16 @@
+Hi Charles,
+
+I wanted to give you an update to where I currently am with the thesis. The thesis is attached. There are 6 chapters and they are at the following stati:
+
+1. Introduction - fully checked by both of us.
+
+2. The natural representation - checked by both of us for SL and Sp. I then went through the subsections for the other cases and applied what we had discussed to SL and Sp to them. There still is, however, Lemma 2.9, which we may or may not have come to a conclusion over!
+
+3. Non-natural representations - we have gone over SL with a fine tooth comb. For the other cases, there are subsections to explain the differences between these cases and the SL case. We went over Sp and SU and I subsequently applied what we said about these cases to the other cases. Are you happy with with the 5th bullet point on page 81? It's a rather complicated method to explain, but I am confident that it works.
+4. Ruth2 - I have been over this chapter myself, but I have not shown it to you at all. Do we need to go over this?
+5. MatrixPGroupWordInGen - we have both been over this with a fine tooth comb.
+6. Tables of timings - you've seen these in bits when we have been checking the complexity of the various algorithms.
+What are your thoughts? I start work on Monday and am eager to get the thesis submitted as soon as possible.
+I hope you are enjoying New Zealand.
+Best Wishes,
+Elliot

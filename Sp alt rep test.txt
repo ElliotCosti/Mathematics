@@ -1,0 +1,45 @@
+load "C:/Users/Elliot/Documents/Mathematics/UnitaryALTREP5.txt";
+load "C:/Users/Elliot/Documents/Mathematics/AlternativeRep.txt";
+
+for d in [2, 4, 6, 8, 10, 12] do
+for q in [2,3,4,5,7,8,9,11,13,16,17,19,23,25,81,243] do
+
+G := SU(d, q);
+Q, E := ClassicalSymmetricPower(G, "SU", 2);
+
+if #Q ne 7 then
+   "skipping ", n, q;
+   continue;
+end if;
+
+n := Degree(Q[1]);
+
+for i in [1..#Q] do
+n, q, "Q[", i, "]";
+
+A := Q[i];
+flag, word, scalar := UnitaryAltRepWordInGen(E, Q, A, d, q^2);
+
+assert flag;
+assert scalar eq 1;
+
+end for;
+
+P := RandomProcess(G);
+
+for i in [1..10] do 
+n, q, i; 
+
+gg := Random(P);
+flag, word := UnitaryWordInGen(G, gg);
+A := Evaluate(word, Q);
+flag, word, scalar := UnitaryAltRepWordInGen(E, Q, A, d, q^2);
+
+assert flag;
+assert scalar eq 1;
+
+end for; 
+end for; 
+end for; 
+
+

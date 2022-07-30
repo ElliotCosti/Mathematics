@@ -1,0 +1,33 @@
+load "C:/Users/Elliot/Documents/Mathematics/OMinus Char2 - 2.txt";
+
+/* Prepare the input:
+
+d := 8;
+q := 2^3;
+Q := MinusChar2Elements(SOMinus(d, q):SpecialGroup := true);
+G := sub<GL(d, q)|Q>;
+Q := [GL(d, q)!Q[i] : i in [1..#Q]];
+A := Random(G);
+
+*/
+
+SOMinusWordInGen := function(G, A);
+
+   flag, word := OmegaMinusWordInGen(G, A);
+   if flag ne Id(G) then
+      d := Dimension(G);
+      F := BaseRing(G);
+      QQ := MinusChar2Elements(G: SpecialGroup := true);
+      sp := GL(d, F)!QQ[#QQ];
+      A := A*sp;
+      flag, word := OmegaMinusWordInGen(G, A);
+      SS := Parent(word);
+      S := SLPGroup(6);
+      phi := hom<SS -> S | S.1, S.2, S.3, S.4, S.5>;
+      word := phi(word);
+      word := word*(S.6^-1);
+   end if;
+
+   return flag, word;
+
+end function;

@@ -1,0 +1,87 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\usepackage[algo2e,ruled,linesnumbered]{algorithm2e} % for algorithms
+\hoffset -25truemm
+\usepackage{latexsym}
+\oddsidemargin=30truemm             %%
+\evensidemargin=25truemm            %% inner margin 30mm, outer margin 25mm
+\textwidth=155truemm                %%
+\voffset -25truemm
+\topmargin=25truemm                 %% top margin of 25mm
+\headheight=0truemm                 %% no head
+\headsep=0truemm                    %% no head
+\textheight=220truemm               
+\renewcommand{\thefootnote}{}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{problem}[definition]{Problem}
+\newenvironment{proof}{\normalsize {\sc Proof}:}{{\hfill $\Box$ \\}}
+
+\def\SL{{\rm SL}}
+\def\GL{{\rm GL}}
+\def\U{{\rm U}}
+\def\PSL{{\rm PSL}}
+\def\PSp{{\rm PSp}}
+\def\Stab{{\rm Stab}}
+\def\PSU{{\rm PSU}}
+\def\GF{{\rm GF}}
+\def\Sp{{\rm Sp}}
+\def\SU{{\rm SU}}
+\def\SX{{\rm SX}}
+\def\PX{{\rm PX}}
+\def\GX{{\rm GX}}
+\def\PSX{{\rm PSX}}
+\def\PGL{{\rm PGL}}
+\def\q{\quad}
+\def\centreline{\centerline}
+
+\begin{document}
+
+\title{Complexities} 
+\author{Elliot Costi}
+\date{December 2006}
+\maketitle
+
+\section{The complexity of Ruth2}
+\label{}
+
+\newline
+\newline
+The input matrices are of dimension $d$ by $d$ over a finite field of $q = p^e$ elements.
+\newline
+\newline
+It performs matrix multiplication of O($d^3$). In order to see which power of a matrix kills a particular entry of a particular vector, we may have to power up said matrix from 1 up to $p-1$ and apply it to the vector to see which power kills the required entry. In order to kill entries of vectors, we must kill each coefficient of the primitive element in each entry seperately. This introduces a factor of $e^3$ into the complexity (matrix multiplication over the prime field).
+\newline
+\newline
+Hence the complexity of the Ruth2 algorithm is O($d^3 e^3 p$).
+
+\section{The complexity of the algorithm to solve the word problem for the p-group}
+\label{}
+
+Works in the same way as Ruth2 hence: O($d^3 e^3 p$).
+
+
+\section{The complexity of the non-natural representation algorithm}
+\label{}
+
+Let $d$ be the dimension of the natural module, $n$ the dimension of the non-natural module.
+\newline
+\newline
+The algorithm that solves this problem for the natural representation is used extensively here but barely takes anytime to compute at all. However, evaluating the output on generating sets of large dimension can be relatively time consuming. As this involves just matrix multiplcation, this would have O($n^3$).
+\newline
+\newline
+The algorithm then constructs the subgroup H that fixes the space spanned by the first basis element, maps this to the non-natural representation and uses the meataxe to produce an H-submodule. Apart from any evaluations that occur, this is instantaneous.
+\newline
+\newline
+Mapping the $p$-group involves $(d-1)e$ evaluations.
+\newline
+\newline
+Let $g$ be the element of the non-standard representation that we wish to find in terms of the generators. Ruth2 is then used between twice and (depending on where the first non-zero entry is in the top row of $g$ considered in the non-natural representation) $2(d-1)$ times. Most of the time, Ruth2 will only be used twice at a cost of O($n^3 e^3 p$)
+\newline
+\newline
+We dualise this process and Ruth2 is used twice (and only twice) more. We then use the Matrix p-group word solver $d-1$ times at a cost of O($n^3 e^3 p$) each time. The algorithm then completes with a total cost of O($n^3 e^3 p d$)
+\end{document}
+

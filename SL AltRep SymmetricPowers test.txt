@@ -1,0 +1,23 @@
+load "C:/Users/Elliot/Documents/Mathematics/AlternativeRep.txt";
+load "C:/Users/Elliot/Documents/Mathematics/SLAltRep4.txt";
+
+for i in [1..10] do
+
+   d := 8;
+   p := 7;
+   e := 1;
+   q := p^e;
+   G := SL(d, q);
+   Q, E := ClassicalSymmetricPower(G, "SL", i);
+   n := Dimension(E);
+   P := RandomProcess(E);
+   g := Random(P);
+   n, i;
+   time flag, scalar, word := SLAltRepWordInGen(E, Q, g, d, q);
+   assert flag eq true;
+   Dimension(E`Module[1]), Dimension(E`Module[2]);
+   g := Random(P);
+   time flag, scalar, word := SLAltRepWordInGen(E, Q, g, d, q);
+   assert flag eq true;
+
+end for;

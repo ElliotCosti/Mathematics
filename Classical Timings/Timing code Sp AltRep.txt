@@ -1,0 +1,48 @@
+load "C:/Users/Elliot/Documents/Mathematics/AlternativeRep.txt";
+load "C:/Users/Elliot/Documents/Mathematics/SymplecticALTREP6.txt";
+
+for e in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16] do
+
+   d := 4;
+   p := 7;
+   q := p^e;
+   G := Sp(d, q);
+   Q, E := ClassicalSymmetricPower(G, "Sp", 2);
+   P := RandomProcess(E);
+   g := Random(P);
+   d, p, e;
+   time flag, scalar, word := SpAltRepWordInGen(E, Q, g, d, q);
+   assert flag eq true;
+
+end for;
+
+for p in [11, 19, 31, 41, 53, 61, 97, 643, 1063] do
+
+   d := 4;
+   e := 1;
+   q := p^e;
+   G := Sp(d, q);
+   Q, E := ClassicalSymmetricPower(G, "Sp", 2);
+   P := RandomProcess(E);
+   g := Random(P);
+   d, p, e;
+   time flag, scalar, word := SpAltRepWordInGen(E, Q, g, d, q);
+   assert flag eq true;
+
+end for;
+
+for d in [4, 6, 8, 10, 12, 14, 16, 18, 20, 22] do
+
+   p := 7;
+   e := 1;
+   q := p^e;
+   G := Sp(d, q);
+   Q, E := ClassicalSymmetricPower(G, "Sp", 2);
+   n := Degree(Q[1]);
+   P := RandomProcess(E);
+   g := Random(P);
+   d, n, p, e;
+   time flag, scalar, word := SpAltRepWordInGen(E, Q, g, d, q);
+   assert flag eq true;
+
+end for;

@@ -1,0 +1,47 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\usepackage[algo2e,ruled,linesnumbered]{algorithm2e} % for algorithms
+\hoffset -25truemm
+\usepackage{latexsym}
+\oddsidemargin=30truemm             %%
+\evensidemargin=25truemm            %% inner margin 30mm, outer margin 25mm
+\textwidth=155truemm                %%
+\voffset -25truemm
+\topmargin=25truemm                 %% top margin of 25mm
+\headheight=0truemm                 %% no head
+\headsep=0truemm                    %% no head
+\textheight=220truemm               
+\renewcommand{\thefootnote}{}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{problem}[definition]{Problem}
+\newenvironment{proof}{\normalsize {\sc Proof}:}{{\hfill $\Box$ \\}}
+
+\def\SL{{\rm SL}}
+\def\GL{{\rm GL}}
+\def\U{{\rm U}}
+\def\PSL{{\rm PSL}}
+\def\PSp{{\rm PSp}}
+\def\PSU{{\rm PSU}}
+\def\GF{{\rm GF}}
+\def\Sp{{\rm Sp}}
+\def\SU{{\rm SU}}
+\def\SX{{\rm SX}}
+\def\PX{{\rm PX}}
+\def\GX{{\rm GX}}
+\def\PSX{{\rm PSX}}
+\def\PGL{{\rm PGL}}
+\def\q{\quad}
+\def\centreline{\centerline}
+
+\begin{document}
+
+\title{Constructive recognition of classical groups in odd characteristic} 
+\author{C.R.\ Leedham-Green and E.A. O'Brien}
+\date{}
+\maketitle
+
+\end{document}

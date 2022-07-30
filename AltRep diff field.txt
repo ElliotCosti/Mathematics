@@ -1,0 +1,477 @@
+load "C:/Users/Elliot/Documents/Mathematics/SLAltRep4.txt";
+load "C:/Users/Elliot/Documents/Mathematics/SymplecticALTREP7.txt";
+load "C:/Users/Elliot/Documents/Mathematics/AlternativeRep.txt";
+load "C:/Users/Elliot/Documents/Mathematics/UnitaryALTREP5.txt";
+load "C:/Users/Elliot/Documents/Mathematics/Unitary Odd ALTREP2.txt";
+load "C:/Users/Elliot/Documents/Mathematics/OmegaCircleALTREP5.txt";
+load "C:/Users/Elliot/Documents/Mathematics/Unitary Odd ALTREP - char 2.txt";
+load "C:/Users/Elliot/Documents/Mathematics/OmegaPlusALTREP6.txt";
+load "C:/Users/Elliot/Documents/Mathematics/OmegaMinusALTREP4.txt";
+load "C:/Users/Elliot/Documents/Mathematics/OmegaMinusALTREP Char2 - 2.txt";
+
+
+"SL";
+
+for d in [3..9] do
+for p in [2, 3, 5, 7, 11, 13, 17] do
+
+G := SL(d, p);
+qq := #BaseRing(G);
+
+for i in [1..6] do
+
+
+   Q := SLChosenElements(G);
+   QQ := [ExteriorSquare(Q[i]) : i in [1..#Q]];
+   n := Degree(QQ[1]);
+
+   q := qq^i;
+   QQ := [GL(n, q)!QQ[i] : i in [1..#Q]];
+   A := Random(GL(n, q));
+
+   /* conjugating everything by a random matrix to make the exterior
+      square look random
+   */
+   Q := [QQ[i]^A : i in [1..4]];
+
+   E := sub<GL(n, q)|Q>;
+
+   P := RandomProcess(E);
+   A := Random(P);
+
+   n, p, i;
+   flag, scalar, word := SLAltRepWordInGen(E, Q, A, d, qq);
+
+   assert scalar eq 1;
+   assert flag;
+
+end for;
+end for;
+end for;
+
+"Sp";
+
+for d in [4, 6, 8, 10] do
+for p in [2, 3, 5, 7, 11, 13, 17] do
+
+G := Sp(d, p);
+qq := #BaseRing(G);
+
+for i in [1..6] do
+
+
+   Q, E := ClassicalSymmetricPower(G, "Sp", 2);
+   n := Degree(Q[1]);
+
+   if #Q ne 6 then
+      "skipping ", n, p;
+      continue;
+   end if;
+
+   q := qq^i;
+   QQ := [GL(n, q)!Q[i] : i in [1..#Q]];
+   A := Random(GL(n, q));
+
+   /* conjugating everything by a random matrix to make the exterior
+      square look random
+   */
+   Q := [QQ[i]^A : i in [1..#QQ]];
+
+   E := sub<GL(n, q)|Q>;
+
+   P := RandomProcess(E);
+   A := Random(P);
+
+   n, p, i;
+   flag, word, scalar := SpAltRepWordInGen(E, Q, A, d, qq);
+
+   assert scalar eq 1;
+   assert flag;
+
+end for;
+end for;
+end for;
+
+
+
+"SU even";
+
+for d in [2, 4, 6, 8, 10] do
+for p in [2, 3, 5, 7, 11, 13, 17] do
+
+G := SU(d, p);
+qq := #BaseRing(G);
+
+for i in [1..6] do
+
+   Q, E := ClassicalSymmetricPower(G, "SU", 2);
+
+   if #Q ne 7 then
+      "skipping ", n, p;
+      continue;
+   end if;
+
+   n := Degree(Q[1]);
+
+   q := qq^i;
+   QQ := [GL(n, q)!Q[i] : i in [1..#Q]];
+   A := Random(GL(n, q));
+
+   /* conjugating everything by a random matrix to make the exterior
+      square look random
+   */
+   Q := [QQ[i]^A : i in [1..#QQ]];
+
+   E := sub<GL(n, q)|Q>;
+
+   P := RandomProcess(E);
+   A := Random(P);
+
+   n, p, i;
+   flag, word, scalar := UnitaryAltRepWordInGen(E, Q, A, d, qq);
+
+   assert flag;
+   assert scalar eq 1;
+
+end for;
+end for;
+end for;
+
+
+"SU odd - odd characteristic";
+
+for d in [3, 5, 7, 9, 11] do
+for p in [3, 5, 7, 11, 13, 17] do
+
+G := SU(d, p);
+qq := #BaseRing(G);
+
+for i in [1..6] do
+
+   Q, E := ClassicalSymmetricPower(G, "SU", 2);
+
+   if #Q ne 7 then
+      "skipping ", n, p;
+      continue;
+   end if;
+
+   n := Degree(Q[1]);
+
+   q := qq^i;
+   QQ := [GL(n, q)!Q[i] : i in [1..#Q]];
+   A := Random(GL(n, q));
+
+   /* conjugating everything by a random matrix to make the exterior
+      square look random
+   */
+   Q := [QQ[i]^A : i in [1..#QQ]];
+
+   E := sub<GL(n, q)|Q>;
+
+   P := RandomProcess(E);
+   A := Random(P);
+
+   n, p, i;
+   flag, scalar, word := UnitaryOddAltRepWordInGen(E, Q, A, d, qq);
+
+   assert flag;
+   assert scalar eq 1;
+
+end for;
+end for;
+end for;
+
+
+"SU odd - even characteristic";
+
+for d in [3, 5, 7, 9, 11] do
+for p in [2] do
+
+G := SU(d, p);
+qq := #BaseRing(G);
+
+for i in [1..6] do
+
+   Q, E := ClassicalSymmetricPower(G, "SU", 2);
+
+   n := Degree(Q[1]);
+
+   QQ := [Q[i] : i in [1..3]];
+   QQ := QQ cat [Id(SL(d, qq))];
+   QQ := QQ cat [Q[i] : i in [4..#Q]];
+
+   if #QQ ne 7 then
+      "skipping ", n, p;
+      continue;
+   end if;
+
+   q := qq^i;
+   QQ := [GL(n, q)!QQ[i] : i in [1..#QQ]];
+   A := Random(GL(n, q));
+
+   /* conjugating everything by a random matrix to make the exterior
+      square look random
+   */
+   Q := [QQ[i]^A : i in [1..#QQ]];
+
+   E := sub<GL(n, q)|Q>;
+
+   P := RandomProcess(E);
+   A := Random(P);
+
+   n, p, i;
+   flag, scalar, word := UnitaryOddChar2AltRepWordInGen(E, Q, A, d, qq);
+
+   assert flag;
+   assert scalar eq 1;
+
+end for;
+end for;
+end for;
+
+
+"Omega Circle";
+
+for d in [3, 5, 7, 9, 11] do
+for p in [3, 5, 7, 11, 13, 17] do
+
+G := Omega(d, p);
+qq := #BaseRing(G);
+
+for i in [1..6] do
+
+   Q, E := ClassicalSymmetricPower(G, "Oo", 2);
+
+   if #Q ne 0 then
+      n := Degree(Q[1]);
+   end if;
+
+   if #Q ne 4 then
+      "skipping ", n, p;
+      continue;
+   end if;
+
+   q := qq^i;
+   QQ := [GL(n, q)!Q[i] : i in [1..#Q]];
+   A := Random(GL(n, q));
+
+   /* conjugating everything by a random matrix to make the exterior
+      square look random
+   */
+   Q := [QQ[i]^A : i in [1..#QQ]];
+
+   E := sub<GL(n, q)|Q>;
+
+   P := RandomProcess(E);
+   A := Random(P);
+
+   n, p, i;
+   flag, scalar, word := OmegaCircleAltRepWordInGen(E, Q, A, d, qq);
+
+   assert flag;
+   assert scalar eq 1;
+
+end for;
+end for;
+end for;
+
+
+"Omega Plus";
+
+for d in [6, 8, 10, 12, 14] do
+for p in [2, 3, 5, 7, 11, 13, 17] do
+
+G := OmegaPlus(d, p);
+qq := #BaseRing(G);
+
+for i in [1..6] do
+
+   Q, E := ClassicalSymmetricPower(G, "O+", 2);
+
+   if #Q ne 0 then
+      n := Degree(Q[1]);
+   end if;
+
+   if #Q ne 7 then
+      "skipping ", n, p;
+      continue;
+   end if;
+
+   QQ := [Q[i] : i in [1..6]] cat [Id(SL(n, p))] cat [Q[7]];
+   Q := QQ;
+
+   q := qq^i;
+   QQ := [GL(n, q)!Q[i] : i in [1..#Q]];
+   A := Random(GL(n, q));
+
+   /* conjugating everything by a random matrix to make the exterior
+      square look random
+   */
+   Q := [QQ[i]^A : i in [1..#QQ]];
+
+   E := sub<GL(n, q)|Q>;
+
+   P := RandomProcess(E);
+   A := Random(P);
+
+   n, p, i;
+   flag, word, scalar := OmegaPlusAltRepWordInGen(E, Q, A, d, qq);
+
+   assert flag;
+   assert scalar eq 1;
+
+end for;
+end for;
+end for;
+
+
+"Omega Minus";
+
+for d in [4, 6, 8, 10, 12, 14] do
+for p in [3, 5, 7, 11, 13, 17] do
+
+G := OmegaMinus(d, p);
+qq := #BaseRing(G);
+
+for i in [1..6] do
+
+   Q, E := ClassicalSymmetricPower(G, "O-", 2);
+
+   if #Q ne 0 then
+      n := Degree(Q[1]);
+
+      if d eq 4 then
+         Append(~Q, Id(SL(n, qq)));
+         Append(~Q, Id(SL(n, qq)));
+      end if;
+
+      if d eq 6 then
+         Append(~Q, Q[#Q]);
+      end if;
+   end if;
+
+   if #Q ne 5 then
+      "skipping ", n, p;
+      continue;
+   end if;
+
+   q := qq^i;
+   QQ := [GL(n, q)!Q[i] : i in [1..#Q]];
+   A := Random(GL(n, q));
+
+   /* conjugating everything by a random matrix to make the exterior
+      square look random
+   */
+   Q := [QQ[i]^A : i in [1..#QQ]];
+
+   E := sub<GL(n, q)|Q>;
+
+   P := RandomProcess(E);
+   A := Random(P);
+
+   n, p, i;
+   flag, scalar, word := OmegaMinusAltRepWordInGen(E, Q, A, d, qq);
+
+   assert flag;
+   assert scalar eq 1;
+
+end for;
+end for;
+end for;
+
+
+
+
+"Omega Minus Char 2";
+
+for d in [4, 6, 8, 10, 12, 14] do
+for p in [2] do
+
+G := OmegaMinus(d, p);
+qq := #BaseRing(G);
+
+for i in [1..6] do
+
+   Q, E := ClassicalSymmetricPower(G, "O-", 2);
+
+   if #Q ne 0 then
+      n := Degree(Q[1]);
+
+      if d eq 4 then
+         Append(~Q, Id(SL(n, qq)));
+         Append(~Q, Id(SL(n, qq)));
+      end if;
+
+      if d eq 6 then
+         Append(~Q, Q[#Q]);
+      end if;
+   end if;
+
+   if #Q ne 5 then
+      "skipping ", n, p;
+      continue;
+   end if;
+
+   q := qq^i;
+   QQ := [GL(n, q)!Q[i] : i in [1..#Q]];
+   A := Random(GL(n, q));
+
+   /* conjugating everything by a random matrix to make the exterior
+      square look random
+   */
+   Q := [QQ[i]^A : i in [1..#QQ]];
+
+   E := sub<GL(n, q)|Q>;
+
+   P := RandomProcess(E);
+   A := Random(P);
+
+   n, p, i;
+   flag, scalar, word := OmegaMinusAltRepWordInGen(E, Q, A, d, qq);
+
+   assert flag;
+   assert scalar eq 1;
+
+end for;
+end for;
+end for;
+
+
+/* THIS WILL NEVER WORK BECAUSE THE WRITE OVER SMALLER FIELD FUNCTION DOESN'T NECESSARILY GIVE AN ABSOLUTELY IRREDICUBLE GROUP
+*/
+
+for d in [4..9] do
+for p in [3, 5, 7, 11, 13, 17] do
+for i in [1..6] do
+
+   G := SL(d, p^i);
+   qq := #BaseRing(G);
+
+   Q := SLChosenElements(G);
+   Q := [WriteOverSmallerField(Q[i], GF(p)) : i in [1..4]];
+   n := Nrows(Q[1]);
+
+   A := Random(GL(n, p));
+   Q := [(GL(n, p)!Q[i])^A : i in [1..4]];
+
+   E := sub<GL(n, p)|Q>;
+
+   P := RandomProcess(E);
+   A := Random(P);
+
+   n, p, i;
+
+   gg := Random(G);
+   _, word := WordInGen(G, gg);
+   A := Evaluate(word, Q);
+   flag, scalar, word := SLAltRepWordInGen(E, Q, A, d, qq);
+
+   assert scalar eq 1;
+   assert flag;
+
+end for;
+end for;
+end for;
+
+
+

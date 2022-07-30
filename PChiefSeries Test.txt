@@ -1,0 +1,80 @@
+RandomSpace := function (d, q, k) 
+V := VectorSpace (GF(q), d); 
+U := sub < V | [Random (V): i in [1..k]]>; 
+return U; 
+end function; 
+
+for d in [6..10] do
+for q in [2,3,4,5,7,8,9,11,13,16,17,19,23,25, 64, 81, 128, 243] do
+for i in [1..10] do 
+d, q, i;
+
+S := [RandomSpace (d, q, Random ([1..d div 2])): k in [1..d div 3]]; 
+U := RandomSpace (d, q, Random ([1..d div 2])); 
+A,B := StabiliserOfSpaces (S); 
+H := sub < GL(d, q) | B>; 
+V := VectorSpace (GF(q), d); 
+_, CB := PInvariantFlag(V, H);
+
+W := WordGroup(H);
+HSLP := [W.i : i in [1..Ngens(W)]];
+H := B;
+
+H := [H[i]^CB : i in [1..#H]];
+
+F := GF(q);
+time B, bslp := PChiefSeriesGenerators(H, HSLP: initial := true);
+BB := sub<GL(d, F)|B>;
+bb := Ngens(BB);
+Q := H;
+
+for k in [1..bb] do
+   blob := sub<BB|[BB.j : j in [bb-k+1..bb]]>;
+   blib := sub<BB|[BB.j : j in [bb-k..bb]]>;
+   // assert IsNormal(BB, blob);
+   assert IsNormal(blib, blob);
+   assert Evaluate(bslp[k], Q) eq B[k];
+end for;
+
+time B, bslp := PChiefSeriesGenerators(H, HSLP: initial := true);
+BB := sub<GL(d, F)|B>;
+bb := Ngens(BB);
+
+for k in [1..bb] do
+//  blub := sub<BB|[BB.j : j in [bb..bb]]>;
+   blob := sub<BB|[BB.j : j in [bb-1..bb]]>;
+   blib := sub<BB|[BB.j : j in [bb-2..bb]]>;
+   assert IsNormal(BB, blob);
+   assert IsNormal(blib, blob);
+   assert Evaluate(bslp[k], Q) eq B[k];
+end for;
+
+end for; end for; end for;
+
+
+for d in [15, 20, 30, 40, 50] do
+for q in [2,3,4,5,7,8,9,11,13,16,17,19,23,25, 64, 81, 128, 243] do
+for i in [1..10] do 
+d, q, i;
+
+S := [RandomSpace (d, q, Random ([1..d div 2])): k in [1..d div 3]]; 
+U := RandomSpace (d, q, Random ([1..d div 2])); 
+A,B := StabiliserOfSpaces (S); 
+H := sub < GL(d, q) | B>; 
+V := VectorSpace (GF(q), d); 
+_, CB := PInvariantFlag(V, H);
+
+W := WordGroup(H);
+HSLP := [W.i : i in [1..Ngens(W)]];
+H := B;
+
+H := [H[i]^CB : i in [1..#H]];
+
+F := GF(q);
+time B, bslp := PChiefSeriesGenerators(H, HSLP: initial := true);
+time B1, bslp1 := PChiefSeriesGeneratorsBlob(H, HSLP: initial := true);
+
+assert #B eq #B1;
+
+end for; end for; end for;
+

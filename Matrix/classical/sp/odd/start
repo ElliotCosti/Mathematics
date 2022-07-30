@@ -1,0 +1,16 @@
+/* May 2007 version */
+
+load "/home/obrien/Matrix/recurse/code/start";
+Attach ("/home/obrien/Matrix/classical/correct_form.m");
+Attach("/home/obrien/Matrix/classical/correct_orth.m");
+load "/home/obrien/Matrix/classical/conjugate.m";
+load "/home/obrien/Matrix/classical/sl/odd/gen.m";
+load "sp.m";
+SetVerbose ("User1", 0);
+
+/* 
+d := 6; q:=5;
+G := Sp (d, q);
+E, W, CB := SolveSp (G);
+Verify (G, E, W, CB);
+*/

@@ -1,0 +1,44 @@
+
+NmrElements := 1000;
+fct := ExteriorPower;
+fct := SymmetricPower;
+power := 3;
+for d in [5] do
+ // for q in [2,3,4,5,7,8,9,11,13,16,25,27, 32] do 
+ for q in [5] do 
+G := Omega(d, q);
+MA := MatrixAlgebra (GF(q), d);
+QQ := SOChosenElements(G);
+GG := sub<GL(d, q)|QQ>;
+Q := [fct(MA!QQ[i], power): i in [1..#QQ]];
+n := Nrows(Q[1]);
+Q := [GL(n, q) ! x : x in Q];
+A := Random(GL(n, q));
+Q := Q^A;
+E := sub<GL(n, q)|Q>;
+qq := q;
+if IsIrreducible (E) eq false then
+"Reducible";
+   M:=GModule (E);
+   CF := CompositionFactors (M);
+   f :=func<x,y|Dimension (y) - Dimension (x)>;
+   Sort (~CF, f);
+   Q := [GL(Dimension (CF[1]), q)!ActionGenerator (CF[1], i): i in [1..Ngens (E)]];
+   if d eq 3 then Q[4] := Q[3]^0; end if;
+   E := ActionGroup (CF[1]);
+   assert IsIrreducible (E);
+end if;
+
+if IsIrreducible (E) then 
+   for i in [1..NmrElements] do
+      d, q, i;
+       gg := Random(GG);
+       flag, word := OmegaCircleWordInGen(GG, gg);
+       g:=Evaluate(word, Q);
+      f,b,w:= OmegaCircleAltRepWordInGen (E, Q, g,d, qq);
+     x:=Evaluate (w, Q);
+    assert x eq g;
+   end for;
+end if;
+end for;
+end for;

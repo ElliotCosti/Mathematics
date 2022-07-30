@@ -1,0 +1,80 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\usepackage[algo2e,ruled,linesnumbered]{algorithm2e} % for algorithms
+\hoffset -25truemm
+\usepackage{latexsym}
+\oddsidemargin=30truemm             %%
+\evensidemargin=25truemm            %% inner margin 30mm, outer margin 25mm
+\textwidth=155truemm                %%
+\voffset -25truemm
+\topmargin=25truemm                 %% top margin of 25mm
+\headheight=0truemm                 %% no head
+\headsep=0truemm                    %% no head
+\textheight=220truemm               
+\renewcommand{\thefootnote}{}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{problem}[definition]{Problem}
+\newenvironment{proof}{\normalsize {\sc Proof}:}{{\hfill $\Box$ \\}}
+
+\def\SL{{\rm SL}}
+\def\GL{{\rm GL}}
+\def\U{{\rm U}}
+\def\PSL{{\rm PSL}}
+\def\PSp{{\rm PSp}}
+\def\Stab{{\rm Stab}}
+\def\PSU{{\rm PSU}}
+\def\GF{{\rm GF}}
+\def\Sp{{\rm Sp}}
+\def\SU{{\rm SU}}
+\def\SX{{\rm SX}}
+\def\PX{{\rm PX}}
+\def\GX{{\rm GX}}
+\def\PSX{{\rm PSX}}
+\def\PGL{{\rm PGL}}
+\def\q{\quad}
+\def\centreline{\centerline}
+
+\begin{document}
+
+\title{Definitions from the Humphreys Book} 
+\author{Elliot Costi}
+\date{June 2006}
+\maketitle
+
+\section{}
+\label{}
+
+Let $\mathbb{K}$ be an algebraicly closed field. The set $\mathbb{K}^n$ it called the affine $n$-space and denoted $A^n$. An affine variety is the set of common zeroes in $A^n$ of a finite collection of polynomials.
+
+The {\em Zariski topology} on $A^n$ is defined to be the topology whose closed sets are the sets
+$$
+V(I) := \{ x \in A^n \mid f(x) = 0, \text{ \forall } f \in I\} \subset A^n,
+$$
+where $I \subset K[X_1, \ldots, X_n]$ is any ideal in the polynomial ring $K[X_1, \ldots, X_n]$. For any affine variety $V \subset A^n$, the {\em Zariski topology} on $V$ is defined to be the subspace topology induced on $V$ as a subset of $A^n$. So we are saying that the closed sets under the Zariski topology are the affine varieties.
+
+An algebraic group $G$ is a variety endowed with the structure of a group and the maps $\mu: G \times G \rightarrow G$, where $\mu(x, y) = xy$ and $\iota : G \rightarrow G$, where $\iota(x) = x^{-1}$ are morphisms of varieties.
+
+A topological space $X$ is irreducible if it cannot be written as the union of two proper, nonempty, closed subsets.
+
+A noetherian space $X$ can be written as a union of finitely many of its maximal irreducible subspaces. These are called the irreducible components of $X$.
+
+The identity component of $G$, denoted $G^\circ$, is the unique irreducible component of $e$. It normal subgroup of finite index in $G$ whose cosets are the connected as well as irreducible components of $G$.
+
+$G$ is connected if $G = G^\circ$.
+
+A rational representation $\phi$ is one that maps from some group to $\GL(n, \mathbb{K})$.
+
+Let $M$ be a subset of the algebraic group $G$. The group closure of M is the smallest closed subgroup containing M.
+
+A derivation $\delta: \mathbb{E} \rightarrow \mathbb{L}$ ($\mathbb{E}$ a field, $\mathbb{L}$ an extension field of $\mathbb{E}$) is a map satisfying $\delta(x + y) = \delta(x) + \delta(y)$ and $\delta(xy) =  x\delta(y) + \delta(x)y$. If $\mathbb{F}$ is a subfield of $\mathbb{E}$ then $\delta$ is called an $\mathbb{F}$-derivation if in addition $\delta(x) = 0$ for all $x \in \mathbb{F}$. So $\delta$ is $\mathbb{F}$-linear. The space $Der_{\mathbb{F}}(\mathbb{E}, \mathbb{L})$ of all $\mathbb{F}$-derivations $\mathbb{E} \rightarrow \mathbb{L}$ is a vectorspace over $\mathbb{L}$.
+
+Let $G$ be an algebraic group and $A = \mathbb{K}[G]$. $G$ acts on $A$ by left translation: $(\lambda_x f)(y) = f(x^{-1}y)$, $f \in A$. $\lambda: G \rightarrow \GL(A)$ and $\lambda(x) = \lambda_x$. $\lambda_x$ is the comorphism attached to the morphism $y \mapsto x^{-1}y$.
+
+Let Der $A$ be the set of all $\mathbb{K}$-derivations of $A$. The Lie Algebra of $G$ is $L(G) = \{\delta \in$ Der $A | \delta\lambda_x = \lambda_x\delta$ for all $x \in G \}$.
+
+\end{document}
+

@@ -1,0 +1,38 @@
+load "C:/Users/Elliot/Documents/Mathematics/standard.m";
+load "C:/Users/Elliot/Documents/Mathematics/SOCircle2.txt";
+
+for d in [3, 5, 7, 9] do
+for p in [3, 5, 7, 11, 13, 17, 19] do
+for e in [1..10] do
+
+G := SO(d, p^e);
+Q := SOChosenElements(G: SpecialGroup := true);
+Q := [GL(d, p^e)!Q[i] : i in [1..#Q]];
+G := sub<GL(d, p^e)|Q>;
+P := RandomProcess(G);
+
+for i in [1..#Q] do
+d, p, e, "Q[", i, "]";
+
+A := Q[i];
+flag, word := SOCircleWordInGen(G, A);
+
+assert flag eq Id(G);
+assert A eq Evaluate(word, Q);
+
+end for;
+
+for i in [1..10] do 
+d, p, e, i; 
+
+A := Random(P);
+
+flag, word := SOCircleWordInGen(G, A);
+
+assert flag eq Id(G); 
+assert A eq Evaluate(word, Q);
+
+end for;
+end for; 
+end for; 
+end for; 

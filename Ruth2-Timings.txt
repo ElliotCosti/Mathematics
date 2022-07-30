@@ -1,0 +1,23 @@
+RandomSpace := function (d, q, k)
+V := VectorSpace (GF(q), d);
+U := sub < V | [Random (V): i in [1..k]]>;
+return U;
+end function;
+
+for d in [10, 20, 30, 40, 50, 60, 70, 80, 90, 100] do
+for q in [7] do
+d, q;
+
+U := RandomSpace (d, q, (d div 2));
+A := ClassicalSylow(SL(d, q), "SL", q);
+B := [];
+for j in [1..50] do
+   Append(~B, Random(Generators(A)));
+end for;
+
+H := sub<GL(d, q)|B>;
+
+time a,b,c,w:= UnipotentStabiliser (H, U: ComputeBase:=true);
+
+end for;
+end for; 

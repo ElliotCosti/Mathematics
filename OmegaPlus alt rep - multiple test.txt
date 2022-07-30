@@ -1,0 +1,71 @@
+load "C:/Users/Elliot/Documents/Mathematics/OmegaPlusALTREP6.txt";
+
+for d in [6, 8, 10, 12] do
+for q in [2,3,4,5,7,8,9,11,13,16,17,19,23,25,81,243] do
+
+/* There is separate testing code for dim 4. */
+
+G := OmegaPlus(d, q);
+
+F := GF(q);
+w := PrimitiveElement(F);
+
+QQ := PlusChosenElements(G);
+QQ := [GL(d, F)!QQ[i] : i in [1..#QQ]];
+_, CB := CreateOmegaPlusGenerators(G);
+GG := sub<SL(d, q)|QQ>;
+
+VG := GModule(GG); 
+VE := ExteriorSquare(VG); 
+n := Dimension(VE);
+
+Ebar := sub<GL(n, q) | [ActionGenerators(VE)[i] : i in [1..#ActionGenerators(VE)]]>;
+
+P := RandomProcess(Ebar);
+A := Random(P); 
+
+QQQ := [];
+for i in [1..#QQ] do
+   Append(~QQQ, (ExteriorSquare(QQ[i])));
+end for;
+
+/* conjugating everything by a random matrix to make the exterior square look random */
+Q := [];
+for i in [1..#QQ] do
+   _, word := OmegaPlusWordInGen(G, QQ[i]^(CB^-1));
+   Append(~Q, Evaluate(word, QQQ)^A);
+end for;
+
+E := sub<GL(n, q)|Q>;
+
+for i in [1..#Q] do
+n, q, "Q[", i, "]";
+
+A := Q[i];
+flag, word, scalar := OmegaPlusAltRepWordInGen(E, Q, A, d, q);
+
+assert flag;
+assert scalar eq 1;
+
+end for;
+
+P := RandomProcess(E);
+
+for i in [1..10] do 
+n, q, i; 
+
+/*
+gg := Random(GG);
+flag, word := OmegaPlusWordInGen(GG, gg^(CB^-1));
+g := Evaluate(word, Q);
+*/
+
+g := Random(P);
+flag, word, scalar := OmegaPlusAltRepWordInGen(E, Q, g, d, q);
+
+assert flag;
+assert scalar eq 1;
+
+end for; 
+end for; 
+end for; 

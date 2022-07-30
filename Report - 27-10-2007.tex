@@ -1,0 +1,91 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\hoffset -25truemm
+\usepackage{latexsym}
+\oddsidemargin=27truemm             %%
+\evensidemargin=25truemm            %% inner margin 30mm, outer margin 25mm
+\textwidth=157truemm                %%
+\voffset -25truemm
+\topmargin=22truemm                 %% top margin of 25mm
+\headheight=0truemm                 %% no head
+\headsep=0truemm                    %% no head
+\textheight=240truemm               
+\renewcommand{\thefootnote}{}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{problem}[definition]{Problem}
+\newenvironment{proof}{\normalsize {\sc Proof}:}{{\hfill $\Box$ \\}}
+
+\def\SL{{\rm SL}}
+\def\GL{{\rm GL}}
+\def\U{{\rm U}}
+\def\PSL{{\rm PSL}}
+\def\PSp{{\rm PSp}}
+\def\Stab{{\rm Stab}}
+\def\PSU{{\rm PSU}}
+\def\GF{{\rm GF}}
+\def\Sp{{\rm Sp}}
+\def\SU{{\rm SU}}
+\def\SX{{\rm SX}}
+\def\PX{{\rm PX}}
+\def\GX{{\rm GX}}
+\def\PSX{{\rm PSX}}
+\def\PGL{{\rm PGL}}
+\def\q{\quad}
+\def\centreline{\centerline}
+
+\begin{document}
+
+\title{Quaterly Report}
+\author{Elliot Costi}
+\date{October 2007}
+\maketitle
+
+\newpage
+
+\section{Reading}
+
+\begin{enumerate}
+\item Introduction to Lie Algebras and Representation Theory by James Humphreys - Chapter 1 of 7.
+\end{enumerate}
+
+\section{Research}
+
+\begin{enumerate}
+\item Writing an algorithm to write a word in the generators for $\Omega^-(d, F)$, char $F \ne 2$ in a non-natural representation
+\item Writing code to test and debug the above algorithm
+\item Writing code to test and debug the natural representation code for $\Omega^-(d, F)$.
+\item Fixing bugs in the non-natural representation code for $\SU(d, F)$, $d$ both odd and even (two different algorithms for each).
+\item Fixing bugs in the non-natural representation code for $\Omega^+(d, F)$.
+\item Fixing bugs in the natural representation code for $\SU(d, F)$, $d$ both odd.
+\end{enumerate}
+
+\section{Seminars}
+
+\begin{enumerate}
+\item I gave two seminars on material based on James Humphreys' Reflection Groups and Coxeter Groups book.
+\end{enumerate}
+
+
+\subsection{Things To Be Done}
+
+\begin{enumerate}
+\item Calculate the complexity of the algorithms for which this has not yet been done.
+
+\item Construct algorithms to write an element of $\PSX(d, q)$ as an element of its generators by considering how the generators act on the projective points.
+
+\item Get these algorithms to work for characteristic 2.
+
+\item Write a paper on the above material.
+
+\item Give talk at the Pure Maths Seminar in January.
+
+\item Write thesis.
+
+\end{enumerate}
+
+\end{document}
+

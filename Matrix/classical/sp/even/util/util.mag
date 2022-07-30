@@ -1,0 +1,359 @@
+/******************************************************************************
+ *
+ *    util.mag    Useful Magma intrinsics
+ *
+ *    File      : $RCSfile: util.mag,v $
+ *    Author    : Henrik B‰‰rnhielm
+ *    Dev start : 2005-04-30
+ *
+ *    Version   : $Revision: 1.13 $
+ *    Date      : $Date: 2005/09/01 12:54:51 $
+ *    Last edit : $Author: hb $
+ *
+ *    @(#)$Id: util.mag,v 1.13 2005/09/01 12:54:51 hb Exp $
+ *
+ *****************************************************************************/
+
+//freeze;
+ 
+/*****************************************************************************/
+/* DECLARATIONS                                                              */
+/*****************************************************************************/
+
+forward structFrobeniusTwist, elementFrobeniusTwist, ScaleFactor,
+    ScalarMultiple;
+
+MatSLP := recformat<mat : GrpMatElt, slp : GrpSLPElt>;
+
+declare attributes GrpMat : RandomProcess;
+
+declare verbose UserUtil, 5;
+
+/*****************************************************************************/
+/* MAIN INTRINSICS                                                           */
+/*****************************************************************************/
+
+intrinsic RandomInvolution(G :: GrpMat :
+    Randomiser := RandomProcessWithWords(G : WordGroup :=
+    WordGroup(G)), MaxTries := 1000) ->
+    GrpMatElt, GrpSLPElt
+    { Find an involution in G by random search. }
+
+    if not assigned G`RandomProcess then
+	G`RandomProcess := Randomiser;
+    end if;
+
+    return RandomElementOfOrder(G, 2 : Randomiser := Randomiser,
+	MaxTries := MaxTries);
+end intrinsic;
+
+intrinsic RandomElementOfPseudoOrder(G :: GrpMat, order :: RngIntElt :
+    Randomiser := RandomProcessWithWords(G : WordGroup :=
+    WordGroup(G)), MaxTries := 1000, Element := rec<MatSLP |
+    mat := Identity(G), slp := Identity(WordGroup(G))>) ->
+    GrpMatElt, GrpSLPElt, RngIntElt
+    { Find an element of the given pseudo-order G by random
+    search. Also returns the order multiple. }
+    local g, q, r, w, i;
+
+    if not assigned G`RandomProcess then
+	G`RandomProcess := Randomiser;
+    end if;
+
+    i := 0;
+    repeat
+	g, w := Random(G`RandomProcess);
+	Element`mat := g * Element`mat;
+	Element`slp := w * Element`slp;
+	q, r := Quotrem(Order(Element`mat : Proof := false), order);
+	i +:= 1;
+    until r eq 0 or i ge MaxTries;
+
+    if r ne 0 then
+	error "Element of pseudo-order", order, "not found in",
+	    MaxTries, "attempts";
+    end if;
+
+    return Element`mat, Element`slp, q;
+end intrinsic;
+
+intrinsic RandomElementOfOrder(G :: GrpMat, order :: RngIntElt :
+    Randomiser := RandomProcessWithWords(G : WordGroup :=
+    WordGroup(G)), MaxTries := 1000) ->
+    GrpMatElt, GrpSLPElt
+    { Find an element of the given order G by random search. }
+    local g, w, q;
+    
+    g, w, q := RandomElementOfPseudoOrder(G, order : Randomiser :=
+	Randomiser, MaxTries := MaxTries);
+    return g^q, w^q;
+end intrinsic;
+
+intrinsic IsMetabelian(G :: GrpMat) -> BoolElt
+    {One-sided Monte-Carlo check if G is metabelian. A negative answer is
+    always correct. Error probability is at most 3/4. }
+    local elements, commutators, derivedGroup;
+    
+    // Create commutators of all generators, since their normal closure is
+    // the derived group
+    elements := {(G.i, G.j) : i in [1 .. NumberOfGenerators(G)],
+	j in [1 .. NumberOfGenerators(G)] | j gt i};
+
+    // The normal closure of this is the derived group
+    derivedGroup := sub<G | elements>;
+
+    // Get random element of the derived grop
+    commutators := [NormalSubgroupRandomElement(G, derivedGroup),
+	NormalSubgroupRandomElement(G, derivedGroup)];
+    if IsIdentity((commutators[1], commutators[2])) then
+	return true;
+    else
+	return false;
+    end if;
+end intrinsic;
+
+intrinsic FrobeniusTwist(M :: Mtrx, p :: RngIntElt, r :: RngIntElt) ->
+    GrpMatElt
+    { Frobenius twist of a matrix M, ie take every element to power p^r}
+    return elementFrobeniusTwist(M, p, r);
+end intrinsic;
+
+intrinsic FrobeniusTwist(G :: GrpMat, p :: RngIntElt, r :: RngIntElt) ->
+    GrpMat, Map
+    { Frobenius twist of a matrix group G, ie take FrobeniusTwist r of every
+    generator }
+    return structFrobeniusTwist(G, p, r);
+end intrinsic;
+
+intrinsic FrobeniusTwist(v :: ModTupFldElt, p :: RngIntElt, r :: RngIntElt) ->
+    ModTupFldElt
+    { Frobenius twist of a vector v, ie take every element to power p^r}
+    return elementFrobeniusTwist(v, p, r);
+end intrinsic;
+
+intrinsic FrobeniusTwist(V :: ModTupFld, p :: RngIntElt, r :: RngIntElt) ->
+    ModTupFld, Map
+    { Frobenius twist of a vector space V, ie take FrobeniusTwist r of every
+    generator }
+    return structFrobeniusTwist(V, p, r);
+end intrinsic;
+
+intrinsic DiagonaliseMatrix(M :: Mtrx : OrderEigenvalues := func<x | x>)
+    -> Mtrx, Mtrx
+    { Diagonalise M }
+    local eigenvalues, eigenvectors, eigenspaces, field;
+
+    field := CoefficientRing(M);
+    eigenvalues := [];
+    for e in Eigenvalues(M) do
+	eigenvalues cat:= [e[1] : i in [1 .. e[2]]];
+    end for;
+    
+    assert #eigenvalues eq NumberOfRows(M);
+    eigenvalues := OrderEigenvalues(eigenvalues);
+    assert #eigenvalues eq NumberOfRows(M);
+
+    // Get bases for eigenspaces
+    eigenspaces := [* *];
+    eigs := {@ x : x in eigenvalues @};
+    for e in eigs do
+	Append(~eigenspaces, Basis(Eigenspace(M, e)));
+    end for;
+
+    // Create change of basis matrix
+    eigenvectors := [];
+    for e in eigenvalues do
+	i := Index(eigs, e);
+	assert #eigenspaces[i] gt 0;
+	Append(~eigenvectors, ElementToSequence(eigenspaces[i][1]));
+	Remove(~eigenspaces[i], 1);
+    end for;
+    
+    // Conjugating matrix with eigenvectors
+    x := Matrix([ElementToSequence(f) : f in eigenvectors]);
+    
+    // Diagonal matrix with eigenvalues
+    d := DiagonalMatrix(eigenvalues);
+    assert x^(-1) * d * x eq M;
+    
+    return d, x;
+end intrinsic;
+
+intrinsic BrayAlgorithm(G :: GrpMat, g :: GrpMatElt, slp :: GrpSLPElt :
+    completionCheck := func<H, U, i, l | NumberOfGenerators(H) ge 7>,
+    Randomiser := RandomProcessWithWords(G : WordGroup := WordGroup(G)))
+    -> GrpMat, SeqEnum
+    { Bray Trick for computing involution centraliser in G of involution g }
+    local centraliser, element, commutator, q, r, residue, slpMap,
+	word, nGens;
+
+    require IsIdentity(g^2) : "<g> must be an involution";
+    if not assigned G`RandomProcess then
+	G`RandomProcess := Randomiser;
+    end if;
+
+    centraliser := sub<Generic(G) | g>;
+    slpMap := [slp];
+
+    vprint UserUtil, 1: "Starting Bray algorithm";
+    repeat
+	element, word := Random(G`RandomProcess);
+	commutator := rec<MatSLP | mat := (g, element), slp := (slp, word)>;
+	q, r := Quotrem(Order(commutator`mat : Proof := false), 2);
+	
+	if r eq 1 then
+	    residue := rec<MatSLP | mat := element * commutator`mat^q,
+		slp := word * commutator`slp^q>;
+	    nGens := NumberOfGenerators(centraliser);
+
+	    // Add generator to centraliser
+	    centraliser := sub<Generic(G) |
+		[centraliser.i : i in [1 .. nGens]], residue`mat>;
+
+	    // Only add SLP if generator was not obviously redundant
+	    if NumberOfGenerators(centraliser) gt nGens then
+		Append(~slpMap, residue`slp);
+	    end if;
+
+	    assert #slpMap eq NumberOfGenerators(centraliser);
+	else
+	    residue := rec<MatSLP | mat := commutator`mat^q,
+		slp := commutator`slp^q>;
+	    nGens := NumberOfGenerators(centraliser);
+
+	    // Add generator to centraliser
+	    centraliser := sub<Generic(G) | [centraliser.i :
+		i in [1 .. nGens]], residue`mat>;
+
+	    // Only add SLP if generator was not obviously redundant
+	    if NumberOfGenerators(centraliser) gt nGens then
+		Append(~slpMap, residue`slp);
+	    end if;
+	    
+	    residue := rec<MatSLP | mat := (g, element^(-1))^q,
+		slp := (slp, word^(-1))^q>;
+	    nGens := NumberOfGenerators(centraliser);
+
+	    // Add generator to centraliser
+	    centraliser := sub<Generic(G) | [centraliser.i :
+		i in [1 .. nGens]], residue`mat>;
+
+	    // Only add SLP if generator was not obviously redundant
+	    if NumberOfGenerators(centraliser) gt nGens then
+		Append(~slpMap, residue`slp);
+	    end if;
+
+	    assert #slpMap eq NumberOfGenerators(centraliser);
+	end if;
+	
+	vprint UserUtil, 3: "Check centraliser completion";
+    until completionCheck(centraliser, G, g, slpMap);
+    
+    vprint UserUtil, 1: "Bray algorithm finished";
+    assert #slpMap eq NumberOfGenerators(centraliser);
+
+    return centraliser, slpMap;
+end intrinsic;
+
+intrinsic DihedralTrick(x :: Rec, y :: Rec, R :: GrpRandProc :
+    MaxTries := 1000) -> Rec
+    { Dihedral trick: 
+    if a^2 = b^2 = 1, and b * a = c has odd order 2n + 1,
+    then c^-n * a * c^n = b
+    
+    if b * a does not have odd order, then choose random 
+    conjugate a^x of a such that b * a^x = c has odd order; 
+    now conjugate from a -> a^x -> b 
+    
+    In our case, x and y should be MatSLP records, and the random conjugating
+    elements are chosen from R. }
+    local p, slp_p, z, q, r, i;
+
+    require IsIdentity(x`mat^2) and IsIdentity(y`mat^2) :
+	"x and y must be involutions";
+    
+    i := 0;
+    repeat
+	p, slp_p := Random(R);
+	z := rec<MatSLP | mat := x`mat^p, slp := x`slp^slp_p>;
+	q, r := Quotrem(Order(y`mat * z`mat), 2);
+	i +:= 1;
+    until r eq 1 or i ge MaxTries;
+
+    if i ge MaxTries then
+	error "Dihedral trick failed";
+    end if;
+    
+    return rec<MatSLP | mat := p * (y`mat * z`mat)^q,
+	slp := slp_p * (y`slp * z`slp)^q>;
+end intrinsic;
+
+intrinsic ScaleMatrix(g :: GrpMatElt) -> GrpMatElt
+    { Remove scalars from g }
+    
+    det := Determinant (g);
+    m := Nrows (g);
+    flag, lambda := IsPower (det, m);
+    if flag eq false then return false; end if;
+    return Generic(Parent(g)) ! ScalarMultiple (g, lambda^-1);
+end intrinsic;
+
+intrinsic ScaledTensorFactors(G :: GrpMat, b :: Tup) ->
+    GrpMat, GrpMat, GrpMat, GrpMat
+    { return tensor factors which have determinant 1 }
+    
+   K := BaseRing (G);
+   U := UserGenerators (G);
+   x, y := AreProportional ([U[i]^b[1]: i in [1..#U]], b[2]);
+
+   m := Nrows (y[1][1]);
+   gens := [y[i][1]: i in [1..#y]];  
+   First := sub <GL (m, K) | [y[i][1]: i in [1..#y]]>;  
+   First`UserGenerators := gens;
+
+   n := Nrows (y[1][2]);
+   gens := [y[i][2]: i in [1..#y]];  
+   Second := sub <GL (n, K) | [y[i][2]: i in [1..#y]]>;
+   Second`UserGenerators := gens;
+      
+   return ScaleFactor (First), ScaleFactor (Second), First, Second;
+
+end intrinsic;
+
+/*****************************************************************************/
+/* AUXILIARY FUNCTIONS                                                       */
+/*****************************************************************************/
+
+function ScalarMultiple(g, lambda)
+   P := Parent (g);
+   F := BaseRing (P);
+   d := Degree (P);
+   return MatrixAlgebra (F, d) ! lambda * g;
+end function;
+
+function ScaleFactor(G)
+   K := BaseRing (G);
+   m := Degree (G);
+   new := [Identity (GL (m, K))];
+   U := UserGenerators (G);
+   for i in [1..#U] do 
+      det := Determinant (U[i]);
+      flag, lambda := IsPower (det, m);
+      // error if flag eq false, "Error in ScaledTensorFactors";
+      if flag eq false then return false; end if;
+      new[i] := ScalarMultiple (U[i], lambda^-1);
+   end for;
+   S := sub <GL (m, K) | new>; S`UserGenerators := new;
+   return S;
+end function;
+
+function elementFrobeniusTwist(element, char, r)
+    return Generic(Parent(element)) ! [e^(char^r) :
+	e in ElementToSequence(element)];
+end function;
+
+function structFrobeniusTwist(struct, char, r)
+    return sub<Generic(struct) | [FrobeniusTwist(struct.i, char, r) :
+	i in [1 .. NumberOfGenerators(struct)]]>;
+end function;
+

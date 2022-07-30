@@ -1,0 +1,17 @@
+ConjugateMatrix := function(A);
+
+   F := BaseRing(A);
+   d := Degree(A[1]);
+   M := KMatrixSpace(F, d, d);
+   Z := M.1 - M.1;
+   p := Characteristic(F);
+   
+   for i in [1..d] do
+      for j in [1..d] do
+         Z[i, j] := A[i, j]^p;
+      end for;
+   end for;
+
+   return Z;
+
+end function;

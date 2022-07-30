@@ -1,0 +1,108 @@
+/* additional elements to generate SU */
+
+SUAdditionalElements := function (F: EvenCase := true)
+   if EvenCase then d := 4; else d := 3; end if;
+   M := MatrixAlgebra (F, d);
+   gamma := PrimitiveElement (F);
+   q := Isqrt (#F);
+   I := Identity (M);
+
+   P := PolynomialRing(F);
+   py := P.1^q + P.1 + 1;
+   phi := Roots(py)[1, 1];
+
+   if EvenCase then  
+      I[1][3] := 1;
+      I[4][2] := -1;
+      J := DiagonalMatrix (F, [gamma, gamma^-q, gamma^-1, gamma^q]);
+   else
+      I := M![1, phi, 1, 0, 1, 0, 0, 1, 1];
+      J := DiagonalMatrix (F, [gamma, gamma^(-q), gamma^(q - 1)]);
+   end if;
+   I := GL(d, F)!I;
+   J := GL(d, F)!J;
+   return I, J;
+
+end function;
+
+/* canonical basis for SU(d, q) */
+
+SUChar2ChosenElements := function (G )
+
+   d := Degree (G);
+   E := BaseRing (G); 
+
+   f := Degree (E) div 2;
+   p := Characteristic (E);
+   q := p^f;
+   F := GF(p, f);
+
+   w := PrimitiveElement (E);
+   if p eq 2 then
+      alpha := Root(w^(q+1), 2);
+   else
+      alpha := w^((q + 1) div 2);
+   end if;
+   w0 := alpha^2; 
+
+   M := MatrixAlgebra (E, d);
+   a := Zero (M);
+   a[1][2] := alpha;
+   a[2][1] := alpha^-q;
+   for i in [3..d] do a[i][i] := 1; end for;
+ 
+   t := Identity (M);
+   t[1][2] := alpha;
+
+   delta := Identity (M);
+   if (d eq 3) and (f eq 1) then
+      delta[1,2] := w;
+      delta[1,3] := w;
+      delta[3,2] := w^2;
+   else
+      delta[1][1] := w0;
+      delta[2][2] := w0^-1;
+   end if;
+
+   if d ge 4 then 
+      p := Zero (M);
+      p[1][3] := 1; p[2][4] := 1; p[3][1] := 1; p[4][2] := 1;
+      for i in [5..d] do p[i][i] := 1; end for;
+   else
+      p := Identity (M);
+   end if;
+
+   if d ge 4 then 
+      b := Zero (M);
+      n := d div 2;
+      for i in [1..2 * n - 2 by 2] do
+         b[i][i + 2] := 1;
+      end for; 
+      b[2 * n - 1][1] := 1;
+       for i in [2..2 * n - 2 by 2] do
+          b[i][i + 2] := 1;
+     end for; 
+      b[2 * n][2] := 1;
+      if IsOdd (d) then b[d][d] := 1; end if;
+   else 
+      b := Identity (M);
+   end if;
+
+   P := GL(d, E);
+   a := P!a; b := P!b; p := P!p; t := P!t; delta := P!delta;
+
+   if d eq 2 then 
+      x := Identity (P);
+      y := Identity (P);
+   elif d in [3, 4] then 
+      x, y := SUAdditionalElements (E: EvenCase := IsEven (d));
+   else 
+      x, y := SUAdditionalElements (E: EvenCase := IsEven (d));
+      f := d - Nrows (x);
+      x := GL(d, E) ! (DiagonalJoin (Identity (MatrixAlgebra (E, f)), x)); 
+      y := GL(d, E) ! (DiagonalJoin (Identity (MatrixAlgebra (E, f)), y)); 
+   end if;
+
+   return [a, b, t, delta, p, x, y];
+end function;
+

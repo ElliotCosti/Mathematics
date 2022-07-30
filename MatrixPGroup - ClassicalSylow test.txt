@@ -1,0 +1,27 @@
+load "C:/Users/Elliot/Documents/Mathematics/MatrixPGroup9.txt";
+
+RandomSpace := function (d, q, k) 
+V := VectorSpace (GF(q), d); 
+U := sub < V | [Random (V): i in [1..k]]>; 
+return U; 
+end function; 
+
+for d in [15, 20, 25, 30, 40] do 
+for q in [2,3,5,7,11,13,17,19,23] do for i in [1..10] do 
+d, q, i; 
+
+H := ClassicalSylow(SL(d, q), "SL", q);
+gens := [H.i : i in [1..Ngens(H)]];
+Q := [Random(gens) : i in [1..30]];
+K := sub<GL(d, q)|Q>;
+Q := [K.i : i in [1..Ngens(K)]];
+P := RandomProcess(K);
+Y := Random(P);
+
+time word := MatrixPGroupWordInGen(Y, K: ComputeBase:=true); 
+assert Y eq Evaluate(word, Q);
+
+end for; 
+end for; 
+end for; 
+

@@ -1,0 +1,65 @@
+load "C:/Users/Elliot/Documents/Mathematics/SLAltRep4.txt";
+load "C:/Users/Elliot/Documents/Mathematics/AlternativeRep.txt";
+
+/* preparing the input */
+
+for d in [5..7] do
+for q in [3,4,5,7,8,9,11,13,16,17,19,23,25, 64, 81, 128, 243] do
+
+G := SL(d, q);
+
+print "Exterior Power";
+for i in [2..4] do
+
+   d, q, i;
+   Q, E := ClassicalExteriorPower(G, "SL", i);
+   P := RandomProcess(E);
+   g := Random(P);
+   time flag, _, _ := SLAltRepWordInGen(E, Q, g, d, q);
+   assert flag;
+   time flag, _, _ := SLAltRepWordInGen(E, Q, g, d, q);
+   assert flag;
+
+end for;
+
+print "Symmetric Power";
+for i in [2..3] do
+
+   d, q, i;
+   Q, E := ClassicalSymmetricPower(G, "SL", i);
+   P := RandomProcess(E);
+   g := Random(P);
+   time flag, _, _ := SLAltRepWordInGen(E, Q, g, d, q);
+   assert flag;
+   time flag, _, _ := SLAltRepWordInGen(E, Q, g, d, q);
+   assert flag;
+
+end for;
+
+print "V tensor V^Frobenius";
+d, q;
+Q, E := ConstructDelta(G, "SL");
+n := Nrows(Q[1]);
+Q := [GL(n, q)!Q[i] : i in [1..#Q]];
+P := RandomProcess(E);
+g := Random(P);
+   time flag, _, _ := SLAltRepWordInGen(E, Q, g, d, q);
+assert flag;
+   time flag, _, _ := SLAltRepWordInGen(E, Q, g, d, q);
+   assert flag;
+
+print "V tensor Dual(V)";
+d, q;
+E := DualRepresentation(G, "SL");
+Q := [E.i : i in [1..Ngens(E)]];
+P := RandomProcess(E);
+g := Random(P);
+   time flag, _, _ := SLAltRepWordInGen(E, Q, g, d, q);
+assert flag;
+   time flag, _, _ := SLAltRepWordInGen(E, Q, g, d, q);
+   assert flag;
+
+
+end for;
+end for;
+

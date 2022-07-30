@@ -1,0 +1,26 @@
+load "C:/Users/Elliot/Documents/Mathematics/Orthogonal8.txt";
+
+SOPlusWordInGen := function(G, A);
+
+   _, _, J := OrthogonalForm(G);
+   sn := SpinorNorm(A, J);
+   if sn eq 0 then
+      flag, word := OmegaPlusWordInGen(G, A);
+   else
+      d := Dimension(G);
+      F := BaseRing(G);
+      QQ := PlusChosenElements(G: SpecialGroup := true);
+      CB := ChangeofBasisMatrix(G);
+      sp := (GL(d, F)!QQ[#QQ]) ^(CB^-1);
+      A := A*sp;
+      flag, word := OmegaPlusWordInGen(G, A);
+      SS := Parent(word);
+      S := SLPGroup(9);
+      phi := hom<SS -> S | S.1, S.2, S.3, S.4, S.5, S.6, S.7, S.8>;
+      word := phi(word);
+      word := word*(S.9^-1);
+   end if;
+
+   return flag, word;
+
+end function;

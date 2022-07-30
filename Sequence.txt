@@ -1,0 +1,23 @@
+Q := [2, 2, 4, 11, 1, 4, 8, 15, 6, 6, 17, 22, 16, 38];
+
+d := #Q;
+C := ComplexField();
+MA := MatrixAlgebra(C, d);
+M := MA!0;
+for i in [1..d] do;
+   for j in [1..d] do;
+      M[i, j] := i^j;
+   end for;
+end for;
+M := Transpose(M);
+V := VectorSpace(C, d);
+v := V!Q;
+v := v*(M^-1);
+
+P := PolynomialRing(C);
+py := P!0;
+for i in [1..#Q] do
+   py := py + v[i]*P.1^i;
+end for;
+
+Evaluate(py, #Q+1);

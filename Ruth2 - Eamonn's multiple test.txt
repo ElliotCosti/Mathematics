@@ -1,0 +1,38 @@
+RandomSpace := function (d, q, k) 
+V := VectorSpace (GF(q), d); 
+U := sub < V | [Random (V): i in [1..k]]>; 
+return U; 
+end function; 
+
+for d in [6..10] do 
+for q in [2,3,4,5,7,8,9,11,13,16,17,19,23,25, 64, 81, 128, 243] do for i in [1..10] do 
+d, q, i; 
+S := [RandomSpace (d, q, Random ([1..d div 2])): k in [1..d div 3]]; 
+U := RandomSpace (d, q, Random ([1..d div 2])); 
+A,B := StabiliserOfSpaces (S); 
+H := sub < GL(d, q) | B>; 
+// time RandomSchreier (H); 
+a,b,c,w:= UnipotentStabiliser (H, U); 
+
+/*
+if Ngens(H) eq 0 then
+   X := H;
+else
+   time X := Stabiliser (H, U); 
+end if;
+assert a eq X; 
+*/
+
+for j in [1..10] do
+   h := Random(H);
+   _, b1, _, _:= UnipotentStabiliser (H, U^h); 
+   assert b eq b1;
+end for;
+
+assert U^a eq {U}; 
+assert U^c eq b; 
+W, phi := WordGroup (H); 
+assert phi (w) eq c; 
+end for; 
+end for; 
+end for; 

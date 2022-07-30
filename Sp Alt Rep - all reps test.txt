@@ -1,0 +1,55 @@
+load "C:/Users/Elliot/Documents/Mathematics/SymplecticALTREP7.txt";
+load "C:/Users/Elliot/Documents/Mathematics/AlternativeRep.txt";
+
+/* preparing the input */
+
+for d in [2, 4, 6, 8] do
+for q in [2,3,4,5,7,8,9,11,13,16,17,19,23,25, 64, 81, 128, 243] do
+
+G := Sp(d, q);
+
+print "Symmetric Power";
+for i in [2..4] do
+
+   d, q, i;
+   Q, E := ClassicalSymmetricPower(G, "Sp", i);
+
+   if #Q ne 6 then
+      "skipping ", d, q, i;
+      continue;
+   end if;
+
+   P := RandomProcess(E);
+   g := Random(P);
+   time flag := SpAltRepWordInGen(E, Q, g, d, q);
+   assert flag;
+   g := Random(P);
+   time flag := SpAltRepWordInGen(E, Q, g, d, q);
+   assert flag;
+
+end for;
+
+// if (d ge 8) and (q ge 4) then
+   print "V tensor V^Frobenius";
+   d, q;
+   Q, E := ConstructDelta(G, "Sp");
+
+   if #Q ne 6 then
+      "skipping ", d, q;
+      continue;
+   end if;
+
+   n := Nrows(Q[1]);
+   Q := [GL(n, q)!Q[i] : i in [1..#Q]];
+   P := RandomProcess(E);
+   g := Random(P);
+   time flag := SpAltRepWordInGen(E, Q, g, d, q);
+   assert flag;
+   g := Random(P);
+   time flag := SpAltRepWordInGen(E, Q, g, d, q);
+   assert flag;
+// end if;
+
+end for;
+end for;
+

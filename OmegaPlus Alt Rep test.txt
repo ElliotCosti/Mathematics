@@ -1,0 +1,4 @@
+gg := Random(GG);
+_, word := OmegaPlusWordInGen(G, gg^(CB^-1));
+g := Evaluate(word, Q);
+OmegaPlusAltRepWordInGen(Q, g, d);

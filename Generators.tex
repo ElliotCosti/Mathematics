@@ -1,0 +1,262 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\hoffset -25truemm
+\usepackage{latexsym}
+\usepackage{float}
+\usepackage[algo2e,ruled,linesnumbered]{algorithm2e}
+\oddsidemargin=27truemm             %%
+\evensidemargin=25truemm            %% inner margin 30mm, outer margin 25mm
+\textwidth=157truemm                %%
+\voffset -25truemm
+\topmargin=22truemm                 %% top margin of 25mm
+\headheight=0truemm                 %% no head
+\headsep=0truemm                    %% no head
+\textheight=240truemm               
+\renewcommand{\thefootnote}{}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{problem}[definition]{Problem}
+\newenvironment{proof}{\normalsize {\sc Proof}:}{{\hfill $\Box$ \\}}
+
+\def\SL{{\rm SL}}
+\def\GL{{\rm GL}}
+\def\U{{\rm U}}
+\def\PSL{{\rm PSL}}
+\def\PSp{{\rm PSp}}
+\def\Stab{{\rm Stab}}
+\def\PSU{{\rm PSU}}
+\def\GF{{\rm GF}}
+\def\Sp{{\rm Sp}}
+\def\SU{{\rm SU}}
+\def\SO{{\rm SO}}
+\def\SX{{\rm SX}}
+\def\PX{{\rm PX}}
+\def\GX{{\rm GX}}
+\def\PSX{{\rm PSX}}
+\def\PGL{{\rm PGL}}
+\def\q{\quad}
+\def\centreline{\centerline}
+
+\begin{document}
+
+\title{Membership Testing in Classical Groups}
+\author{Elliot Costi}
+\date{2008}
+\maketitle
+
+\oddsidemargin=2truemm             %%
+\evensidemargin=25truemm            %% inner margin 30mm, outer margin 25mm
+
+\hspace{10}
+\begin{landscape}
+\begin{table} \label{standard-table}\tiny 
+\begin{centewr}
+\begin{tabular}{|r||c|c|c|c|c|c|c|} 
+\hline 
+Group & $s$ & $t$ & $\delta$ & $u$ & $v$ & $x$ & $y$ 
+
+\rule{0cm}{3.0ex}\\ \hline
+$\SL(n, q)$ & 
+$\begin{array}{cc} \left(\matrix{0&1\cr-1&0\cr}\right) \end{array} \;$
+& 
+
+$\begin{array}{cc} \left(\matrix{1&1\cr0&1\cr}\right) \end{array} \;$
+
+& 
+$\left(\matrix{\omega&0\cr0&\omega^{-1}\cr}\right)$
+& 
+$I_2$
+& 
+
+$\left(\matrix{ 0 & 1 \cr -I_{n} & 0 \cr }\right)$
+& 
+
+$I_{4}$
+
+& 
+
+$I_4$
+
+\rule{0cm}{3.0ex}\\ \hline
+
+$\Sp(2n, q)$ & 
+$\left(\matrix{0&1\cr-1&0\cr}\right)$
+& 
+
+$ \begin{array}{cc} \left(\matrix{1&1\cr0&1\cr}\right) \end{array} $
+
+& 
+$\left(\matrix{\omega&0\cr0&\omega^{-1}\cr}\right)$
+& 
+$\left(\matrix{0&0&1&0\cr0&0&0&1\cr1&0&0&0\cr0&1&0&0\cr}\right)$
+& 
+
+$ (e_1, e_2, \ldots, e_{n})(f_1,f_2,\ldots, f_n) $
+
+& 
+
+$\left(\matrix{1&0&0&0\cr0&1&1&0\cr0&0&1&0\cr1&0&0&1\cr}\right)$
+
+& 
+
+$I_4$
+
+\rule{0cm}{3.0ex}\\ \hline
+
+$\SU(2n, q)$ & 
+
+$\left(\matrix{0&\alpha\cr \alpha^{-q}&0\cr} \right)$
+
+& 
+
+$\left(\matrix{1&\alpha\cr0&1\cr}\right)$
+
+& 
+
+$\left(\matrix{\omega^{q + 1}&0\cr0&\omega^{-(q+1)}\cr}\right)$
+
+& 
+$\left(\matrix{0&0&1&0\cr0&0&0&1\cr1&0&0&0\cr0&1&0&0\cr}\right)$
+
+& 
+$ (e_1, e_2, \ldots, e_{n})(f_1,f_2,\ldots, f_n) $
+& 
+
+$\left(\matrix{1&0&1&0\cr0&1&0&0\cr0&0&1&0\cr0&-1&0&1\cr}\right)$
+
+& 
+
+$\left(\matrix{\omega&0&0&0 \cr 0&\omega^{-q} & 0 & 0\cr 
+  0 & 0 & \omega^{-1} & 0 \cr 0 & 0 & 0 & \omega^q\cr}\right)$
+
+\rule{0cm}{3.0ex}\\ \hline
+
+$\SU(2n + 1, q)$ & 
+
+$\left(\matrix{0&\alpha\cr \alpha^{-q}&0\cr} \right)$
+
+& 
+
+$\left(\matrix{1&\alpha\cr0&1\cr}\right)$
+
+& 
+
+$\left(\matrix{\omega^{q + 1}&0\cr0&\omega^{-(q+1)}\cr}\right)$
+
+& 
+
+$\left(\matrix{0&0&1&0\cr0&0&0&1\cr1&0&0&0\cr0&1&0&0\cr}\right)$
+
+& 
+$ (e_1, e_2, \ldots, e_{n})(f_1,f_2,\ldots, f_n) $
+
+& 
+
+$\left(\matrix{1& -1/2 & 1 \cr 0&1 & 0 \cr 0 & -1 & 1\cr}\right)$
+
+& 
+
+$\left(\matrix{\omega &0&0\cr 0&\omega^{q-1} & 0 \cr 0 & 0 & \omega^{-q}\cr}\right)$
+
+\rule{0cm}{3.0ex}\\ \hline
+
+\end{tabular}
+\caption{Standard generators for non-orthogonal classical groups}
+\end{center}
+\end{table}
+\end{landscape}
+
+
+\begin{landscape}
+\begin{table} \label{orthog-table}\tiny 
+\begin{center}
+\begin{tabular}{|r||c|c|c|c|c|} 
+\hline 
+%Group & $s$ & $t$ & $\delta$ & $u$ & $v$ & $x$ & $y$ 
+%\rule{0cm}{3.0ex}\\ \hline
+Group&$s$&$t$&$\delta$&$u$&$v\w$ \rule{0cm}{3.0ex}\\ \hline
+$\Omega^+(2n,q)$
+&
+$\left(\matrix{0&0&0&-1\cr0&0&-1&0\cr0&1&0&0\cr1&0&0&0}\right)$
+&
+$\left(\matrix{1&0&0&-1\cr0&1&0&0\cr0&1&1&0\cr0&0&0&1}\right)$
+&
+$\left(\matrix{\omega&0&0&0\cr0&\omega^{-1}&0&0\cr0&0&\omega&0\cr0&0&0&\omega^{-1}}\right)$
+&
+$I_4$
+&
+$(e_1,e_2,\ldots,e_n)^{\epsilon_n}(f_1,f_2,\ldots,f_n)^{\epsilon_n}$
+
+\rule{0cm}{3.0ex}\\ \hline
+&$s'$&$t'$&$\delta'$& &  
+\rule{0cm}{3.0ex}\\ \hline
+&
+$\left(\matrix{0&0&1&0\cr0&0&0&1\cr-1&0&0&0\cr0&-1&0&0}\right)$
+&
+$\left(\matrix{1&0&1&0\cr0&1&0&0\cr0&0&1&0\cr0&-1&0&1}\right)$
+&
+$\left(\matrix{\omega&0&0&0\cr0&\omega^{-1}&0&0\cr0&0&\omega^{-1}&0\cr0&0&0&\omega}\right)$
+&
+&
+\rule{0cm}{3.0ex}\\ \hline
+Group&$t$&$t^\prime$&$\delta$&$u$&$v\w$ 
+\rule{0cm}{3.0ex}\\ \hline
+$\Omega^-(2n,q)$
+&
+$\left(\matrix{1&1& 1 &0\cr0&1&0&0\cr0& 2 &1&0\cr0&0&0&1}\right)$
+&
+$\left(\matrix{1&0&0  &0\cr1&1&1&0\cr2& 0 &1&0\cr0&0&0&1}\right)$
+&
+$\left(\matrix{\omega&0&0&0\cr0&\omega^{-1}&0&0\cr0&0&A&
+B\cr0&0&C&A}\right)$
+&
+%$\left(\matrix{0&I_2\cr-I_2&0}\right)$
+$(e_1, e_2)^{-} (f_1, f_2)^{-}$
+%$I_4$
+&
+$(e_1,\ldots,e_{n-1})^{\epsilon_{n-1}}(f_1,\ldots,f_{n-1})^{\epsilon_{n-1}}$
+
+
+\rule{0cm}{3.0ex}\\ \hline
+Group&$s$&$t$&$\delta$&$u$&$v\w$ 
+\rule{0cm}{3.0ex}\\ \hline
+
+$\Omega(2n+1,q)$
+&
+$\left(\matrix{0&1&0\cr1&0&0\cr0&0&-1}\right)$
+&
+$\left(\matrix{1&1&2\cr0&1&0\cr0&1&1\cr}\right)$
+&
+$\left(\matrix{\omega^2&0&0\cr0&\omega^{-2}&0\cr0&0&1}\right)$
+&
+$I_4$
+%$I_4$
+%$\left(\matrix{0&I_2\cr-I_2&0}\right)$
+&
+$(e_1,\ldots,e_n)^{\epsilon_n}(f_1,\ldots,f_n)^{\epsilon_n}$
+%$\left(\matrix{-I_2&0\cr0& 1}\right)$
+\rule{0cm}{3.0ex}\\ \hline
+\end{tabular}
+\end{center}
+%\centerline{$A={1\over2}(\gamma^{q-1}+\gamma^{-q+1})\quad B={1\over2}\alpha(\gamma^{q-1}-\gamma^{-q+1})
+%\quad C = {1\over2}\alpha^{-1}(\gamma^{q-1}-\gamma^{-q+1})$ and 
+%$\w$ is only defined if $q\equiv3\bmod4$ and, in the case 
+%of $\Omega^-(2n,q)$, if $n>1$.}
+\caption{Standard generators for orthogonal groups}
+\end{table}
+\end{landscape}
+\\
+
+\hspace{25} {Suppose that the field that these matrices are defined over is $F =$ GF($q$). Then $\omega$ is the primitive element of $F$. For the Unitary groups defined over the field GF($q^2$), $\alpha = \omega^{\frac{q+1}{2}}$. For $\Omega^-(2n, q)$, let $\gamma$ be the primitive element of $GF(q^2).$ Then the variables $A, B$ and $C$ given in the definition have the following values, with $\alpha$ defined as for the Unitary groups: \begin{eqnarray*}
+A & = & {1\over2}(\gamma^{q-1}+\gamma^{-q+1}) \\
+B & = & {1\over2}\alpha(\gamma^{q-1}-\gamma^{-q+1}) \\
+C &=& {1\over2}\alpha^{-1}(\gamma^{q-1}-\gamma^{-q+1}).
+\end{eqnarray*} }
+
+\newpage
+
+\end{document}
+

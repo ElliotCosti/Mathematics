@@ -1,0 +1,63 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\usepackage[algo2e,ruled,linesnumbered]{algorithm2e} % for algorithms
+\hoffset -25truemm
+\usepackage{latexsym}
+\oddsidemargin=30truemm             %%
+\evensidemargin=25truemm            %% inner margin 30mm, outer margin 25mm
+\textwidth=155truemm                %%
+\voffset -25truemm
+\topmargin=25truemm                 %% top margin of 25mm
+\headheight=0truemm                 %% no head
+\headsep=0truemm                    %% no head
+\textheight=220truemm               
+\renewcommand{\thefootnote}{}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{problem}[definition]{Problem}
+\newenvironment{proof}{\normalsize {\sc Proof}:}{{\hfill $\Box$ \\}}
+
+\def\SL{{\rm SL}}
+\def\GL{{\rm GL}}
+\def\U{{\rm U}}
+\def\PSL{{\rm PSL}}
+\def\PSp{{\rm PSp}}
+\def\Stab{{\rm Stab}}
+\def\PSU{{\rm PSU}}
+\def\GF{{\rm GF}}
+\def\Sp{{\rm Sp}}
+\def\SU{{\rm SU}}
+\def\SX{{\rm SX}}
+\def\PX{{\rm PX}}
+\def\GX{{\rm GX}}
+\def\PSX{{\rm PSX}}
+\def\PGL{{\rm PGL}}
+\def\q{\quad}
+\def\centreline{\centerline}
+
+\begin{document}
+
+\title{The Order of the Symplectic Groups} 
+\author{Elliot Costi}
+\date{February 2006}
+\maketitle
+
+\section{}
+\label{}
+
+\begin{theorem}
+If $\mathbb{F}_q$ is finite then $|\Sp(2m, q)|=|q^{m^2}|\prod^{m}_{i=1}(q^{2i}-1)$ and $\PSp(2m, q) = \frac{|\Sp(2m, q)|}{(2, q-1)}$.
+\end{theorem}
+
+\begin{proof}
+Let $n = 2m$. Any one of the $q^n - 1$ non-zero vectors of $V$ will do for the first vector $u$ om a hyperbolic pair. Now, $|q^\perp| = q^{n-1}$ and so there are $q^n - q^{n-1}$ choices of vector $v$ such that $f(u, v) \ne 0$. Thus, there are $(q^n - q^{n-1})/(q-1) = q^{n-1}$ choices of $v$ such that $f(u, v)=1$. Hence, there are $(q^n - 1)q^{n-1}$ distinct hyperbolic pairs (number of choices of $u$ times number of choices of $v$). If $(u, v)$ is a hyperbolic pair and $W$ is the hyperbolic plane with $\{u, v\}$ as a basis then $\sigma \in \Stab_{Sp(V)}((u, v))$ if and only if $\sigma|_W = 1_W$. As we saw in the proof that $\Sp(V)$ is primitive on $\mathbb{P}_{n-1}(V)$, we have that $\Stab_{Sp(V)} \cong \Sp(W^\perp)$. Thus $|\Sp(n, q)| = (q^n-1)q^{n-1} |\Sp(n-2, q)|$ by the Orbit-Stabilizer Theorem. We now proceed by induction. When m = 1 (and so n = 2) we have that $|\Sp(2, q)| = |\SL(2, q| = q(q^2 - 1)$. Assume inductively that $|\Sp(n - 2, q)| = q^{(m-1)^2} \prod^{m-1}_{i=1}(q^{2i}-1)$.
+
+Then, $|\Sp(n, q)| = q^{2m-1} (q^{2m} - 1) q^{(m-1)^2} \prod^{m-1}_{i=1} (q^{2i}-1) = q^{m^2}\prod^{m}_{i=1}(q^{2i}-1)$.
+
+\end{proof}
+
+\end{document}
+

@@ -1,0 +1,38 @@
+load "C:/Users/Elliot/Documents/Mathematics/OmegaCircle4.txt";
+
+for d in [3, 5, 7, 9, 11, 13, 17, 19, 31, 51] do
+for p in [3,5,7,11,13,17,19,23] do
+for e in [1..5] do
+
+q := p^e;
+Q := SOChosenElements(Omega(d, q));
+G := sub<GL(d, q)|Q>;
+Q := [GL(d, q)!Q[i] : i in [1..#Q]];
+P := RandomProcess(G);
+/*
+for i in [1..#Q] do 
+d, p, e, "Q[", i, "]"; 
+
+A := Q[i];
+
+flag, word := OmegaCircleWordInGen(G, A);
+
+assert flag eq Id(G); 
+assert A eq Evaluate(word, Q);
+
+end for;
+*/
+for i in [1..10] do 
+d, p, e, i; 
+
+A := Random(P);
+
+flag, word := OmegaCircleWordInGen(G, A);
+
+assert flag eq Id(G); 
+assert A eq Evaluate(word, Q);
+
+end for;
+end for; 
+end for; 
+end for; 

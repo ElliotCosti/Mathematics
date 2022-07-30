@@ -1,0 +1,9 @@
+G := 
+MatrixGroup<4, GF(2, 3) |
+    [ W^4, W^5, W^4, W, W^3, W^5, W^3, W^5, 1, W^5, W^6, W, W, W^3, 0, W^5 ] where W := GF(2,
+    3).1,
+    [ W^3, W, W, W^5, W^5, 1, W^5, W^3, W^5, 0, W^4, W^5, W, W^6, W^4, W^5 ] where W := GF(2,
+    3).1 >
+;
+InitialiseGroup (G);
+a :=Degree4Involution (G);

@@ -1,0 +1,41 @@
+RandomSpace := function (d, q, k) 
+V := VectorSpace (GF(q), d); 
+U := sub < V | [Random (V): i in [1..k]]>; 
+return U; 
+end function; 
+
+for d in [15, 20, 25, 30, 40] do 
+for q in [2,3,5,7,11,13,17,19,23] do for i in [1..10] do 
+d, q, i; 
+
+H := ClassicalSylow(SL(d, q), "SL", q);
+U := RandomSpace (d, q, Random ([1..d div 2])); 
+
+// time RandomSchreier (H); 
+time a,b,c,w:= UnipotentStabiliser (H, U: ComputeBase:=true); 
+
+/*
+if Ngens(H) eq 0 then
+   X := H;
+else
+   time X := Stabiliser (H, U); 
+end if;
+assert a eq X; 
+*/
+
+/*
+for j in [1..10] do
+   h := Random(H);
+   time _, b1, _, _:= UnipotentStabiliser (H, U^h: ComputeBase:=true); 
+   assert b eq b1;
+end for;
+*/
+
+assert U^a eq {U}; 
+assert U^c eq b; 
+W, phi := WordGroup (H); 
+assert phi (w) eq c; 
+end for; 
+end for; 
+end for; 
+

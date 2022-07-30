@@ -1,0 +1,368 @@
+PInvariantFlag := function (V, X)
+
+    F := BaseRing (X);
+    p := #F;
+    d := Degree (X);
+    MA := MatrixAlgebra (F, d);
+    t := Ngens (X);
+    Y := [MA!X.j : j in [1..t]];
+
+    /* clumsy handling of trivial case */
+    if t eq 0 then
+       B := Basis (V);
+       d := #B;
+       W := [sub < V | [B[j] : j in [i..d]]> : i in [1..d]];
+       Append (~W, sub < V | >);
+    else
+       W := [V];
+       k := 1;
+       I := Identity (MA);
+       while Dimension (W[k]) ne 0 do
+          k +:= 1;
+          W[k] := &+[W[k-1] * (Y[j] - I): j in [1..t]];
+       end while;
+    end if;
+
+    flag := [];
+    for i in [1..#W - 1] do
+       F, phi := quo < W[i] | W[i + 1] >;
+       BF := Basis (F);
+       FB := [BF[j] @@ phi : j in [1..Dimension (F)]];
+       flag cat:= FB;
+    end for;
+
+    Spaces := [sub < V | >] cat
+            [sub <V | [flag[i]: i in [#flag..j by -1]]>: j in [#flag..1 
+by -1]];
+    Reverse (~Spaces);
+
+    CB := (GL (d, p) ! &cat[Eltseq (f): f in flag])^-1;
+    return flag, CB, Spaces;
+
+end function;
+
+VectorExtract := function(j, M)
+   n := Degree(M);
+   F := BaseRing(M);
+   v := [M[i, i+j] : i in [1..n-j]];
+   v := VectorSpace(F, n-j)!v;
+   return v;
+end function;
+
+/* Given an upper uni-triangular matrix M, determine its weight. The weight
+   of a matrix in this sense is a triple. The first entry in the triple is the
+   first diagonal (say D) above the leading diagonal that contains a non-zero
+   entry. The second entry in the triple is the index of the first non-zero
+   entry as you look down D. The third entry is the first non-zero coefficient
+   of the first non-zero entry of D considered as a polynomial over the
+   primitive element. */
+
+MatrixWeight := function(M)
+
+   n := Degree(M);
+
+   k := 0;
+   for z in [1..n-1] do
+      for i in [1..n-z] do
+         if M[i, i+z] ne 0 then k := z; break z; end if;
+      end for;
+   end for;
+   if k eq 0 then return [n, 1, 1]; end if;
+
+   F := BaseRing(M);
+   v := VectorExtract(k, M);
+   d := Depth(v);
+   V := VectorSpace(F, PrimeField(F));
+   dd := Depth(V!Eltseq(v[d]));
+   return [k, d, dd];
+
+end function;
+
+FindPower := function(s, Y, weight);
+
+   p := #PrimeField(BaseRing(Y));
+   j0 := weight[1];
+   j1 := weight[2];
+   j2 := weight[3];
+   F := BaseRing(Y);
+
+/*   beta := 0;
+   while Eltseq(Y[j1, j0 + j1])[j2] ne 0 and beta lt p do
+      beta +:= 1;
+      Y := Y * s;
+   end while; */
+
+   beta := -Eltseq(Y[j1, j0 + j1])[j2]/Eltseq(s[j1, j0 + j1])[j2];
+   beta := IntegerRing()!beta;
+   Y := Y*(s^beta);
+
+/*   if beta eq p then error "error in FindPower"; end if; */
+
+   return beta, Y;
+
+end function;
+
+FindIncreasePower := function(weight, h, s);
+
+   j0 := weight[1];
+   j1 := weight[2];
+   j2 := weight[3];
+
+   alpha := -Eltseq(h[j1, j0 + j1])[j2]/Eltseq(s[j1, j0 + j1])[j2];
+   alpha := IntegerRing()!alpha;
+
+   return alpha;
+
+end function;
+
+/* increases the weight of all the other elements of S using s */
+
+IncreaseWeight := function(s, S, SSLP, min, weight);
+     j0 := min[1];
+     j1 := min[2];
+     j2 := min[3];
+     X := [];
+     XSLP := [];
+     POSs := Position(S, s);
+     newweight := [];
+       for h in weight do
+          if h[1] ne s then
+             if h[2] eq [j0, j1, j2] then
+                beta := FindIncreasePower ([j0, j1, j2], h[1], s);
+                hh := h[1] * s^beta;
+                hhslp := SSLP[Position(S, h[1])] * SSLP[POSs]^beta;
+                if hh ne Id(Parent(s)) then
+                   Append (~newweight, <hh, MatrixWeight(hh)>);
+                end if;
+             else
+                hh := h[1];
+                hhslp := SSLP[Position(S, h[1])];
+                Append (~newweight, h);
+             end if;
+             if hh ne Id(Parent(s)) then
+                Append (~X, hh);
+                Append (~XSLP, hhslp);
+             end if;
+          end if;
+       end for;
+
+      return X, XSLP, newweight;
+
+end function;
+
+/* This part of the algorithm works by knocking out entries of Y using
+   generators of least weight in S until Y is the identity matrix. */
+
+KillEntries := function(Y, S, SSLP);
+
+   yslp := Identity(Parent(SSLP[1]));
+
+   /* Calculating the element of S with the least weight */
+   weight := [<S[i], MatrixWeight(S[i])> : i in [1..#S]];
+   weights := [weight[i, 2] : i in [1..#S]];
+   weight1 := [];
+   for w in [1..#weight] do
+      Append(~weight1, weight[w, 2, 1]);
+   end for;
+   j0 := Minimum(weight1);
+   weight2 := [];
+   for w in [1..#weight] do
+      if weight[w, 2, 1] eq j0 then
+         Append(~weight2, weight[w, 2, 2]);
+      end if;
+   end for;
+   j1 := Minimum (weight2);
+   weight3 := [];
+   for w in [1..#weight] do
+      if (weight[w, 2, 1] eq j0) and (weight[w, 2, 2] eq j1) then
+         Append(~weight3, weight[w, 2, 3]);
+      end if;
+   end for;
+   j2 := Minimum (weight3);
+
+   while #S ne 0 do
+      pos := Position(weights, [j0, j1, j2]);
+      s := S[pos];
+      sslp := SSLP[pos];
+      beta, Y := FindPower(s, Y, [j0, j1, j2]);
+      yslp := yslp * sslp^beta;
+      Remove(~S, pos);
+      Remove(~SSLP, pos);
+      Remove(~weight, pos);
+      if #S eq 0 then break; end if;
+
+      weights := [weight[i, 2] : i in [1..#S]];
+      weight1 := [];
+      for w in [1..#weight] do
+         Append(~weight1, weight[w, 2, 1]);
+      end for;
+      j0 := Minimum(weight1);
+      weight2 := [];
+      for w in [1..#weight] do
+         if weight[w, 2, 1] eq j0 then
+            Append(~weight2, weight[w, 2, 2]);
+        end if;
+      end for;
+      j1 := Minimum (weight2);
+      weight3 := [];
+      for w in [1..#weight] do
+         if (weight[w, 2, 1] eq j0) and (weight[w, 2, 2] eq j1) then
+            Append(~weight3, weight[w, 2, 3]);
+        end if;
+      end for;
+      j2 := Minimum (weight3);
+
+end while;
+
+return yslp;
+
+end function;
+
+/* S is a list of generators for the p-group, SSLP is a list giving
+   each generator as an SLP, s is the element of S that you are about
+   to remove and are using to multiply the other elements of S in order
+   to give them higher matrix weight. min is the matrix weight of s. */
+
+IncreaseDepthPair := function(s, S, SSLP, min)
+   j0 := min[1];
+   j1 := min[2];
+   j2 := min[3];
+   identity := Id(Parent(s[1]));
+   X := [];
+   XSLP := [];
+   POSs := Position(S, s);
+   for h in S do
+      if h[1] ne s[1] then
+         if h[2] eq [j0, j1, j2] then
+            beta := FindIncreasePower ([j0, j1, j2], h[1], s[1]);
+            v := h[1] * s[1]^beta;
+            hh := <v, MatrixWeight(v)>;
+            hhslp := SSLP[Position(S, h)] * SSLP[POSs]^beta;
+         else
+            hh := h;
+            hhslp := SSLP[Position(S, h)];
+         end if;
+         if hh[1] ne identity then
+            Append (~X, hh);
+            Append (~XSLP, hhslp);
+         end if;
+      end if;
+   end for;
+
+   return X, XSLP;
+
+end function;
+
+PChiefSeriesGenerators := function(X, XSLP: initial := false)
+
+   if #X eq 0 then return [], []; end if;
+
+   YSLP := XSLP;
+   B := [];
+   BSLP := [];
+   p := Characteristic(BaseRing(X[1]));
+   identity := Id(Parent(X[1]));
+
+   depth := [MatrixWeight(g) : g in X];
+   Y := [<X[i], depth[i]> : i in [1..#X]];
+
+   depth1 := [depth[x, 1] : x in [1..#depth]];
+   j0 := Minimum (depth1);
+   depth2 := [];
+   for x in [1..#X] do
+      if depth[x, 1] eq j0 then
+         Append(~depth2, depth[x, 2]);
+      end if;
+   end for;
+   j1 := Minimum (depth2);
+   depth3 := [];
+   for x in [1..#X] do
+      if (depth[x, 1] eq j0) and (depth[x, 2] eq j1) then
+         Append(~depth3, depth[x, 3]);
+      end if;
+   end for;
+   j2 := Minimum (depth3);
+
+   while #Y ne 0 do
+      pos := Position (depth, [j0, j1, j2]);
+      g := Y[pos];
+      gslp := YSLP[pos];
+      Append(~B, g[1]);
+      Append(~BSLP, gslp);
+
+      Y, YSLP := IncreaseDepthPair(g, Y, YSLP, [j0, j1, j2]);
+
+      if initial then
+         v := g[1]^p;
+         if v ne identity then
+            Append(~Y, <v, MatrixWeight(v)>);
+            Append(~YSLP, gslp^p);
+         end if;
+         T := #X lt #B select X else B;
+         TSLP := #X lt #B select XSLP else BSLP;
+         for x in T do
+            v := (g[1], x);
+            if v ne identity then
+               Append(~Y, <v, MatrixWeight(v)>);
+               xslp := TSLP[Position(T, x)];
+               Append(~YSLP, (gslp, xslp));
+            end if;
+         end for;
+      end if;
+
+      if #Y eq 0 then break; end if;
+
+      depth := [Y[j, 2] : j in [1..#Y]];
+      depth1 := [depth[x, 1] : x in [1..#depth]];
+      j0 := Minimum (depth1);
+      depth2 := [];
+      for x in [1..#Y] do
+         if depth[x, 1] eq j0 then
+            Append(~depth2, depth[x, 2]);
+         end if;
+      end for;
+      j1 := Minimum (depth2);
+      depth3 := [];
+      for x in [1..#Y] do
+         if (depth[x, 1] eq j0) and (depth[x, 2] eq j1) then
+            Append(~depth3, depth[x, 3]);
+         end if;
+      end for;
+      j2 := Minimum (depth3);
+
+   end while;
+
+   return B, BSLP;
+
+end function;
+
+/* return generating set which determines (decreasing) chief series
+   subs for matrix group X */
+
+intrinsic GetBaseForPGroup(K::GrpMat, X::SeqEnum, XSLP::SeqEnum) -> SeqEnum, SeqEnum
+{Returns generating set which determines (decreasing) chief series subs for matrix group X};
+
+   if assigned K`X then
+      return K`X, K`XSLP;
+   end if;
+
+/* otherwise make a call to the regular function */
+
+   K`X, K`XSLP := PChiefSeriesGenerators(X, XSLP: initial := true);
+
+   return K`X, K`XSLP;
+
+end intrinsic;
+
+intrinsic GetPFlag(V::ModTupFld, K::GrpMat) -> SeqEnum, SeqEnum
+{Returns generating set which determines (decreasing) chief series subs for matrix group X};
+
+   if assigned K`CB then
+      return K`CB;
+   end if;
+
+   _, K`CB := PInvariantFlag(V, K);
+
+   return K`CB;
+
+end intrinsic;

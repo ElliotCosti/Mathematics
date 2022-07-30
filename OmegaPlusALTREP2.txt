@@ -1,0 +1,369 @@
+load "C:/Documents and Settings/Elliot Costi/My Documents/Mathematics/Ruth2 - 17.m";
+load "C:/Documents and Settings/Elliot Costi/My Documents/Mathematics/Orthogonal8.txt";
+load "C:/Documents and Settings/Elliot Costi/My Documents/Mathematics/MatrixPGroup5.txt";
+load "C:/Documents and Settings/Elliot Costi/My Documents/Mathematics/standard.m";
+
+/* preparing the input */
+
+G := OmegaPlus(4, 5);
+
+d := Dimension(G);
+q := #BaseRing(G);
+F := GF(q);
+w := PrimitiveElement(F);
+
+QQ := PlusChosenElements(G);
+QQ := [GL(d, F)!QQ[i] : i in [1..#QQ]];
+_, CB := CreateOmegaPlusGenerators(G);
+GG := sub<SL(d, q)|QQ>;
+
+VG := GModule(GG); 
+VE := ExteriorSquare(VG); 
+n := Dimension(VE);
+
+Ebar := sub<GL(n, q) | [ActionGenerators(VE)[i] : i in [1..#ActionGenerators(VE)]]>;
+
+P := RandomProcess(Ebar);
+A := Random(P); 
+
+QQQ := [];
+for i in [1..#QQ] do
+   Append(~QQQ, (ExteriorSquare(QQ[i])));
+end for;
+
+/* conjugating everything by a random matrix to make the exterior square look random */
+Q := [];
+for i in [1..#QQ] do
+   _, word := OmegaPlusWordInGen(G, QQ[i]^(CB^-1));
+   Append(~Q, Evaluate(word, QQQ)^A);
+end for;
+
+E := sub<GL(n, q)|Q>;
+
+/* Q is the set of generators of E - the alternative representation; g is the element that we need to find in terms of the generators and d is the dimension of the natural representation */
+
+OmegaPlusAltRepWordInGen := function(Q, g, d);
+
+q := #BaseRing(Q[1]);
+F := GF(q);
+omega := PrimitiveElement(F); 
+w := omega;
+M := KMatrixSpace(F, d, d);
+b := Basis(M);
+G := SL(d, q);
+n := Degree(Q[1]);
+e := Degree(F);
+QQ := PlusChosenElements(OmegaPlus(d, F));
+QQ := [GL(d, F)!QQ[i] : i in [1..#QQ]];
+
+CB := ZeroMatrix(GF(q), d, d);
+for i in [1..IntegerRing()!(d/2)] do
+   CB := CB + b[(i-1)*d + 2*i - 1];
+end for;
+for i in [1..IntegerRing()!(d/2)] do
+   CB := CB + b[IntegerRing()!(d/2)*d + i*d - 2*i + 2];
+end for;
+   CB := SL(d, q)!CB;
+
+/* creating H. H is the subgroup of G that fixes the first two bases elements of the natural module. As this has a p-local subgroup, it affords a 2-dimensional submodule in the natural dimension. */
+
+QG := PlusChosenElements(OmegaPlus(d-2, q));
+
+HQ := [];
+for i in [1..#QG] do
+   Append (~HQ, G!InsertBlock(Id(G), QG[i], 3, 3));
+end for;
+Append(~HQ, QQ[3]);
+Append(~HQ, Transpose(QQ[2]));
+Append(~HQ, Transpose(QQ[5]));
+
+H := sub<GL(d, q)|HQ>; /* H is the stabiliser of the first basis vector of the natural module */
+
+/*
+VH := GModule(H);
+_, U := IsIrreducible(VH);
+g := Random(Sp(d, F))^CB;
+V := VectorSpace(F, d);
+U := sub<V|[V!VH!U.i : i in [1..Dimension(U)]]>;
+W := U^g;
+J1, J2, x, xslp := UnipotentStabiliser(K, U);
+L1, L2, y, yslp := UnipotentStabiliser(K, W);
+*/
+
+/* we now map H to the non-natural representation. */
+
+HEQ := [];
+for i in [1..#HQ] do
+   _, word := OmegaPlusWordInGen(G, HQ[i]^(CB^-1));
+   Append(~HEQ, Evaluate(word, Q));
+end for;
+
+HE := sub<GL(n, q)| HEQ>; // is reducible
+VPH := GModule(HE);
+flag, U, Uhat := IsIrreducible(VPH);
+/* U above is a non-trivial submodule */
+while (Dimension(U) eq 1) or (Dimension(Uhat) eq 1) do
+   flag, U, Uhat := IsIrreducible(VPH);
+end while;
+
+/* we now create an elementary abelian p-group K. The generators of K consist of those elements with some power of the primitive element in the top row (excluding the first position), 1s down the leading diagonal and 0s everywhere else */
+
+t1 := QQ[5];
+r1 := QQ[2];
+t2 := Transpose(t1);
+r2 := Transpose(r1);
+v := QQ[8];
+u := t2^2*(t2^t1);
+delta1 := QQ[3];
+delta2 := QQ[6];
+/* s := (r2*(r1^-1)*r2)*u; */
+R2 := (Q[2]^Q[1])^-1;
+s := (R2*(Q[2]^-1)*R2)*((Q[4])^-1);
+
+KQ := [];
+Append(~KQ, t2);
+Append(~KQ, r2^-1);
+for i in [1..(d div 2) - 2] do
+   Append(~KQ, t2^((v*u)^i));
+   Append(~KQ, (r2^((v*u)^i))^-1);
+end for;
+
+FF := sub<F|w^2>;
+py := FF!w;
+Z := IntegerRing();
+
+Ot2 := Id(G);
+for i in [1..e] do
+   Ot2 := Ot2*(t2^(delta2^(i-1)))^Z!Eltseq(py)[i];
+end for;
+Or2 := Id(G);
+for i in [1..e] do
+   Or2 := Or2*((r2^-1)^(delta1^(i-1)))^Z!Eltseq(py)[i];
+end for;
+
+for j in [2..e] do
+   if IsEven(j) then
+      for i in [0..(d div 2) - 2] do
+         Append(~KQ, (Ot2^(delta2^(j div 2 - 1)))^((v*u)^i));
+         Append(~KQ, (Or2^(delta1^(j div 2 - 1)))^((v*u)^i));
+      end for;
+   else
+      for i in [0..(d div 2) - 2] do
+         Append(~KQ, (t2^(delta2^((j-1) div 2)))^((v*u)^i));
+         Append(~KQ, ((r2^(delta1^((j-1) div 2)))^((v*u)^i))^-1);
+      end for;
+   end if;
+end for;
+
+for i in [1..#KQ] do
+   KQ[i] := Transpose(KQ[i]);
+end for;
+
+K := sub<SL(d, F)|KQ>;
+
+S := [K.i : i in [1..Ngens(K)]];
+
+/* mapping K to the non-natural representation */
+
+kk := <Id(Parent(Q[1]))>;
+for i in [1..#S] do
+   _, blob := OmegaPlusWordInGen(G, S[i]^(CB^-1));
+   Append(~kk, Evaluate(blob, Q));
+end for;
+
+KE := sub<GL(n, q)|[kk[i] : i in [1..#kk]]>;
+
+V := VectorSpace(GF(q), n);
+U := sub<V|[V!VPH!U.i : i in [1..Dimension(U)]]>; // Here U has been rewritten in vectors of length n but the module still has its original dimension
+
+W := U^g;
+
+Conj := function(W, k)
+return sub<VectorSpace(GF(q), n)|[W.i*k : i in [1..Dimension(W)]]>; // creating W^k
+end function;
+
+/* Ruth2. This function maps U and W to a canonical subspace of U and W in the orbit of the p-group KE. If the preimage of g in G has a non-zero entry in the (1, 1) position, then U and W are in the same orbit of KE and hence U^x eq W^y. If the (1, 1) entry is zero however, then U^x ne W^y and so we permutes the columns of g until we get a non-zero entry in the (1, 1) position.  */
+
+ComputeBase := false;
+J1, J2, x, xslp := UnipotentStabiliser(KE, U:ComputeBase := false);
+L1, L2, y, yslp := UnipotentStabiliser(KE, W:ComputeBase := false);
+
+Ubar := U;
+
+/* U^g*y*x^-1 eq U should be true. */
+
+/* This code permutes the columns of g until we get a
+   non-zero entry in the (1, 1) position of the natural module.
+*/
+
+vpower := 0;
+spower := 0;
+bool := (W^(y*x^-1) eq U);
+temp := g;
+v := Q[8];
+while bool eq false do
+   g := g*v;
+   vpower := vpower + 1;
+   W := U^g;
+   J1, J2, x, xslp := UnipotentStabiliser(KE, U:ComputeBase := false);
+   L1, L2, y, yslp := UnipotentStabiliser(KE, W:ComputeBase := false);
+   bool := (W^(y*x^-1) eq U);
+   if vpower gt d then
+     vpower := 0;
+     g := temp;
+     break;
+   end if;
+end while;
+while bool eq false do
+   spower := 1;
+   g := g*v*s;
+   vpower := vpower + 1;
+   W := U^g;
+   J1, J2, x, xslp := UnipotentStabiliser(KE, U:ComputeBase := false);
+   L1, L2, y, yslp := UnipotentStabiliser(KE, W:ComputeBase := false);
+   bool := (W^(y*x^-1) eq U);
+   if bool eq false then g := g*(s^-1); end if;
+end while;
+
+// g*y*x^-1 should now be in H
+
+/* the above bit will have to be changed to allow for the fact that we have a different Weyl group */
+
+/* We have now killed the top row of the preimage of g. We now do the same to the second row */
+
+for i in [1..#KQ] do
+   KQ[i] := Transpose(KQ[i]);
+end for;
+
+K := sub<SL(d, q)|[KQ[i] : i in [1..#KQ]]>;
+S1 := [K.i : i in [1..Ngens(K)]];
+
+kk2 := <Id(Parent(Q[1]))>;
+for i in [1..#S1] do
+   _, blob := OmegaPlusWordInGen(G, S1[i]^(CB^-1));
+   Append(~kk2, Evaluate(blob, Q));
+end for;
+
+KE2 := sub<GL(n, q)|[kk2[i] : i in [1..#kk2]]>;
+
+Remove(~HQ, Position(HQ, Transpose(QQ[2])));
+Append(~HQ, QQ[2]);
+H := sub<GL(d, q)|HQ>;
+
+_, splodge := OmegaPlusWordInGen(OmegaPlus(d, F), (QQ[2])^(CB^-1));
+splodge1:= Evaluate(splodge, Q);
+
+Remove(~HEQ, #HEQ);
+Append(~HEQ, splodge1);
+HE2 := sub<GL(n, q)| HEQ>;
+
+VPH2 := GModule(HE2);
+flag, U, Uhat := IsIrreducible(VPH2);
+while (Dimension(U) eq 1) or (Dimension(Uhat) eq 1) do
+   flag, U, Uhat := IsIrreducible(VPH2);
+end while;
+U := sub<V|[V!VPH2!U.i : i in [1..Dimension(U)]]>;
+
+h := g*y*x^-1;
+
+/* W := sub<VectorSpace(GF(q), n)|[U.i*h : i in [1..Dimension(U)]]>; */
+W := U^h;
+
+ComputeBase := false;
+J1, J2, x, xslp1 := UnipotentStabiliser(KE2, U:ComputeBase := false);
+L1, L2, y, yslp1 := UnipotentStabiliser(KE2, W:ComputeBase := false);
+
+// No need to perform the checks as before as we know that the top left hand corner cannot now be 0 in the natural representation.
+
+a := h*y*x^-1; // this has zeroes in the first two rows and columns in the natural rep (except the 1, 1 place)
+
+Y := [];
+for i in [1..Ngens(KE)] do
+   Append(~Y, KE.i^a); // these all should be multiples of the generators of KE meaning you can solve the equation (x_1 .. x_d) = (y_1 .. y_d)A in the lower dimension, where A is the untouched d-1 * d-1 portion of the matrix g
+end for;
+
+// So Y[1], for example, is the image of a matrix whose second row is the top row of A. Hence it will be some linear combination of generators of KE.
+
+// psi := hom<Sp(d, F) -> E | (E!(ActionGenerators(VE)[1])^A), (E!(ActionGenerators(VE)[2])^A)>;
+// (psi^-1)(a);
+// GG := sub<SL(d, F)|QQ>;
+// psi := hom<E -> GG | Q>;
+
+/* we calculate what each Y[i] is in the natural representation */
+Z := [];
+Append(~Z, Id(G));
+for i in [1..d-2] do
+   Z[i+1] := Evaluate(MatrixPGroupWordInGen(Y[i], KE), S);
+end for;
+
+Z1 := M!Evaluate(MatrixPGroupWordInGen((KE.1 * KE.2^-1)^a, KE), S);
+Z[1] := Z1 - M!Z[2] + M!Z[3];
+
+/* constructing the preimage of a */
+aa := M!b[1];
+for i in [1..d-1] do;
+   for j in [2..d] do;
+      aa := aa + Z[i][1, j] * b[d*i + j];
+   end for;
+end for;
+
+// aa * Evaluate(xslp1, S1) * Evaluate(yslp1^-1, S1) * Evaluate(xslp, S) * Evaluate(yslp^-1, S);
+
+bool := false;
+// QQ := [Q[i] : i in [1..#Q]];
+det := Determinant(aa);
+g := temp;
+p := Factorisation(q)[1][1];
+Scalars := <>;
+for i in [1..p-1] do
+   for j in [0..e-1] do
+      Append(~Scalars, ScalarMatrix(n, i)*w^j);
+   end for;
+end for;
+Scalars := sub<GL(n, q)|[Scalars[i] : i in [1..#Scalars]]>;
+
+// _, J := OrthogonalForm(OmegaPlus(d, F));
+J := ZeroMatrix(F, d, d);
+for i in [1..d] do
+   J[i, d-i+1] := 1;
+end for;
+J := CB^-1*J*CB;
+
+while bool eq false do
+   sq := Root(det, d); // may give wrong answer as multivalued.
+   word := sq^-1 * aa * Evaluate(xslp1, S1) * Evaluate(yslp1^-1, S1) * Evaluate(xslp, S) * Evaluate(yslp^-1, S);
+   flag, word := OmegaPlusWordInGen(OmegaPlus(d, F), word^(CB^-1));
+
+   bool := Evaluate(word, Q) eq g * (v^-1)^-vpower * (s^-1)^-spower;
+   scalar := Id(Parent(Q[1]));
+/*   if bool eq false then
+   for ss in Scalars do
+      if Evaluate(word, Q)/ss eq g* (v^-1)^-vpower * (s^-1)^-spower then scalar := ss; bool := true; break; end if;
+      if Evaluate(word, Q)/ss eq g* (v^-1)^-vpower * (s^-1)^-spower then break; end if;
+   end for;
+   end if;
+*/
+   if (bool eq false) then
+      j := Root((Transpose(aa)*J*aa)[1, 2], 2);
+      aa := aa/j;
+      if j eq 1 then
+         aa := -aa;
+      end if;
+   end if;
+
+   det := Determinant(aa);
+
+end while;
+
+R2 := (Parent(word).2^Parent(word).1)^-1;
+ss := (R2*(Parent(word).2^-1)*R2)*((Parent(word).4)^-1);
+word := word * (ss^-1)^spower * ((Parent(word).8)^-1)^vpower;
+
+if scalar eq Id(Parent(Q[1])) then
+   flag := Evaluate(word, Q) eq g;
+else
+   flag := Evaluate(word, Q)/scalar eq g;
+end if;
+return word, scalar[1, 1], flag;
+		
+end function;

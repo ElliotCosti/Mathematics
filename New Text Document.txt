@@ -1,0 +1,30 @@
+CB4 := GL(4, F)![1, 0, 0, 0,
+0, 0, 0, 1,
+0, 1, 0, 0,
+0, 0, -1, 0];
+
+_, x1 := IsProportional((A^CB4), 2);
+x2 := x1[2];
+x1 := x1[1];
+x1 := x1/Root(Determinant(x1), 2);
+x2 := x2/Root(Determinant(x2), 2);
+
+_, w1 := WordInGen(SL(2, F), x1);
+_, w2 := WordInGen(SL(2, F), x2);
+
+sll := SL(2, F);
+QQ[1] -> Q[1]
+QQ[2] -> Q[1]
+QQ[3] -> Q[2]
+QQ[4] -> Q[3]
+
+
+QQ[1] -> Q[4]
+QQ[2] -> Q[4]
+QQ[3] -> Q[5]
+QQ[4] -> Q[6]
+
+W1 := Evaluate(w1, [sl!Q[4], sl!Q[4], sl!Q[5], sl!Q[6]]);
+W2 := Evaluate(w2, [sl!Q[1], sl!Q[1], sl!Q[2], sl!Q[3]]);
+
+assert W1 * W2 eq A;

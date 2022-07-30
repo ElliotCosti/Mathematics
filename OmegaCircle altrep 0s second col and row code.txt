@@ -1,0 +1,8 @@
+VH2 := GModule(H);
+_, UH := IsIrreducible(VH2);
+VH := VectorSpace(GF(q), d);
+UH := sub<VH|[VH!VH2!UH.i : i in [1..Dimension(UH)]]>;
+WH := UH^gg;
+
+JH1, JH2, xH, xslpH := UnipotentStabiliser(K, UH:ComputeBase := false);
+LH1, LH2, yH, yslpH := UnipotentStabiliser(K, WH:ComputeBase := false);

@@ -1,0 +1,66 @@
+G := SU(7, 7);
+SLP := SLPGroup(7);
+CB := ChangeOfBasis(G);
+Q := SUChosenElements(G);
+
+for i in [1..100] do
+
+S1 := Id(SLP);
+S2 := Id(SLP);
+A := Random(G)^CB;
+AA := A;
+GetAOne(~A, ~S1, ~S2);
+assert A eq Evaluate(S1, Q)*AA*Evaluate(S2, Q);
+assert A[1, 1] eq 1;
+
+end for;
+
+for i in [1..#Q] do
+
+S1 := Id(SLP);
+S2 := Id(SLP);
+A := Q[i];
+AA := A;
+GetAOne(~A, ~S1, ~S2);
+assert A eq Evaluate(S1, Q)*AA*Evaluate(S2, Q);
+assert A[1, 1] eq 1;
+
+end for;
+
+for i in [1..100] do
+
+S1 := Id(SLP);
+S2 := Id(SLP);
+A := Random(SU(7, 7))^CB;
+AA := A;
+GetAOne(~A, ~S1, ~S2);
+assert A eq Evaluate(S1, Q)*AA*Evaluate(S2, Q);
+assert A[1, 1] eq 1;
+KillPlace(~A, ~S1, ~S2);
+assert A eq Evaluate(S1, Q)*AA*Evaluate(S2, Q);
+assert A[1, 3] eq 0;
+
+end for;
+
+for i in [1..100] do
+
+S1 := Id(SLP);
+S2 := Id(SLP);
+A := Random(SU(7, 7))^CB;
+AA := A;
+GetAOne(~A, ~S1, ~S2);
+assert A eq Evaluate(S1, Q)*AA*Evaluate(S2, Q);
+assert A[1, 1] eq 1;
+KillRow(~A, ~S1, ~S2);
+assert A eq Evaluate(S1, Q)*AA*Evaluate(S2, Q);
+assert A[3, 1] eq 0;
+
+end for;
+
+
+
+
+
+
+
+

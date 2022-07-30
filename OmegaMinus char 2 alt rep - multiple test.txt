@@ -1,0 +1,62 @@
+load "C:/Users/Elliot/Documents/Mathematics/OmegaMinusALTREP Char2 - 3.txt";
+
+for d in [4, 6, 8, 10, 12] do
+for e in [1..4] do
+
+q := 2^e;
+
+G := OmegaMinus(d, q);
+
+F := GF(q);
+w := PrimitiveElement(F);
+
+QQ := MinusChar2Elements(G);
+QQ := [GL(d, F)!QQ[i] : i in [1..#QQ]];
+GG := sub<SL(d, q)|QQ>;
+
+VG := GModule(GG); 
+VE := ExteriorSquare(VG); 
+n := Dimension(VE);
+
+Ebar := sub<GL(n, q) | [ActionGenerators(VE)[i] : i in [1..#ActionGenerators(VE)]]>;
+
+P := RandomProcess(Ebar);
+A := Random(P); 
+
+QQQ := [];
+for i in [1..#QQ] do
+   Append(~QQQ, (ExteriorSquare(QQ[i])));
+end for;
+
+/* conjugating everything by a random matrix to make the exterior square look random */
+Q := [];
+for i in [1..#QQ] do
+   _, word := OmegaMinusWordInGen(G, QQ[i]);
+   Append(~Q, Evaluate(word, QQQ)^A);
+end for;
+
+E := sub<GL(n, q)|Q>;
+
+P := RandomProcess(E);
+
+for i in [1..#Q] do
+n, q, "Q[", i, "]";
+
+A := Q[i];
+flag, scalar, word := OmegaMinusAltRepWordInGen(E, Q, A, d, q);
+
+assert flag;
+
+end for;
+
+for i in [1..10] do 
+n, q, i; 
+
+A := Random(P);
+flag, scalar, word := OmegaMinusAltRepWordInGen(E, Q, A, d, q);
+
+assert flag;
+
+end for; 
+end for; 
+end for; 

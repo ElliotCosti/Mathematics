@@ -1,0 +1,91 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\hoffset -25truemm
+\usepackage{latexsym}
+\oddsidemargin=27truemm             %%
+\evensidemargin=25truemm            %% inner margin 30mm, outer margin 25mm
+\textwidth=157truemm                %%
+\voffset -25truemm
+\topmargin=22truemm                 %% top margin of 25mm
+\headheight=0truemm                 %% no head
+\headsep=0truemm                    %% no head
+\textheight=240truemm               
+\renewcommand{\thefootnote}{}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{problem}[definition]{Problem}
+\newenvironment{proof}{\normalsize {\sc Proof}:}{{\hfill $\Box$ \\}}
+
+\def\SL{{\rm SL}}
+\def\GL{{\rm GL}}
+\def\U{{\rm U}}
+\def\PSL{{\rm PSL}}
+\def\PSp{{\rm PSp}}
+\def\Stab{{\rm Stab}}
+\def\PSU{{\rm PSU}}
+\def\GF{{\rm GF}}
+\def\Sp{{\rm Sp}}
+\def\SU{{\rm SU}}
+\def\SX{{\rm SX}}
+\def\PX{{\rm PX}}
+\def\GX{{\rm GX}}
+\def\PSX{{\rm PSX}}
+\def\PGL{{\rm PGL}}
+\def\q{\quad}
+\def\centreline{\centerline}
+
+\begin{document}
+
+\title{Quaterly Report}
+\author{Elliot Costi}
+\date{January 2008}
+\maketitle
+
+\newpage
+
+\section{Reading}
+
+\begin{enumerate}
+\item Introduction to Lie Algebras and Representation Theory by James Humphreys - Chapters 2 and 3 of 7.
+\end{enumerate}
+
+\section{Research}
+
+\begin{enumerate}
+\item Wrote an algorithm to write a word in the generators for $\Omega^-(d, F)$, char $F \ne 2$ in a non-natural representation
+\item Calcualted generators for $\Omega^-(d, F)$, char $F = 2$
+\item Wrote algorithms to write a word in the generators for $\Omega^-(d, F)$, char $F = 2$ in both a natural and a non-natural representation
+\item Wrote algorithms to write a word in the generators for $\Omega(d, F)$, $d$ odd, char $F \ne 2$ in both a natural and a non-natural representation
+\item Wrote code to test and debug the above algorithms
+\item Modified all non-natural representation algorithms so that they were able to work over non-natural representations of the same characteristic rather than the same field
+\item Modified the Unitary group algorithms so that they ran faster
+\item Assisted a colleague at Imperial with his problem
+\item Modified {\tt MatrixPGroupWordInGen} so that it ran faster
+\item Wrote 22 pages of a paper that will eventually be turned into a thesis
+\item Started work on writing code to Construct algorithms to write an element of $\PSX(d, q)$ as an element of its generators by considering how the generators act on the projective points.
+\item Timed all algorithms against various variables
+\end{enumerate}
+
+\section{Seminars}
+
+\begin{enumerate}
+\item I gave a Pure Maths Seminar based on my research
+\end{enumerate}
+
+
+\subsection{Things To Be Done}
+
+\begin{enumerate}
+\item Calculate the complexity of the algorithms for which this has not yet been done
+
+\item Continue with the $\PSX(d, q)$ work
+
+\item Continue writing the paper
+
+\end{enumerate}
+
+\end{document}
+

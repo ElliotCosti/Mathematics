@@ -1,0 +1,123 @@
+AttachSpec ("C:/Users/Elliot/Documents/Mathematics/classical/classical");
+load "C:/Users/Elliot/Documents/Mathematics/classical/conjugate.m";
+load "C:/Users/Elliot/Documents/Mathematics/classical/eob-gens.m";
+SetEchoInput (true);
+
+NmrElts := 100;
+
+for d in [3..6] do 
+for q in [2,3,4,5,7,8,9, 25, 27] do 
+G:=SL (d, q);
+for n in [1..NmrElts] do 
+g:=Random (G);
+flag, w := SLWordInGen (G, g);
+G:=SL (d, q);
+X := SLChosenElements (G);
+assert Evaluate (w, X) eq g;
+end for;
+end for;
+end for;
+
+import "C:/Users/Elliot/Documents/Mathematics/classical/rewriting/symplectic.mag": SymplecticCBM;
+
+for d in [4..8 by 2] do 
+for q in [2, 3,4,5,7, 8, 9, 25, 27] do 
+G:=Sp (d, q);
+for n in [1..NmrElts] do 
+g:=Random (G);
+flag, w := SymplecticWordInGen (G, g);
+CB := SymplecticCBM (G);
+G:=Sp (d, q);
+X := SpChosenElements (G);
+assert CB * Evaluate (w, X) *CB^-1 eq g;
+end for;
+end for;
+end for;
+
+import "C:/Users/Elliot/Documents/Mathematics/classical/rewriting/unitary.mag": UnitaryCBM;
+
+/* 
+for d in [4..8 by 2] do
+for q in [3,5,7, 9, 25, 27] do 
+G:=SU (d, q);
+for n in [1..NmrElts] do 
+g:=Random (G);
+flag, w := UnitaryWordInGen (G, g);
+assert flag;
+CB := UnitaryCBM (G);
+G:=SU (d, q);
+X := SUChosenElements (G);
+assert CB * Evaluate (w, X) *CB^-1 eq g;
+end for;
+end for;
+end for;
+*/
+
+import "C:/Users/Elliot/Documents/Mathematics/classical/rewriting/unitary_odd.mag": UnitaryOddCBM;
+for d in [3..7 by 2] do
+for q in [3,5,7, 9, 25, 27] do 
+G:=SU (d, q);
+for n in [1..NmrElts] do 
+g:=Random (G);
+flag, w := UnitaryOddWordInGen (G, g);
+assert flag;
+CB := UnitaryOddCBM (G);
+G:=SU (d, q);
+X := SUChosenElements (G);
+assert CB * Evaluate (w, X) *CB^-1 eq g;
+end for;
+end for;
+end for;
+
+import "rewriting/orth.mag": OmegaCBM;
+
+for d in [4..8 by 2] do
+for q in [3,5,7, 9, 25, 27] do 
+G:=SOPlus (d, q);
+for n in [1..NmrElts] do 
+g:=Random (G);
+flag, w := SOPlusWordInGen (G, g);
+assert flag;
+CB := OmegaCBM (G);
+X := PlusChosenElements (G : SpecialGroup:=true);
+assert CB * Evaluate (w, X) *CB^-1 eq g;
+end for;
+end for;
+end for;
+
+import "rewriting/standard.mag": MinusChosenElements;
+for d in [4..8 by 2] do
+for q in [3,5,7, 9, 25, 27] do 
+G:=SOMinus (d, q);
+X1 := MinusChosenElements (G : SpecialGroup:=true);
+G := sub < GL(d, q) | X1>;
+for n in [1..NmrElts] do 
+g:=Random (G);
+flag, w := SOMinusWordInGen (G, g);
+assert flag;
+X := EOBMinusChosenElements (G : SpecialGroup:=true);
+if d eq 6 then X[6] := X[5]; X[5] := X[4]; end if;
+if d eq 4 then X[6] := X[4]; X[5] := X[3]^0; X[4] := X[5]; end if;
+assert Evaluate (w, X) eq g;
+
+end for;
+end for;
+end for;
+
+import "rewriting/standard.mag": SOChosenElements;
+
+for d in [3..7 by 2] do
+for q in [3,5,7, 9, 25, 27] do 
+G:= SO (d, q);
+X1 := SOChosenElements (G : SpecialGroup:=true);
+G := sub <GL(d, q) | X1>;
+for n in [1..NmrElts] do 
+g:=Random (G);
+flag, w := SOCircleWordInGen (G, g);
+assert flag;
+X := EOBSOChosenElements (G : SpecialGroup:=true);
+if d eq 3 then  X[5] := X[4]; X[4] := X[4]^0; end if;
+assert Evaluate (w, X) eq g;
+end for;
+end for;
+end for;

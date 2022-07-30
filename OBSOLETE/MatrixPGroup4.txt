@@ -1,0 +1,232 @@
+PInvariantFlag := function (V, X)
+
+    F := BaseRing (X);
+    p := #F;
+    d := Degree (X);
+    MA := MatrixAlgebra (F, d);
+    t := Ngens (X);
+    Y := [MA!X.j : j in [1..t]];
+
+    /* clumsy handling of trivial case */
+    if t eq 0 then
+       B := Basis (V);
+       d := #B;
+       W := [sub < V | [B[j] : j in [i..d]]> : i in [1..d]];
+       Append (~W, sub < V | >);
+    else
+       W := [V];
+       k := 1;
+       I := Identity (MA);
+       while Dimension (W[k]) ne 0 do
+          k +:= 1;
+          W[k] := &+[W[k-1] * (Y[j] - I): j in [1..t]];
+       end while;
+    end if;
+
+    flag := [];
+    for i in [1..#W - 1] do
+       F, phi := quo < W[i] | W[i + 1] >;
+       BF := Basis (F);
+       FB := [BF[j] @@ phi : j in [1..Dimension (F)]];
+       flag cat:= FB;
+    end for;
+
+    Spaces := [sub < V | >] cat
+            [sub <V | [flag[i]: i in [#flag..j by -1]]>: j in [#flag..1 
+by -1]];
+    Reverse (~Spaces);
+
+    CB := (GL (d, p) ! &cat[Eltseq (f): f in flag])^-1;
+    return flag, CB, Spaces;
+
+end function;
+
+
+/*M is the matrix that we are extracting the vector from. j is how many places above the diagonal we are creating the vector from.*/
+
+VectorExtract := function(j, M);
+   v := [];
+   n := Degree(M);
+   q := #BaseRing(M);
+   for i in [1..n-j] do
+      Append(~v, M[i, i+j]);
+   end for;
+   v := VectorSpace(GF(q), n-j)!v;
+
+   return v;
+
+end function;
+
+MatrixWeight := function(M);
+   n := Degree(M);
+   F := BaseRing(M);
+   _, incl := VectorSpace(F, PrimeField(F));
+
+   k := 0;
+   for z in [1..n-1] do
+      for i in [1..n-z] do
+         if M[i, i+z] ne 0 then k := z; break; end if;
+      end for;
+      if k ne 0 then break; end if;
+   end for;
+   v := VectorExtract(k, M);
+   d := Depth(v);
+   dd := Depth(incl(v[d]));
+   return [k, d, dd];
+end function;
+
+FindPower := function(s, Y, weight);
+    p := #PrimeField(BaseRing(Y));
+    j0 := weight[1];
+    j1 := weight[2];
+    j2 := weight[3];
+   F := BaseRing(Y);
+   _, incl := VectorSpace(F, PrimeField(F));
+
+    beta := 0;
+    while incl(Y[j1, j0 + j1])[j2] ne 0 and beta lt p do
+       beta +:= 1;
+       Y := Y * s;
+    end while;
+
+    if beta eq p then error "error in FindPower"; end if;
+
+    return beta, Y;
+end function;
+
+FindIncreasePower := function(weight, h, s);
+   p := Factorisation(#BaseRing(s))[1][1];
+   j0 := weight[1];
+   j1 := weight[2];
+   j2 := weight[3];
+   F := BaseRing(s);
+   _, incl := VectorSpace(F, PrimeField(F));
+
+   alpha := -Eltseq(h[j1, j0 + j1])[j2]/Eltseq(s[j1, j0 + j1])[j2];
+   
+   // You want to kill the first entry in h (in the diagonal sense). Call this entry b. A power of s will do it.
+   // Let a be the first entry of s (in the diagonal sense). Then the first entry of s^alpha is alpha*a.
+   // The first entry of h*(s^alpha) is b + alpha*a. You want to find the power of s that kills the the first entry of h.
+   // So you want to solve b + alpha*a = 0.
+   
+   /*
+   if exists (alpha) {alpha : alpha in [1..p - 1] |
+      MatrixWeight(h * s^alpha)[1] gt j0} eq false then
+      if exists (alpha) {alpha : alpha in [1..p - 1] |
+         MatrixWeight(h * s^alpha)[2] gt j1} eq false then
+         if exists (alpha) {alpha : alpha in [1..p - 1] |
+            MatrixWeight(h * s^alpha)[3] gt j2} eq false then error "error in FindIncreasePower";
+   end if; end if; end if;
+   */
+   alpha := IntegerRing()!alpha;
+   
+   return alpha;
+end function;
+
+/*increases the weight of all the other elements of S using s*/
+IncreaseWeight := function(s, S, SSLP, min, weight);
+     j0 := min[1];
+     j1 := min[2];
+     j2 := min[3];
+     X := [];
+     XSLP := [];
+     newweight := [];
+       for h in weight do
+          if h[1] ne s then
+             if h[2] eq [j0, j1, j2] then
+                beta := FindIncreasePower ([j0, j1, j2], h[1], s);
+                hh := h[1] * s^beta;
+                hhslp := SSLP[Position(S, h[1])] * SSLP[Position(S, s)]^beta;
+		Append (~newweight, <hh, MatrixWeight(hh)>);
+             else
+                hh := h[1];
+                hhslp := SSLP[Position(S, h[1])];
+		Append (~newweight, h);
+             end if;
+             Append (~X, hh);
+             Append (~XSLP, hhslp);
+          end if;
+       end for;
+
+      return X, XSLP, newweight;
+end function;
+
+KillEntries := function(Y, S, SSLP);
+
+yslp := Identity(SSLP);
+SSLP := [SSLP.i : i in [1..Ngens(SSLP)]];
+
+weight := [<S[i], MatrixWeight(S[i])> : i in [1..#S]];
+weights := [weight[i, 2] : i in [1..#S]];
+weight1 := [];
+   for w in [1..#weight] do
+       Append(~weight1, weight[w, 2, 1]);
+   end for;
+j0 := Minimum(weight1);
+weight2 := [];
+   for w in [1..#weight] do
+       if weight[w, 2, 1] eq j0 then
+          Append(~weight2, weight[w, 2, 2]);
+       end if;
+   end for;
+j1 := Minimum (weight2);
+weight3 := [];
+   for w in [1..#weight] do
+       if (weight[w, 2, 1] eq j0) and (weight[w, 2, 2] eq j1) then
+          Append(~weight3, weight[w, 2, 3]);
+       end if;
+   end for;
+j2 := Minimum (weight3);
+
+while #S ne 0 do
+   s := S[Position(weights, [j0, j1, j2])];
+   sslp := SSLP[Position(weights, [j0, j1, j2])];
+   beta, Y := FindPower(s, Y, [j0, j1, j2]);
+   yslp := yslp * sslp^beta;
+
+   S, SSLP, weight := IncreaseWeight(s, S, SSLP, [j0, j1, j2], weight);
+   if #S eq 0 then break; end if;
+
+   weights := [weight[i, 2] : i in [1..#S]];
+   weight1 := [];
+      for w in [1..#weight] do
+         Append(~weight1, weight[w, 2, 1]);
+      end for;
+   j0 := Minimum(weight1);
+   weight2 := [];
+      for w in [1..#weight] do
+         if weight[w, 2, 1] eq j0 then
+            Append(~weight2, weight[w, 2, 2]);
+        end if;
+      end for;
+   j1 := Minimum (weight2);
+   weight3 := [];
+      for w in [1..#weight] do
+         if (weight[w, 2, 1] eq j0) and (weight[w, 2, 2] eq j1) then
+            Append(~weight3, weight[w, 2, 3]);
+        end if;
+      end for;
+   j2 := Minimum (weight3);
+
+end while;
+
+return yslp;
+
+end function;
+
+/*Y is an element of the p-group K*/
+MatrixPGroupWordInGen := function(Y, K);
+// we firstly upper uni-triangularise the matrices
+
+   q := #BaseRing(Y);
+   V := VectorSpace(GF(q), Degree(Y));
+   _, CB := PInvariantFlag(V, K);
+   S := [K.i^CB : i in [1..Ngens(K)]];
+   Y := Y^CB;
+
+   SSLP := SLPGroup(#S);
+
+   yslp := KillEntries(Y, S, SSLP);
+
+   return yslp^-1;
+end function;

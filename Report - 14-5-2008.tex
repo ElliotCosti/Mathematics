@@ -1,0 +1,85 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\hoffset -25truemm
+\usepackage{latexsym}
+\oddsidemargin=27truemm             %%
+\evensidemargin=25truemm            %% inner margin 30mm, outer margin 25mm
+\textwidth=157truemm                %%
+\voffset -25truemm
+\topmargin=22truemm                 %% top margin of 25mm
+\headheight=0truemm                 %% no head
+\headsep=0truemm                    %% no head
+\textheight=240truemm               
+\renewcommand{\thefootnote}{}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{problem}[definition]{Problem}
+\newenvironment{proof}{\normalsize {\sc Proof}:}{{\hfill $\Box$ \\}}
+
+\def\SL{{\rm SL}}
+\def\GL{{\rm GL}}
+\def\U{{\rm U}}
+\def\PSL{{\rm PSL}}
+\def\PSp{{\rm PSp}}
+\def\Stab{{\rm Stab}}
+\def\PSU{{\rm PSU}}
+\def\GF{{\rm GF}}
+\def\Sp{{\rm Sp}}
+\def\SU{{\rm SU}}
+\def\SX{{\rm SX}}
+\def\PX{{\rm PX}}
+\def\GX{{\rm GX}}
+\def\PSX{{\rm PSX}}
+\def\PGL{{\rm PGL}}
+\def\q{\quad}
+\def\centreline{\centerline}
+
+\begin{document}
+
+\title{Quarterly Report}
+\author{Elliot Costi}
+\date{May 2008}
+\maketitle
+
+\newpage
+
+\section{Reading}
+
+\begin{enumerate}
+\item Introduction to Lie Algebras and Representation Theory by James Humphreys - Chapters 1, 2 3 and 4 of 7.
+\end{enumerate}
+
+\section{Research}
+
+\begin{enumerate}
+\item Tidied up Symplectic natural representation code
+\item Extended natural representation code for $\Omega^+$ and $\Omega^-$ so that they work for small dimensions
+\item Extended testing procedure to test the above
+\item Fixed bug in $\Omega^o$ code
+\item Timed {\tt Ruth2} and analysed these timings
+\item Extended the $\Omega^+$ code so that it works for $\SO^+$
+\item Fixed bug in $\SU$ code
+\item Tidied up Symplectic non-natural representation code
+\item Tidied up $\Omega^+$ non-natural representation code
+\item Rewrote {\tt MatrixPGroupWordInGen} so that it was no longer performing an unnecessary action
+\item Wrote a piece of code to see why evaluating an SLP on one set of matrices takes longer than performing this evaluation on another
+\item Modified {\tt Ruth2} so that it would run faster for elementary abelian groups
+\item Modified $\Omega^-$ natural representation code so that {\tt Ruth2} is no longer needed to perform calculations
+\item Made an attempt to rewrite the $\Omega^-$ code so that it works on a different generating set. No real progress has been made with this as yet
+\item Provided timings for all classical groups
+\item Wrote more of my thesis. Now on 53 pages.
+\end{enumerate}
+
+\section{Seminars}
+
+\begin{enumerate}
+\item I gave a talk to the Postgraduate Group Theory Conference in Oxford
+\item I gave a talk at the third year presentation day in May
+\item I gave three seminars on Coxeter / Reflections Groups at the representation theory seminar series
+\end{enumerate}
+
+\end{document}
+

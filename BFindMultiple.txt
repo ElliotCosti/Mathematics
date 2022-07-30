@@ -1,0 +1,50 @@
+BFindMultiple := function (depths, p, u, i, k, h, U)
+
+//    F := BaseRing(u);
+//    _, incl:= VectorSpace(F, PrimeField(F));
+//    if exists (alpha) {alpha : alpha in [1..p - 1] |
+//       SubspaceDepth (depths, u - u * (k * h^alpha), U)[1] gt i[1]} eq false then
+//    if exists (alpha) {alpha : alpha in [1..p - 1] | (SubspaceDepth (depths, 
+// u - u * (k * h^alpha), U)[1] eq i[1] and SubspaceDepth (depths, u - u * (k *
+// h^alpha), U)[2] gt i[2])} eq false then
+//       error "error in FindMultiple";
+//    end if; end if;
+
+//    return alpha;
+
+    w := u - u*k*h;
+
+    temp := [];
+    for i in [n+1..#depths] do
+       temp[i] := depths[i][1];
+    end for;
+    depths := temp;
+
+    dw := DepthPlus(w);
+    while dw[1] in depths do
+       pos := Position (depths, dw[1]) - n;
+
+/* pos is the position in the defined portion of the depths vector with depth equal to that of w.*/
+
+       w := w - w[dw[1]] / U[pos][dw[1]] * U[pos];
+
+/* in the above, w[dw[1]] is the first non zero entry in w and U[pos][dw[1]] 
+is the first non zero entry in U[pos] since both have the same depth. Hence
+this process kills the dw[1]-th position in w. */
+
+       dw := DepthPlus(w);
+    end while;
+
+    beta := 0;
+    v0 := w - (u - u*k);
+    a := Eltseq(v0[i[1]])[i[2]];
+    b := Eltseq((u - u*k)[i[1]])[i[2]];
+    beta := -b/a;
+
+    if beta notin PrimeField(GF(p)) then error "error in BFindMultiple"; 
+end if;
+    beta := IntegerRing()!beta;
+
+    return beta;
+
+end function;

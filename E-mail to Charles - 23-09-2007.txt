@@ -1,0 +1,29 @@
+Dear Charles,
+
+I am trying to see if I can get the non-natural representation
+code for SL to work in cross characteristic. However, I have come
+up with a problem in a part of the code. In this piece of code, HE
+has a normal p-subgroup SY. Should this not mean that it is
+reducible?
+
+To fill in the blanks, I am considering GL(3, 2) as a non-natural
+representation of PSL(2, 7). HE is the image in GL(3, 2) of the
+subgroup H of PSL(2, 7) that stabilises the first basis element of
+the underlying vector space. Magma says that H is irreducible but
+HE is not.
+
+Elliot
+
+G := GL(3, 2);
+
+a := G![0, 1, 1, 1, 0, 0, 1, 0, 1];
+b := G![1, 1, 0, 0, 0, 1, 0, 1, 1];
+
+HE := sub<G|a, b>;
+
+c := G![1, 1, 1, 1, 1, 0, 1, 0, 0];
+
+SY := sub<G|c>;
+
+assert IsNormal(HE, SY);
+assert IsIrreducible(HE);

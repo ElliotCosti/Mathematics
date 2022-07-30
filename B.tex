@@ -1,0 +1,2686 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\usepackage[algo2e,ruled,linesnumbered]{algorithm2e} % for algorithms
+\hoffset -25truemm
+\usepackage{latexsym}
+\oddsidemargin=30truemm             %%
+\evensidemargin=25truemm            %% inner margin 30mm, outer margin 25mm
+\textwidth=155truemm                %%
+\voffset -25truemm
+\topmargin=25truemm                 %% top margin of 25mm
+\headheight=0truemm                 %% no head
+\headsep=0truemm                    %% no head
+\textheight=220truemm               
+\renewcommand{\thefootnote}{}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{problem}[definition]{Problem}
+\newenvironment{proof}{\normalsize {\sc Proof}:}{{\hfill $\Box$ \\}}
+
+\def\X{{\bf X}}
+\def\O{{\bf O}}
+
+\def\SL{{\rm SL}}
+\def\GL{{\rm GL}}
+\def\U{{\rm U}}
+\def\PSL{{\rm PSL}}
+\def\PSp{{\rm PSp}}
+\def\PSU{{\rm PSU}}
+\def\GF{{\rm GF}}
+\def\Sp{{\rm Sp}}
+\def\SU{{\rm SU}}
+\def\SX{{\rm SX}}
+\def\PX{{\rm PX}}
+\def\GX{{\rm GX}}
+\def\PSX{{\rm PSX}}
+\def\PGL{{\rm PGL}}
+\def\q{\quad}
+\def\centreline{\centerline}
+
+\begin{document}
+
+\title{Constructive recognition of classical groups in odd characteristic} 
+\author{C.R.\ Leedham-Green and E.A. O'Brien}
+\date{}
+\maketitle
+
+\begin{abstract}
+Let $G = \langle X \rangle \leq \GL(d, F)$ be 
+one of $\SL (d, F)$, $\Sp (d, F)$, or $\SU (d, F)$
+where $F$ is a finite field of odd characteristic. 
+We present recognition algorithms to construct
+standard generators for $G$ which allow us
+to write an element of $G$ as a straight-line
+program in $X$.
+The algorithms are Las Vegas polynomial-time, 
+subject to the existence of a discrete log oracle for $F$. 
+\end{abstract}
+
+\footnote{This work was supported in part by the Marsden Fund of
+New Zealand via grant UOA 412.
+2000 {\it Mathematics Subject Classification}.
+Primary 20C20, 20C40.}
+
+\section{Introduction}
+\label{intro}
+
+A major goal of the ``matrix recognition project"
+is the development of efficient
+algorithms for the investigation of 
+subgroups of $\GL(d, F)$ where $F$ 
+is a finite field. 
+We refer to the recent survey \cite{OBrien05}
+for background related to this work.
+A particular aim is to 
+identify the composition factors
+of $G \leq \GL(d, F)$. If a problem
+can be solved for the composition factors,
+then it can be frequently be solved for $G$.
+
+One may intuitively think of a {\it straight-line program} (SLP)
+for $g \in G = \langle X \rangle$ as an efficiently stored group word
+on $X$ that evaluates to $g$.  For a formal definition, we
+refer the reader to \cite[p.\ 10]{Seress03} or  
+Section \ref{SLP}.
+A critical property of an SLP is 
+that its length is proportional to the number of 
+multiplications and exponentiations used in
+constructing the corresponding group element. 
+Babai \& Szemer{\'e}di \cite{BabaiSzemeredi84}
+prove that every element of 
+$G$ has an SLP in $X$ of length at most $O(\log^2|G|)$.
+
+Informally, a {\it constructive recognition algorithm}
+constructs an explicit isomorphism
+between a group $G$ and a ``standard" (or natural)
+representation of $G$, and exploits this isomorphism
+to write an arbitrary element of $G$ as
+an SLP in its defining generators. 
+%That the constructive membership problem has a solution was established
+
+In this paper we present constructive
+recognition algorithms for certain of the classical groups.
+Let $\SX(d,q)$ denote $\SL(d,q)$, or $\Sp(d,q)$ (for 
+even $d$), or $\SU(d,q)$, and let $\GX(d,q)$ denote
+$\GL(d,q)$, or $\Sp(d,q)$, or $\U(d,q)$. 
+More precisely, we present and analyse two algorithms that
+take as input a generating subset $X$ of $\SX(d,q)$ for $q$ odd, and
+return as output {\it standard generators} of this group as 
+SLPs in $X$. Usually, these  
+generators are defined with respect to a 
+basis different to that for which $X$ was defined, 
+and a change-of-basis 
+matrix is also returned to relate these bases.
+We can readily write a given element of a classical group 
+as an SLP in terms of these generators, using row-and-column operations.
+
+Similar algorithms are under development for the orthogonal groups
+in odd characteristic.  Further, characteristic 2 can also be 
+addressed in the same style, but the resulting algorithms are more complex.
+We shall consider these cases in later papers.
+
+Our principal result is the following.
+\begin{theorem} \label{main}
+Let $G = \langle X \rangle \leq \GL(d, q)$ denote 
+$\SL(d,q)$, or $\Sp(d,q)$ for even $d$, or $\SU(d,q)$
+where, in all cases, $q$ is odd. 
+There are Las Vegas algorithms which,
+given the input $X$, 
+construct a new standard generating set $S$ 
+for $G$ having the property that 
+an SLP of length $O(d^2 \log q)$
+can be found from $S$ for any $g \in G$. 
+Assuming the existence of a discrete log oracle 
+for $\GF (q)$, 
+the algorithm to construct
+$S$ runs in $O(d (\xi + d^3 \log q + \chi))$ field operations, 
+where $\xi$ is the cost of constructing an independent 
+(nearly) uniformly distributed random element of $G$,
+and $\chi$ is the cost of a call to a discrete log oracle for $\GF(q)$.
+\end{theorem}
+
+We prove this theorem by exhibiting algorithms
+with the stated complexity. If we assume that
+a random element can be constructed in 
+$O(d^3)$ field operations, then $O(d^4)$ is 
+an upper bound to the complexity for fixed $q$. 
+
+Brooksbank's algorithms \cite{Brooksbank03} 
+for the natural 
+representation of $\Sp(d, q)$, $\SU(d, q)$, and $\Omega^\epsilon(d, q)$ 
+have complexity $O(d^5)$ for fixed $q$. More precisely, 
+the complexity of his algorithm is 
+$$O(d^3 \log q (d + \log d \log^3 q) + \xi(d + \log \log q) + d^5 \log^2 q
+   + \chi(\log q)).$$
+%$O(d^2 \log d (\mu + \chi \log q + d\log^4 q))$,
+%where $\epsilon$ is the cost of constructing  a independent 
+%(nearly) uniformly distributed random element,
+%and $\chi$ is the cost of a call to a discrete log oracle for $\GF(q)$.
+The algorithm of Celler \& Leedham-Green \cite{CellerLeedhamGreen98}
+for $\SL(d, q)$ has complexity $O(d^4 \cdot q)$.
+
+The two algorithms presented here reflect a tension 
+between two competing tasks: the speed of construction
+of the standard generators, and minimising the 
+length of the resulting SLPs for the standard 
+generators in $X$.
+The first is designed for optimal efficiency; 
+the second to produce short SLPs.
+We consider this topic in more detail in Section \ref{SLP}.
+
+We establish some notation. 
+Let $g\in G \leq \GL(d, q)$, 
+let $\bar{G}$ denote $G / G \cap Z$
+where $Z$ denotes the centre of $\GL(d, q)$,
+and let $\bar{g}$ denote the image of $g$ in $\bar{G}$.
+The {\it projective centraliser} of $g \in G$
+is the preimage in $G$ of $C_{\bar{G}} (\bar{g})$.
+Further $g \in G$ is a {\it projective involution} 
+if $g^2$ is scalar, but $g$ is not.
+
+A central component of both algorithms
+is the use of involution centralisers.
+In Section \ref{cent} we summarise
+the structure of involution centralisers
+for elements of classical groups in odd characteristic.
+In Section \ref{standard} we define
+standard generators for the classical groups.
+
+In Sections \ref{Alg1} and \ref{Alg2} the two 
+algorithms are described. They
+rely on finding involutions  whose eigenspaces  have
+approximately the same  dimension in the case of the first algorithm,
+and exactly the same dimension  in the second. The probability
+of obtaining such involutions by random search
+is analysed in Sections \ref{Involution} and Section \ref{Equal}.
+The centraliser of an involution  is constructed using an 
+algorithm of Bray \cite{Bray}; this is considered
+in Section \ref{Bray}. The base cases of the
+algorithms (when $d \leq 4$) are discussed in Section \ref{base}. 
+We frequently compute high powers of elements of linear groups; 
+an algorithm for doing this
+efficiently is described in Section \ref{Exp}. The use of powering to
+construct the direct factors from the direct product of two classical
+groups is discussed in Section \ref{Pow}. 
+The complexity of the algorithms and the 
+length of the resulting SLPs for the standard generators
+are discussed in Section \ref{Analysis} and \ref{SLP}.  
+%In Section \ref{grey} we consider the modifications
+%necessary to apply the algorithms to other representations 
+%of the groups in defining characteristic. 
+Finally we report on our implementation of the algorithm, 
+publicly available in {\sc Magma} \cite{Magma}.
+
+\section{Centralisers of involutions in classical groups}\label{cent} 
+We briefly review the structure of involution centralisers 
+in (projective) classical groups 
+defined over fields of odd characteristic.
+A detailed account can be found in \cite{GLS3}.
+\begin{enumerate}
+\item 
+If $u$ is an involution in $\SL(d,q)$, with eigenspaces $E_+$ and
+$E_-$, then the centraliser of $u$ in $\SL(d,q)$ is
+$(\GL(E_+)\times\GL(E_-))\cap\SL(d,q)$. The centraliser of the
+image of $u$ in $\PSL(d,q)$ is the image of the centraliser of $u$ in
+$\SL(d,q)$ if $E_+$ and $E_-$ have different dimensions. If
+$E_+$ and $E_-$ have the same dimension, then in $\PSL(d,q)$ these
+eigenspaces may be interchanged by the centraliser of the image of
+$u$, which is now the image of $(\GL(d/2,q)\wr C_2)\cap\SL(d,q)$ in
+$\PSL(d,q)$.
+
+\item 
+If $u$ is an involution in $\Sp(2n,q)$, with eigenspaces $E_+$ and
+$E_-$, these spaces are  mutually orthogonal, and the form restricted
+to either is non-singular. Thus the centraliser of $u$ is 
+$\Sp(E_+) \times \Sp(E_-)$. The centraliser of the image of $u$ in
+$\PSp(2n,q)$ is the image of $\Sp(E_+)\times\Sp(E_-)$, except when the
+eigenspaces have the same dimension, when the centraliser again
+permutes the eigenspaces. An element of the projective
+centraliser permuting the eigenspaces sends $(v,w)$ to
+$(w\theta,-v\theta)$, where  $\theta$ is an isometry that permutes
+these spaces, so the image of $\Sp(E_+)\times\Sp(E_-)$ has index 2
+in the projective centraliser.
+
+\item 
+If $u$ is an involution in $\SU(d,q)$, the situation is similar.
+Again the eigenspaces of $u$ are mutually orthogonal, and the form
+restricted to the eigenspaces is non-degenerate. The centraliser of
+$u$ in $\SU(d,q)$  is $(\U(E_+)\times\U(E_-))\cap\SU(d,q)$. The
+centraliser of the image of $u$ in $\PSU(d,q)$ is the image of the
+centraliser of $u$ in $\SU(d,q)$  except where the eigenspaces of
+$u$ have the same dimension, when the centraliser is the image of
+$(\U(d/2,q)\wr C_2)\cap\SU(d,q)$ in $\PSU(d,q)$.
+\end{enumerate}
+
+\section{Standard generators for classical groups}
+\label{standard}
+
+We now describe {\it standard generators} for
+the perfect classical groups $\SL(d,q)$, $\Sp(d,q)$ and $\SU(d,q)$
+where $q$ is odd in all cases.
+
+We use the notation $\SX(d,q)$ to denote any  one of these 
+groups, and $\PX(d,q)$ to denote the corresponding central quotient.
+
+Let $V$ be the natural module for a perfect classical group $G$ of the
+above kind.  We define a {\it hyperbolic} basis for $V$ as
+follows. If $G=\SL(d,q)$ then any ordered basis is hyperbolic. If
+$G=\Sp(d,q)$ then $d$ is even, say $d=2n$, and $G$ preserves a
+non-degenerate symplectic form. A hyperbolic basis for $V$ is then an
+ordered basis of the form $\{e_1,f_1,\ldots,e_n,f_n\}$, where, if the
+image of a pair of vectors $(v,w)$ under the form is written as $v.w$,
+then $e_i.e_j=f_i.f_j=0$ for all $i,j$ (including the case $i=j$), and
+$e_i.f_j=0$ for $i\ne j$, and $e_i.f_i=-f_i.e_i=1$ for all $i$. If
+$G=\SU(d,q)$, and $d=2n$ is even, then the definition is exactly as
+for the case of $\Sp(d,q)$ except that, the form being hermitian, the
+condition  $e_i.f_i=-f_i.e_i=1$ for all $i$ is replaced by the
+condition $e_i.f_i=f_i.e_i=1$ for all $i$. If $G=\SU(d,q)$, where
+$d=2n+1$, a hyperbolic basis is of the form
+$(e_1,f_1,\ldots,e_n,f_n,v)$, where the above equations hold, and in
+addition $e_i.v=f_i.v=0$ for all $i$, and $v.v=1$. 
+
+That a hyperbolic basis exists for $V$ is easily established;
+it can be constructed from an arbitrary basis in
+$O(d^3)$ field operations. For details, see 
+for example, \cite[Chapter 2]{Grove02}.
+
+The standard generators introduced here are defined in terms of
+a hyperbolic basis for $V$, which will be defined in terms of the
+given basis by a change-of-basis matrix. 
+
+It is of course a triviality to  {\it write down} the standard generators
+(once they have been defined).  However we must construct these elements
+as SLPs in the given generators.
+
+Once a hyperbolic basis has been chosen for $V$, the Weyl group of $G$
+can be defined as a section of $G$, namely as the group of monomial 
+matrices in $G$ modulo diagonal
+matrices, thus defining a subgroup of the symmetric group $S_d$. For
+$G=\SL(d,q)$, this group is $S_d$. For $\Sp(2n,q)$ the Weyl group 
+is the subgroup of $S_{2n}$ that preserves the system of imprimitivity with blocks
+$\{e_i,f_i\}$ for $1\le i\le n$, and is thus $C_2\wr S_n$. For
+each of $\SU(2n,q)$ and $\SU(2n+1,q)$, the Weyl group 
+is also $C_2\wr S_n$. 
+
+%Our standard generators for $G$ are in two intersecting sets. The first is
+%a generating set for a minimal case, and the second consists
+%of signed permutation matrices that generate the Weyl group of $G$, modulo 
+%diagonal matrices. The
+%permutation matrices are signed, since otherwise matrices of determinant
+%$-1$ would be needed in some cases. 
+
+%The minimal cases are as follows.
+%If $G=\SL(d,q)$ then the minimal case is $\SL(2,q)$. If $G=\Sp(d,q)$
+%the minimal case is $\Sp(4,q)$. If $G=\SU(2n,q)$ the minimal case
+%is $\SU(4,q)$, and if $G=\SU(2n+1,q)$ the minimal case is
+%$\SU(3,q)$.
+%Note that $\Sp(2,q)=\SU(2,q)=\SL(2,q)$.
+
+In detail, the standard generating set $Y$ for $G$ with respect
+to a hyperbolic basis for $V$ is as follows:
+\begin{enumerate}
+\item 
+If $G=\SL(d,q)$ then $Y=\{s,\delta,u,v\}$ is defined as follows.
+All but $v$ lie in the copy of $\SL(2,q)$ that normalises $\langle
+e_1,e_2\rangle$ and centralises $\langle e_3,\ldots,e_d\rangle$, and
+these act on  $\langle e_1,e_2\rangle$ with respect to this ordered
+basis as follows: 
+$$s=\left(\matrix{1&1\cr0&1\cr}\right)\quad
+%t_2=\left(\matrix{1&0\cr1&1\cr}\right)$$            
+\delta = \left(\matrix{\omega&0\cr0&\omega^{-1}\cr}\right)\quad
+u=\left(\matrix{0&1\cr-1&0\cr}\right)$$  
+where $\omega$ is a primitive element for $\GF(q)$.
+Finally $v$ is defined by
+$e_1\mapsto e_d\mapsto -e_{d-1}\mapsto -e_{d-2}\mapsto
+-e_{d-3}\cdots \mapsto -e_1$, [NOT TRUE: Signs wrong -- correct description is below]
+Finally 
+$$v= \left(\matrix{ 0 & 0 &  \ldots & 0 & 1 \cr 
+                  -1 & 0 &  \ldots & 0 & 0 \cr 
+                   0 & -1 &  \ldots & 0 & 0 \cr 
+              \ldots  & \ldots    & \ldots & \ldots   & \ldots \cr
+                   0 &  0  & \ldots & -1 & 0 \cr 
+}
+\right)\quad$$
+the signs chosen to ensure that $v$ has determinant 1. 
+Clearly $u$ and $v$ generate the Weyl
+group, modulo the group of diagonal matrices.
+Note that $v=u$ if $d=2$.
+
+\item 
+If $G=\Sp(d,q)$, where $d=2n$ and $n>1$, then
+$Y=\{s,t,\delta,u,v\}$ where $s$ and $ \delta$ 
+are as defined for $\SL(d,q)$; and $t$ is the element of $G$ 
+that centralises $\langle e_i,f_i:i>2\rangle$, 
+normalises the space $\langle e_1,f_1,e_2,f_2\rangle$,
+and acts on the space with matrix referred to this hyperbolic basis given by
+$$t=\left(\matrix{1&0&0&0\cr0&1&1&0\cr0&0&1&0\cr1&0&0&1\cr}\right);$$ 
+and $u$ and $v$ are permutation matrices defined by
+$u=(e_1,e_2)(f_1,f_2)$ and 
+$v=(e_1,e_2,\ldots,e_n)(f_1,f_2,\ldots,f_n)$.
+Note that $v=u$ if $n=2$.
+
+\item 
+If $G=\SU(d,q)$, where $d=2n$ and $n>1$, then
+$Y=\{s,t,x,\delta, u,v\}$, where $u$ and $v$ 
+are as defined for $\Sp(d,q)$;  and $\delta$, $x$, and $s$ centralise
+all but the first two basis vectors, normalise the space spanned
+by the first two basis vectors, and act on this space, with respect to
+the ordered basis $(e_1,f_1)$ as 
+$$\delta = \left(\matrix{\omega^{q + 1}&0\cr0&\omega^{-(q+1)}\cr}\right)\quad
+s= \left(\matrix{1&\alpha\cr0&1\cr}\right) \quad
+x= \left(\matrix{0&\alpha\cr \alpha^{-q}&0\cr}\right)$$
+where $\omega$ is a primitive element of $\GF(q^2)$,
+and $\alpha=\omega^{(q+1)/2}$; and $t$
+centralises all but the first four basis vectors, normalises the space
+spanned by the first four basis elements, and acts on this space,
+with respect to the ordered basis $(e_1,f_1,e_2,f_2)$ as
+$$t=\left(\matrix{1&0&\omega&0\cr0&1&0&0\cr0&0&1&0\cr0&-\omega^q&0&1\cr}\right).$$
+
+\item
+If $G=\SU(d,q)$, where $d=2n+1$ and $n>0$, then
+$Y=\{s,t,x,y,\delta,u,v\}$, where the generators except for $x$ and $y$
+are as for the even case, but with $t$ omitted if $d=3$. Now $x$ and $y$
+centralise all but the first two and the last basis vectors, normalise the
+space that these three vectors span, and act on this space with respect to
+the ordered basis $(e_1,f_1,v)$ with matrices of the form
+$$\left(\matrix{1&\beta&\gamma\cr
+0&1&0\cr
+0&-\gamma^q&1\cr}\right).$$
+In each case the equation $\gamma^{q+1}+\beta+\beta^q=0$ is satisfied.
+The two values of $\beta$ (one for $x$ and one for $y$)
+are chosen so that they span $\GF(q^2)$ over $\GF(q)$.
+\end{enumerate}
+
+In all cases, these generators have the property that it is easy to construct from them
+any element of any root group, and consequently these generators generate
+the group in question.  The root groups are defined with respect to a maximal
+split torus, which we take to be the group of diagonal matrices in the group in question
+(with the additional restriction, in the case of $\SU(2n+1,q)$, that the final diagonal
+entry is 1).  These root groups can then be constructed as follows.
+
+\begin{enumerate}
+\item If $G=\SL(d,q)$ then the root groups are of the form
+$\{s^{\delta^ig}:0\le i\le q-2\}$,
+where $g\in\langle u,v\rangle$.
+
+\item If $G=\Sp(2n,q)$ then the root groups corresponding to
+long roots are again of the form $\{s^{\delta^ig}:0\le i\le q-2\}$,
+where $g\in\langle u,v\rangle$, and root groups corresponding to
+short roots are of the form $\{t^{\delta^ig}:0\le i\le q-2\}$,
+where $g\in\langle u,v\rangle$.
+
+\item If $G=\SU(2n,q)$ then the root groups are defined by the same formulae
+as in the case $G=\Sp(2n,q)$.
+
+\item If $G=\SU(2n+1,q)$ then the root groups are as in the previous case, together
+with a family of two-parameter groups, namely the set of elements that
+normalise the space spanned by $\{e_i,f_i,v\}$, centralise the other basis elements,
+and act on the above 3-space, with respect to the ordered basis $(e_i,v,f_i)$, as the
+set of matrices  of the form
+$$\left(\matrix{1&\beta&\gamma\cr
+0&1&-\beta^q\cr
+0&0&1\cr}\right),$$
+where the equation $\beta^{q+1}+\gamma+\gamma^q=0$ is satisfied.
+This is a non-abelian group of order $q^3$. Its derived group and
+centre coincide, and these form the set of matrices with $\beta=0$.  If $i=1$ then
+conjugating by $\delta$ multiplies all three matrix entries above the diagonal
+by a primitive element of $\GF(q)$, so these root groups can be written as
+$\{(x^{\delta^i}y^{\delta^j}[x,y]^{\delta^k})^g:0\le i,j,k\le q-2\}$ for
+$g\in\langle u,v\rangle$.
+\end{enumerate}
+
+Define $Y_0:=\{s,\delta,u,v\}$. 
+If $G$ is $\Sp(2n, q)$ where $n > 1$, 
+or $\SU (2n, q)$ or $\SU(2n + 1, q)$ for $n > 0$,
+then $Y_0$ generates $\SL(2,q)\wr S_n$.
+For these groups, the first and major step in our algorithm constructs $Y_0$.
+As a final step, we construct the additional 
+element or elements to obtain $Y$. 
+
+If $G = \SL(2n, q)$, the first step also constructs 
+$\SL(2,q)\wr S_{n}$; in a final step we obtain the $2n$-cycle. 
+
+\section{Algorithm {\tt One}}
+\label{Alg1}
+Algorithm {\tt One} takes as input a generating set $X$ for
+$G=\SX(d,q)$, and returns standard generators for $G$ as SLPs in $X$.
+The generators are in standard form 
+when referred to a basis constructed  by the algorithm. The change-of-basis 
+matrix that expresses this basis in terms of the standard basis for the natural
+module is also returned.
+
+The algorithm employs a ``divide-and-conquer" strategy. Define a
+{\it strong involution} in $\SX(d,q)$ to be an involution whose
+eigenspaces have dimensions in the range $(d/3,2d/3]$ if $d>5$, and 
+in the range $[2,3]$ if $d=5$. For $\Sp(d,q)$ and $\SU(d,q)$ the
+eigenspaces of an involution $u$ are mutually orthogonal, and the form
+restricted to either eigenspace is non-degenerate. Thus, if these
+spaces have dimensions $e$ and $d-e$, then the derived subgroup of the
+centraliser of $u$ in $\SX(d,q)$ is $\SX(e,q)\times\SX(d-e,q)$. Note
+that the dimension of the $-1$-eigenspace of an involution in
+$\SX(d,q)$ is always even.
+
+Algorithm {\tt OneEven} addresses the case of even $d$.
+
+\begin{algorithm2e}[H] 
+\caption{\tt OneEven$(X,{\it type})$}
+\label{alg1:even}
+\tcc{
+$X$ is a generating set for
+the perfect classical group $G$
+in odd characteristic, of type SL or Sp or SU, in even dimension.
+Return standard generating set $Y_0$ for a copy 
+of $\SL(2, q) \wr S_{d/2} \leq G$, the 
+SLPs for the elements of $Y_0$, the change-of-basis matrix,
+and generators for centraliser of involution $k$ defined in line 13.
+}
+\Begin{
+ $d$ := the rank of the matrices in $X$; 
+
+if $d \leq 4$ then return {\tt BaseCase} (X, {\it type, false});
+
+$q$ := the size of the field over which these matrices are defined;   
+
+if {\it type} = SU then $q := q^{1/2}$;  
+
+Find by random search $g \in G:=\langle X\rangle$ of 
+even order such that $g$ powers to 
+a strong involution $h$;
+
+Let $n$ be the dimension of the $+1$-eigenspace of $h$;
+
+Find generators for the centraliser  $C$ of $h$ in $G$;
+
+In the derived subgroup $C'$ of $C$ find generating sets 
+$X_1$ and $X_2$ for the direct factors of $C'$;
+
+$(s_{1},\delta_1,u_1,v_1)$ := {\tt OneEven}$(X_1,{\it type})$;
+
+$(s_2,\delta_2,u_2,v_2)$ := {\tt OneEven}$(X_2,{\it type})$;
+
+Let $(e_1, f_1, \ldots, e_n, f_n, e_{n+1}, f_{n+1}, \ldots, e_d, f_d)$
+be the concatenation of the hyperbolic bases constructed in lines 10 and 11;
+
+$k := (\delta_1^{(q-1)/2})^{v_1^{-1}}\delta_2^{(q-1)/2}$;
+
+Find generators for the centraliser $D$ of $k$ in $G$;
+
+In the derived subgroup $D'$ of $D$ find a generating set $X_3$ for 
+the direct factor
+that acts faithfully on $\langle e_n,e_{n+1},f_n,f_{n+1}\rangle$;
+
+In $\langle X_3\rangle$ find the permutation matrix 
+$j=(e_n,e_{n+1})(f_n,f_{n+1})$;
+
+$v := v_1 j v_2$;
+
+return $(s_1,\delta_1,u_1,v)$, the change-of-basis matrix, and $X_3$.
+}
+\end{algorithm2e}
+
+If the type is SL, then the centraliser of $h$ is 
+$\GL(E_+)\times\GL(E_-)\cap\SL(d,q)$ where $E_+$ and $E_-$ are the
+eigenspaces  of $h$. If the type is Sp, it is
+$\Sp(E_+)\times\Sp(E_-)$, and if the type is SU, it is
+$(U(E_+)\times U(E_-))\cap\SU(d,q)$. In these last two
+cases the restriction of the form to each of the eigenspaces is
+non-singular, and each eigenspace is orthogonal to the other. Thus
+the concatenation of a hyperbolic basis of one eigenspace with a
+hyperbolic basis for the other eigenspace is a hyperbolic basis for
+the whole space. 
+
+As presented the algorithm has been simplified. 
+In lines 11 and 12 we have ignored
+the change-of-basis matrices that are also returned; the change-of-basis 
+returned at line 18 is the concatenation of these bases.
+
+We make the following additional observations on Algorithm {\tt OneEven}. 
+
+\begin{enumerate}
+\item 
+The SLPs that express the standard generators 
+in terms of $X$ are also returned.
+
+\item 
+Generators for the involution centraliser in line 
+8 are constructed using the algorithm of Bray \cite{Bray},
+see Section \ref{Bray}. Of course, $g$ is an element of
+this centraliser. We need only a subgroup of the centraliser that 
+contains its derived subgroup. 
+
+\item 
+The generators for the direct summands
+constructed in line 9 are constructed by forming suitable powers of
+the generators of the centraliser. This step is discussed in
+Section \ref{Pow}.
+
+\item 
+The algorithms for the {\tt BaseCase} calls in lines 3 and 16 are 
+discussed in Section \ref{base}.
+
+\item 
+The search for an element that powers to a suitable involution is
+discussed in Section \ref{Involution}.
+
+\item 
+The recursive calls in lines 10 and 11 are
+in smaller dimension. Not only are the groups of
+smaller Lie rank, but the matrices have degree at most $2d/3$.
+Hence these calls only affect the time or space complexity of the
+algorithm up to a constant multiple; however they contribute to the length of
+the SLPs produced.
+
+\item 
+Note that $k$ in line 12 is an involution: 
+its $-1$-eigenspace is $\langle e_n,f_n,e_{n+1},f_{n+1}\rangle$ and its
+$+1$-eigenspace is
+$\langle e_1,f_1,\ldots, e_{n - 1}, f_{n-1}, e_{n+2},f_{n+2}, \ldots, e_d, f_d \rangle$.
+\end{enumerate}
+ 
+Algorithm {\tt OneOdd}, which considers 
+the case of odd degree $d$, is similar
+to Algorithm {\tt OneEven}.
+Our commentary on the even degree case also applies. 
+
+\begin{algorithm2e}[H]
+\caption{\tt OneOdd$(X,{\it type})$}
+\label{alg1:odd}
+\tcc{
+$X$ is a generating set for
+the perfect classical group $G$
+in odd characteristic and degree, of type SL or SU.
+If $G = \SL(d, q)$, then 
+return standard generating set $Y$ for $G$;
+if $G = \SU(d, q)$ then 
+return generating set $Y_0$ for $\SL(2, q) \wr S_{(d - 1)/2}$. 
+Also return the SLPs for elements of this generating set, 
+the change-of-basis matrix,
+and generators for centraliser of involution $k$ defined in line 13.
+}
+
+\Begin{
+$d$ := the rank of the matrices in $X$;
+
+if $d = 3$ then return {\tt BaseCase} (X, {\it type, false});
+
+ $q$ := the size of the field over which these matrices are defined;  
+
+ if {\it type} = SU then $q := q^{1/2}$;  
+
+Find by random search $g \in G:=\langle X\rangle$ of even order
+ such that $g$ powers to a strong involution $h$;
+
+Let $n$ be the dimension of the $+1$-eigenspace of $h$;
+
+Find generators for the centraliser $C$ of $h$ in $G$;
+
+In the derived subgroup $C'$ of $C$ find generating 
+sets $X_1$ and $X_2$ for the direct factors 
+of $C'$, where $X_1$ centralises the $-1$-eigenspace of $h$;
+
+ $(s_1,\delta_1,u_1,v_1)$ := {\tt OneOdd}$(X_1,{\it type})$;
+
+ $(s_2,\delta_2,u_2,v_2)$ := {\tt OneEven}$(X_2,{\it type})$;
+
+Let $(e_1, f_1, \ldots, e_n, f_n, e_{n+1}, f_{n+1}, \ldots, e_d, f_d)$
+be the concatenation of the hyperbolic bases constructed in lines 10 and 11;
+
+ $k := (\delta_1^{(q-1)/2})^{v_1^{-1}}\delta_2^{(q-1)/2}$;
+
+Find generators for the centraliser $D$ of $k$ in $G$;
+
+In the derived subgroup $D'$ of $D$ find a generating set 
+$X_3$ for the direct factor
+that acts faithfully on $\langle e_n,e_{n+1},f_n,f_{n+1}\rangle$;
+
+In $\langle X_3 \rangle$ find the permutation matrix 
+$j=(e_n,e_{n+1})(f_n,f_{n+1})$;
+
+$v := v_1 j v_2$;
+
+return $(s_1,\delta_1,u_1,v)$, the change-of-basis matrix and $X_3$.
+}
+\end{algorithm2e}
+
+We summarise the main algorithm as Algorithm {\tt OneMain}. 
+
+If $G = \SL(2n, q)$ and $n > 2$, we construct an additional element
+$a$ which is used to construct a $2n$-cycle. 
+It is an element of the centraliser of the involution $k$ 
+computed in each of {\tt OneEven} and {\tt OneOdd}. It acts 
+on the subspace spanned by the basis vectors $e_n, f_n, e_{n+1}, f_{n +1}$ as follows:
+$$\left(\matrix{0&1&0&0\cr0&0&1&0\cr0&0&0&1\cr-1&0&0&0\cr}\right)$$ 
+and centralises the remaining $2n - 4$ basis vectors. 
+The product $av$ is a $2n$-cycle; we perform a change-of-basis that 
+permutes the basis and changes sign to produce the desired one.
+
+\begin{algorithm2e}[H]
+\caption{\tt OneMain$(X,{\it type})$}
+\label{alg1:main}
+\tcc{ $X$ is a generating set for the perfect classical group $G$
+in odd characteristic, of type SL or Sp or SU.
+Return standard generators $Y$ for $G$, the SLPs
+for these generators, and change-of-basis matrix.}
+
+\Begin{
+ 
+$d$ := the rank of the matrices in $X$;
+
+if $d \leq 4$ then return {\tt BaseCase}(X, {\it type, true});
+
+  \eIf{$d$ is odd}
+   {
+       $(s, \delta, u, v)$, $X_3$ := {\tt OneOdd}(X,{\it type});
+
+       \If{type={\rm SL}}
+       {
+          return $(s,\delta,u,v)$ and the change-of-basis matrix;
+       }
+   }{
+       $(s,\delta, u, v)$, $X_3$ := {\tt OneEven}$(X,{\it type})$;
+       }
+
+
+\eIf {type = {\rm SL}} {
+In $\langle X_3 \rangle$ construct additional element $a$ defined above;
+
+   $v := (av)^{-1}$; 
+
+   change basis to obtain desired $d$-cycle $v$;
+
+   return $(s,\delta,u,v)$ and the change-of-basis matrix.
+}
+{
+In $\langle X_3 \rangle$ construct additional element $t$ defined above; 
+
+return $(s, t,\delta,u,v)$ and the change-of-basis matrix.
+}
+}
+\end{algorithm2e}
+
+The correctness and complexity of this algorithm, 
+and the lengths of the resulting SLPs for the 
+standard generators, are discussed in the rest
+of this paper.
+
+\section{Algorithm {\tt Two}} 
+\label{Alg2}
+
+We present a variant of the algorithms in Section \ref{Alg1} based on  
+one recursive call rather than two. Again we denote 
+the groups $\SL(d,q)$, $\Sp(d,q)$
+and $\SU(d,q)$ by $\SX(d,q)$, and the corresponding projective group
+by $\PX(d,q)$.
+
+The key idea is as follows. Suppose that $d$ is a multiple of 4.  
+We find an involution $h \in \SX (d, q)$, as in line 7 of {\tt OneEven},
+but insist that it should have both eigenspaces of dimension $d/2$. 
+
+Let $\bar{h}$ be the image of $h$ in $\PX(d,q)$.
+The centraliser of $\bar{h}$ in $\PX(d,q)$
+acts on the pair of eigenspaces $E_+$ and $E_-$ of $h$, 
+interchanging them. In practice, we construct the
+projective centraliser of $h$ by applying the algorithm 
+of \cite{Bray} to $\bar{h}$ and $\PX(d, q)$, but with the
+additional requirement that we find $\bar{g} \in \PX(d, q)$ 
+that interchanges the two eigenspaces. 
+
+If we now find recursively a set $\cal S$ of
+standard generators for $\SX(E_+)$ with respect the basis $\cal B$,
+then ${\cal S}^g$ is a set of standard generators for $\SX(E_-)$ with
+respect to the basis ${\cal B}^g$. We now use these 
+to construct standard generators for 
+$\SX(d,q)$ exactly as in Algorithm {\tt One}.
+
+If $d$ is an odd multiple of 2, we find an involution with one
+eigenspace of dimension exactly 2. The centraliser of this
+involution gives us $\SX(2,q)$ and $\SX(d-2,q)$. The $d-2$
+factor is now processed as above, since $d-2$ is a multiple of 4, and
+the 2 and $d-2$ factors are combined as in the first algorithm. Thus
+the algorithm deals with $\SX(d,q)$, for even  values of $d$, in a way
+that  is similar in outline to the familiar method of powering, that
+computes $a^n$, by recursion on $n$, as $(a^2)^{n/2}$ for even $n$ and
+as $a(a^{n-1})$ for odd $n$.
+
+Algorithms {\tt TwoTimesFour} and {\tt TwoTwiceOdd} 
+describe the case of even $d$. 
+
+\begin{algorithm2e}
+\caption{\tt TwoTimesFour$(X,{\it type})$}
+\label{alg2:even-b}
+\tcc{ $X$ is a generating set for
+the perfect classical group $G$
+in odd characteristic, of type SL or Sp or SU, in dimension a multiple of 4.
+Return standard generating set $Y_0$ for a copy 
+of $\SL(2, q) \wr S_{d/2} \leq G$, the 
+SLPs for the elements of $Y_0$, the change-of-basis matrix,
+and generators for centraliser of involution $k$ defined in line 14.
+}
+
+\Begin{
+
+$d$ := the rank of the matrices in $X$;
+
+if $d \leq 4$ then return {\tt BaseCase} (X, {\it type, false});
+
+$q$ := the size of the field over which these matrices are defined;  
+
+if {\it type} = SU then $q := q^{1/2}$;  
+
+ Find by random search $g \in G:=\langle X\rangle$ of even order such that 
+$g$ powers to an involution $h$ with eigenspaces of dimension $n = d/2$;
+
+Let $n$ be the dimension of the $+1$-eigenspace of $h$;
+
+ Find generators for the projective centraliser $C$ of $h$ in $G$
+and identify an element $g$ of $C$ that interchanges the two eigenspaces;
+
+In the derived subgroup $C'$ of $C$ find a generating 
+set $X_1$ for one of the direct factors of $C'$;
+
+$(s_1,\delta_1,u_1,v_1)$ := {\tt TwoEven}$(X_1,{\it type})$;
+
+Let $X_2 = X_1^g$;
+
+Conjugate all elements of $(s_1,\delta_1,u_1,v_1)$ by $g$ to 
+obtain  solution $(s_{2},\delta_2,u_2,v_2)$ for $X_2$;
+
+Let $(e_1, f_1, \ldots, e_n, f_n, e_{n+1}, f_{n+1}, \ldots, e_d, f_d)$
+be the concatenation of the hyperbolic bases constructed in lines 10 and 12;
+
+$k := (\delta_1^{(q-1)/2})^{v_1^{-1}}\delta_2^{(q-1)/2}$;
+
+Find generators for the centraliser $D$ of $k$ in $G$;
+
+In the derived subgroup $D'$ of $D$ find a generating set $X_3$ for the direct factor
+that acts faithfully on $\langle e_n,e_{n+1},f_n,f_{n+1}\rangle$;
+
+In $\langle X_3\rangle$ find the permutation matrix $j=(e_n,e_{n+1})(f_n,f_{n+1})$;
+
+$v := v_1 j v_2$;
+
+return $(s_1,\delta_1,u_1,v)$, the change-of-basis matrix, and $X_3$.
+}
+\end{algorithm2e}
+
+\begin{algorithm2e}
+\caption{\tt TwoTwiceOdd$(X,{\it type})$}
+\label{alg2:even-a}
+\tcc{ $X$ is a generating set for
+the perfect classical group $G$
+in odd characteristic, of type SL or Sp or SU, in twice odd dimension.
+Return standard generating set $Y_0$ for a copy 
+of $\SL(2, q) \wr S_{d/2} \leq G$, the 
+SLPs for the elements of $Y_0$, the change-of-basis matrix,
+and generators for centraliser of involution $k$ defined in line 13.
+}
+
+\Begin{
+
+$d$ := the rank of the matrices in $X$;
+
+if $d \leq 4$ then return {\tt BaseCase} (X, {\it type, false});
+
+$q$ := the size of the field over which these matrices are defined;  
+
+if {\it type} = SU then $q := q^{1/2}$;  
+
+ Find by random search $g \in G:=\langle X\rangle$ of even order
+ such that $g$ powers to an involution $h$ with eigenspaces of dimension 
+2 and $d-2$.
+
+Let $n$ be the dimension of the $+1$-eigenspace of $h$;
+
+Find generators for the centraliser $C$ of $h$ in $G$;
+
+ In the derived subgroup $C'$ of $C$ find generating sets 
+$X_1$ and $X_2$ for the direct factors 
+of $C'$ where $X_2$ centralises the eigenspace of dimension 2;
+
+$(s_{1},\delta_1,u_1,v_1)$ := {\tt TwoTwiceOdd}$(X_1,{\it type})$;
+
+$(s_{2},\delta_2,u_2,v_2)$ := {\tt TwoTimesFour}$(X_2,{\it type})$;
+
+Let $(e_1, f_1, \ldots, e_n, f_n, e_{n+1}, f_{n+1}, \ldots, e_d, f_d)$
+be the concatenation of the hyperbolic bases constructed in lines  and 10;
+
+$k := (\delta_1^{(q-1)/2})^{v_1^{-1}}\delta_2^{(q-1)/2}$;
+
+Find generators for the centraliser $D$ of $k$ in $G$;
+
+In the derived subgroup $D'$ of $D$ find a generating set $X_3$ for the direct factor
+that acts faithfully on $\langle e_n,e_{n+1},f_n,f_{n+1}\rangle$;
+
+In $\langle X_3\rangle$ find the permutation matrix $j=(e_n,e_{n+1})(f_n,f_{n+1})$;
+
+$v := v_1 j v_2$;
+
+return $(s_1,\delta_1,u_1,v)$, the change-of-basis matrix, and $X_3$.
+
+}
+\end{algorithm2e}
+
+
+Algorithm {\tt TwoTimesFour} calls no new procedures except in line 6,
+where we construct an involution with eigenspaces of equal dimension.
+This construction is discussed in Section \ref{Involution}.
+
+Algorithm {\tt TwoEven}, which summarises the even degree case,
+returns the generating set $Y_0$ defined in Section \ref{standard}. 
+We complete the construction of $Y$ exactly as in Section \ref{Alg1}.
+
+\begin{algorithm2e}
+\caption{\tt TwoEven$(X,{\it type})$}
+\label{alg2-main:even}
+\tcc{ $X$ is a generating set for
+the perfect classical group $G$
+in odd characteristic, of type SL or Sp or SU, in even dimension.
+Return standard generating set $Y_0$ for a copy 
+of $\SL(2, q) \wr S_{d/2} \leq G$, the 
+SLPs for the elements of $Y_0$, the change-of-basis matrix,
+and generators for centraliser of involution. 
+}
+
+\Begin{
+$d$ := the rank of the matrices in $X$;
+
+\eIf {$d\bmod4=2$} 
+  {
+ 
+   return {\tt TwoTwiceOdd}$(X,{\it type})$;
+  }{
+    return {\tt TwoTimesFour}$(X,{\it type})$;
+  }
+}
+\end{algorithm2e}
+
+If $d$ is odd, then we find an involution whose $-1$-eigenspace has
+dimension 3, thus splitting $d$ as $(d-3)+3$. Since $d-3$ is even, we
+apply the odd case precisely once.
+
+The resulting {\tt TwoOdd} is the same as {\tt OneOdd},
+except that it calls {\tt TwoEven} rather than {\tt OneEven};
+similarly {\tt TwoMain} calls {\tt TwoOdd} and {\tt TwoEven}.
+
+The primary advantage of the second algorithm 
+lies in its one recursive call. 
+This significantly reduces the lengths of the 
+SLPs for the standard generators.
+
+\section{Finding strong involutions}
+\label{Involution}
+
+In the first step of our main algorithms, as outlined in 
+Sections \ref{Alg1} and \ref{Alg2},
+by random search, we obtain an element of
+even order that has as a power a strong involution. 
+We must establish a lower bound
+to the proportion of elements of $\SX(d,q)$ that power up to give
+a strong involution. 
+%We denote the natural module for $\SX(d,q)$ by $V$.
+
+A matrix is {\it separable} if its characteristic polynomial
+has no repeated factors.
+Fulman, Neumann \& Praeger \cite{FNP} 
+provide detailed estimates for the proportions
+of separable matrices in $\GX(d, q)$.
+%, which are valid for all finite fields.
+In particular they establish the following. 
+\begin{theorem}\label{Lemma5.1}  
+The probability that an 
+element of $\GL(d,q)$ or $\U(d,q)$ is separable is 
+at least $1-2/q$.
+The probability that an 
+element of $\Sp(d,q)$ is separable is 
+at least $1-3/q + O(1/q^2)$.
+\end{theorem}
+
+We use these results to assist in our analysis of the 
+proportion of strong involutions in $\SX(d, q)$.
+
+\subsection{The special linear case}\label{sl}
+We commence our analysis with $\SL(d, q)$.
+We first estimate the probability that a random element of
+$\GL(d,q)$ has a power that is an involution having an eigenspace
+of dimension within a given range and then derive 
+similar results for $\SL(d, q)$.
+
+%Since we are willing to estimate within an error that is
+%$O(1/q)$, we may assume, by Theorem \ref{Lemma5.1}, that the characteristic 
+%polynomial of $g \in \GL(d, q)$ has no repeated factors. Thus the natural module 
+%$V$ splits up as the direct sum of the 
+%irreducible $\langle g\rangle$-submodules of $V$.
+
+\begin{lemma}\label{monic} 
+The number of irreducible monic polynomials of degree
+$e>1$ with coefficients in $\GF(q)$ is $k$ where
+$(q^e-1)/e>k\ge q^e(1-q^{-1})/e$.
+\end{lemma}
+\begin{proof}
+Let $k$ denote the number of such polynomials.
+We use the inclusion-exclusion principle to count the
+number of elements of $\GF(q^e)$ that do not lie in any  maximal
+subfield containing $\GF(q)$, and divide this number by $e$, since
+every irreducible monic polynomial of degree $e$ over $\GF(q)$ corresponds
+to exactly $e$ such elements.  Thus 
+$$k = {q^e-\sum_iq^{e/p_i}+\sum_{i<j}q^{e/p_ip_j}-\cdots\over e}$$ 
+where $p_1<p_2<\cdots$ are the distinct prime divisors of $e$. 
+The inequality $(q^e-1)/e >k$ is obvious.  Also, if $e$ is a prime
+then $k=(q^e-q)/e\ge q^e(1-1/q)/e$, with equality if $e=2$.
+Now suppose that $e\ge4$, and let $\ell$ denote the largest prime
+dividing $e$.  Then from the above formula 
+\begin{eqnarray*}
+ek & \ge & q^e-q^{e/\ell}-q^{(e/\ell)-1}-\ldots -1 \\
+   & = &  q^e - (q^{1+e/\ell}-1)/(q-1)\\
+   & \ge & q^e - q^{1+e/2}+1 \\
+   & > & q^e - q^{e-1} \\
+\end{eqnarray*}
+as $1+e/2\le e-1$.
+\end{proof}
+
+\begin{lemma}\label{Lemma5.3} Let $e>d/2$ for $d \geq 4$. 
+The proportion of elements of
+$\GL(d,q)$ whose characteristic polynomial has an irreducible factor
+of degree $e$ is $(1/e)(1+O(1/q))$. 
+More precisely, there are
+universal  constants $c_1$  and $c_2$ such that the proportion is always
+between $(1/e)(1-c_2/q)$ and $(1/e)(1-c_1/q)$.
+\end{lemma}
+\begin{proof}
+Let the characteristic polynomial of $g\in\GL(d,q)$ have an
+irreducible factor $h(x)$ of degree $e$. Then $\{w\in V:w.h(g)=0\}$ is
+a subspace of $V$ of dimension $e$. It follows that the number of
+elements of $\GL(d,q)$ of the required type  is $k_1k_2k_3k_4k_5$
+where $k_1$ is the number of subspaces of $V$ of dimension $e$, 
+$k_2$ is the number of irreducible monic polynomials of degree $e$
+over $\GF(q)$, $k_3$ is the number of elements of $\GL(e,q)$ that
+have a given irreducible characteristic polynomial, $k_4$ is the
+order of $\GL(d-e,q)$, and $k_5$ is the number of complements in
+$V$ to a subspace of dimension $e$.
+In more detail, 
+\begin{eqnarray*}
+k_1 & = & (q^d-1)(q^d-q)\cdots(q^d-q^{e-1})\over(q^e-1)(q^e-q) \cdots (q^e-q^{e-1}) \\
+k_3 & = & (q^e-1)(q^e-q)\cdots(q^e-q^{e-1})\over (q^e-1) \\
+k_4 & = & (q^{d-e}-1)(q^{d-e}-q) \cdots (q^{d-e}-q^{d-e-1}) \\
+k_5 & = & q^{e(d-e)}.
+\end{eqnarray*}
+The formula for $k_3$ arises by taking
+the index in $\GL(e,q)$ of the centraliser of an irreducible element,
+this centraliser being cyclic of order $q^e-1$. 
+The formula for $k_2$ is given in Lemma \ref{monic}. 
+Hence $k_1 k_2 k_3 k_4 k_5 = \vert\GL(d,q)\vert\times k_2/(q^e-1)$. 
+The result follows.  Note that $c_1$ and $c_2$ may be taken to be positive.
+\end{proof}
+
+\begin{lemma}\label{Lemma5.4} Let $e\in(d/3,d/2]$ for $d \geq 4$.
+Let $S_1$ denote the number of elements of $G:=\GL(d,q)$ whose characteristic polynomial
+has two distinct irreducible factors of degree $e$; let $S_2$ denote the number
+of elements of $G$ whose characteristic polynomial has a repeated factor of
+degree $e$; and let $S_3$ denote the number of elements of $G$ whose characteristic
+polynomial has exactly one irreducible factor of degree $e$. 
+Then $S_1={1\over2}\vert\GL(d,q)\vert e^{-2}(1+O(q^{-1}))$, and 
+$S_2=\vert\GL(d,q)\vert O(q^{-1})$, 
+and $S_3=\vert\GL(d,q)\vert(e^{-1}-e^{-2})(1+O(q^{-1}))$,
+where the constants implied by the $O$ notation are absolute constants,
+independent of $d$.
+\end{lemma}
+\begin{proof}  In the proof of Lemma \ref{Lemma5.3} the fact 
+that $e>d/2$ was only used
+to ensure that the characteristic polynomial of an element $g\in G=\GL(d,q)$ has 
+only one irreducible factor of degree $e$.  In the case of the present lemma,
+ If the proof of 
+Lemma \ref{Lemma5.3} is repeated to estimate $S_3$ the
+factor $k_4$ must be replaced by the number of elements of $\GL(d-e,q)$ whose
+characteristic polynomials do not have an irreducible factor of degree $e$. A
+direct application of this lemma then shows that this number is the order
+of $\GL(d-e,q)$ multiplied by a factor of the form $(1-e^{-1})(1+O(1/q))$.
+Thus $S_3=\vert\GL(d,q)\vert(e^{-1}-e^{-2})(1+O(q^{-1}))$. 
+
+The proportion of inseparable elements of $\GL(d,q)$ is
+$O(q^{-1})$ by Theorem\ref{Lemma5.1}, so $S_2=\vert\GL(d,q)\vert O(q^{-1})$,
+and we may ignore the condition that the irreducible factors in question are
+distinct in our estimate of $S_1$.
+ If then the proof of
+Lemma \ref{Lemma5.3} is repeated again to estimate $S_1$ the factor $k_4$ may
+be replaced by the number of elements of $\GL(d-e,q)$ whose characteristic
+polynomials do have an irreducible factor of degree $e$, and the total
+must be divided by 2, since the group elements in question normalise
+two subspaces of dimension $e$.  
+Thus $S_1={1\over2}\vert\GL(d,q)\vert e^{-2}(1+O(q^{-1}))$.  
+\end{proof}
+
+\begin{lemma}\label{Lemma5.5} The results of 
+Lemmas $\ref{Lemma5.3}$ and $\ref{Lemma5.4}$ hold if $\GL(d,q)$
+is replaced by $\SL(d,q)$. 
+\end{lemma}
+\begin{proof}
+We first prove that in Lemma \ref{Lemma5.3} the proportions are exactly the same in
+the case of $\SL(d,q)$.  For in this case $k_4$ must be replaced by
+the number of elements of $\GL(d-e,q)$ of a specified determinant.
+But the number of such elements is exactly the number of elements of
+$\GL(d-e,q)$ divided by $q-1$; so the result follows.  Similarly with
+Lemma \ref{Lemma5.4}, if $e\ne d/2$ the proportions in the two cases are exactly
+equal.  The point is that in these cases we consider the number of
+elements in $\GL(d-e,q)$ or in $\GL(d-2e,q)$, and we need to replace
+these numbers by the number of such elements of a given determinant, thus
+reducing the number by a factor of $q-1$.
+This also applies to $S_2$.  However, this argument breaks down when
+$e=d/2$, as in this case we cannot adjust the determinant of the
+element being constructed by requiring an element of $\GL(d-2e,q)$
+to have a given determinant.  Indeed, in this case it seems that
+the proportions are not exactly equal in the cases of $\GL(d,q)$
+and $\SL(d,q)$.
+To deal with the case $d=e/2$ we need first to consider the norm
+map $N:GF(q^e)\to\GF(q)$.  This defines a homomorphism from
+$\GF(q^e)^\times$ onto $\GF(q)^\times$.  We are concerned with
+the size of the intersection $I_a$ of the pre-image of an arbitrary
+element $a$ of $\GF(q)^\times$ with the set of elements of $\GF(q^e)$
+that lie in no proper subfield.  Since in general the norm map will
+not map a proper subfield of $\GF(q^e)$ onto $\GF(q)$ the size of $I_a$
+will vary with $a$.  But clearly $\vert I_a\vert=c_a{q^e-1
+\over q-1}$, where $c_a=1+O(1/q)$.
+Now $S_1$ is approximated, in the case of $\SL(d,q)$, by 
+$${1\over2}\sum_a\vert I_a\vert\vert I_{a^{-1}}\vert\left({\vert\GL(e,q)\vert\over e-1}
+\right)^2$$
+where the error in the approximation is due to the fact that we have ignored the 
+condition that the irreducible factors of the characteristic polynomial should be
+distinct.  The analogous estimate for $S_1$ in the case of $\GL(d,q)$ replaces
+$\sum_a\vert I_a\vert \vert I_{a^{-1}}\vert$ by $\sum_{a,b}\vert I_a\vert\vert I_b\vert$,
+which is approximately $q-1$ times as big, the error arising from the fact that
+the cardinality of $I_a$ is not quite constant.  We have seen that this error 
+corresponds to a factor of the form $1+O(1/q)$, as does ignoring the condition
+that the irreducible factors in the characteristic polynomial should be different,
+and omitting the contribution of $S_2$.  Note that the assumption $d\ge 3$ enforces
+the condition $e\ge 2$.
+\end{proof}
+
+We now obtain a lower bound for the proportion of 
+$g\in\SL(d,q)$ such that $g$ has even order $2n$, and $g^n$
+has an eigenspace with dimension in a given range. 
+%We assume for the rest of this section that $q$ is odd. 
+To perform this calculation, we consider the cyclic groups $C_{q^e-1}$ of order
+$q^e-1$. If $n$ is an integer, we write $v_2(n)$ for the $2$-adic
+value of $n$.
+
+\begin{lemma}\label{Lemma5.6} If $v_2(m)=v_2(n)$ then $v_2(q^m-1) = v_2(q^n-1)$.
+\end{lemma}
+\begin{proof} 
+ It suffices to consider the case where $m=kn$, and $k$ is odd.
+Then $(q^m-1)/(q^n-1)$ is the sum of $k$ powers of $q^n$, and so is odd.
+\end{proof}
+
+\begin{lemma}\label{Lemma5.7} If $u<v$ then $v_2(q^{2^u}-1)<v_2(q^{2^v}-1)$, 
+and if $u>0$ then $v_2(q^{2^u}-1) =v_2(q^{2^{u+1}}-1)-1$.
+\end{lemma}
+\begin{proof} 
+Observe that $(q^{2^{u+1}}-1)/(q^{2^u}-1)=q^{2^u}+1$ which is even. Now
+$v_2(q^{2^u}-1)>1$ if $u>0$. It then follows that $v_2(q^{2^u}+1)=1$.
+\end{proof}
+
+\begin{theorem}\label{Theorem5.1}  
+For some absolute constant $c$, the proportion
+of $g \in \SL(d,q)$ of even order, such that a power of $g$
+is an involution with eigenspaces of dimensions in the range
+$(d/3,2d/3]$, is at least $c/d$.
+\end{theorem}
+\begin{proof} 
+Let $2^k$ be the unique power of $2$ in the range
+$(d/3,2d/3]$. By Lemma \ref{Lemma5.5} it suffices to prove that 
+if $g\in\SL(d,q)$
+has an  irreducible factor of degree $2^k$ then the probability that
+$g$ has the required property is bounded away from 0.
+
+Let $\{W_i:i\in I\}$ be the set of composition factors of $V$
+under the action of $\langle g\rangle$. Let $n_i$ be the order of the
+image of $g$ in $\GL(W_i)$, and set $w_i=v_2(n_i)$, and
+$w=\max_i(w_i)$, and $d_i=\dim(W_i)$. 
+If $w>0$, then $g$ has even order $2n$  say,
+and in  this case the $-1$-eigenspace of $z :=  g^n$ has
+dimension $\sum d_i$, where the sum is over those values of $i$ for
+which $w_i=w$. 
+
+Suppose now that the characteristic polynomial of $g$
+has exactly one irreducible factor of degree $2^k$. By renumbering if
+necessary we may assume that $d_1=2^k$. Set $x=v_2(q^{2^k}-1)$.  The
+probability that $w_1=x$ is slightly greater than $1/2$. This is
+because the action of $g$ on $W_1$ embeds $g$ at random in
+$\GF(q^{2^k})$, which is a cyclic group of order an odd multiple of
+$2^x$. The distribution of possible values of $g$ is uniform among
+those elements that do not lie in a proper subfield of $\GF(q^{2^k})$.
+But non-zero elements of such subfields do not have order a multiple
+of $2^x$. If $w_1=x$ then necessarily $w_i<w_1$ for all $i>1$,
+and $w_1=w$. It follows that $g$ will then have even order, and that
+$z$ will be an involution whose $-1$-eigenspace will have
+dimension exactly $2^k$. There is a slight problem with the elements of $\SL(d,q)$
+whose characteristic polynomials have two irreducible factors of
+degree $2^k$, as such elements may power up to an involution
+whose  $-1$-eigenspace has dimension $2^{k+1}$, but the estimate of $S_1$
+in Lemma \ref{Lemma5.4} shows that this problem does not affect the truth of the theorem.
+\end{proof}
+
+\begin{corollary}\label{Corollary5.1} Such an element $g$ in $\SL(d,q)$ 
+can be found with at most $O(d(\xi + d^3\log q))$ field operations,
+where $\xi$ is the cost of constructing a random element.
+\end{corollary}
+\begin{proof}
+Theorem \ref{Theorem5.1} implies that a search of length $O(d)$ 
+will find such an element $g$. 
+%Theorem \ref{Lemma5.1} implies that we can
+%afford to discard elements whose characteristic   
+%polynomials have repeated roots. 
+In $O(d^3)$ field operations 
+the characteristic polynomial $f(t)$ of $g$ can be
+computed (see \cite[Section 7.2]{HoltEickOBrien05}); 
+in $O(d^2 \log q)$ field operations it can be factorised as 
+$f(t)=\prod_{i=1}^kf_i(t)$, where the $f_i(t)$ are irreducible 
+(see \cite[Theorem 14.14]{vzg}).
+
+Following the notation of the proof of Theorem \ref{Theorem5.1},  
+we may take $W_i$ to be the
+kernel of $f_i(g)$. It remains to calculate $w_i$. Let $m_i$ be the
+odd part of $q^{d_i}-1$, where $d_i$ is the degree of $f_i$. Now
+compute $s :=(f_i(t))+t^{m_i}$ in $\GF(q)[t]/(f_i(t))$, and iterate 
+$s := s^2$  until $s$ is the identity. The number of iterations
+determines $w_i$, and it is now easy to determine whether or not $g$
+satisfies the required conditions. All of the above steps may be carried
+out in at most $O(d^3 \log q)$ field operations. 
+\end{proof}
+
+
+\subsection{The symplectic and unitary groups}
+We first consider the symplectic groups.
+If $h(x)\in\GF(q)[x]$ is a
+monic polynomial with non-zero constant term, let
+$\tilde{h}(x)\in\GF(q)[x]$ be the monic polynomial  whose zeros are the
+inverses of the zeros of $h(x)$. Hence the multiplicity of a zero of
+$h(x)$ is the multiplicity of its inverse in $\tilde{h}(x)$ so that
+$h(x)\tilde{h}(x)$ is a symmetric  polynomial.  We start with this
+analogue of Lemma \ref{Lemma5.3}.
+
+\begin{lemma}\label{Lemma5.8} Let $m>n/2$ where $n \geq 2$. 
+The proportion of elements of
+$\Sp(2n,q)$ whose characteristic polynomial has a factor $h(x)$ where
+$h(x)$ is irreducible of degree $m$ and $h(x)\ne \tilde{h}(x)$ is
+$(1/2m)(1+O(1/q))$, where the constants implied by the $O$ notation 
+are absolute constants, independent of $n$.
+\end{lemma}
+\begin{proof}
+Let $g\in\Sp(2n,q)$ act on the natural module $V$, and let
+$h(x)$ be an irreducible factor of degree $m$
+of the characteristic polynomial
+$f(x)$ of $g$. 
+Let $V_0$ be the kernel of $h(g)$. Since    
+$h(x)\ne \tilde{h}(x)$ it follows that $V_0$ is totally isotropic. Also
+$\tilde{h}(x)$ is a factor of $f(x)$, and if  $V_1$ is the kernel of
+$\tilde{h}(x)$ then $V_1$ is totally isotropic. Since $h(x)$ and
+$\tilde{h}(x)$ divide $f(x)$ with multiplicity 1, $V_0$ and $V_1$ are
+uniquely determined, and the form restricted to $V_0\oplus V_1$ is
+non-singular. Now let $e_1,\ldots,e_m$ be a basis for $V_0$. A basis
+$f_1,\ldots,f_m$ for $V_1$ is then determined by the conditions
+$B(e_i,f_j)=0$ for $i \ne j$, and $B(e_i,f_i)=1$ for all $i$, where
+$B(-,-)$ is the symplectic form that is preserved. The matrix for $g$
+restricted to $V_0$ now determines the matrix of $g$ restricted to
+$V_1$, since $g$ preserves the form. 
+
+Thus the number of possibilities
+for $g$ is the product $k_1k_2k_3k_4k_5/2$, where $k_1$ is
+the number of choices for $V_0$, and $k_2$ is the number of choices
+for $V_1$ given $V_0$, and $k_3$ is the number of irreducible monic 
+polynomials $h(x)$ of degree $m$ over $\GF(q)$ such that $h(x)\ne
+\tilde{h}(x)$, and $k_4$ is the number of elements of $\GL(m,q)$ with a
+given irreducible characteristic polynomial, and $k_5$ is the order of
+$\Sp(2n-2m,q)$.   The factor $1/2$ in the above expression arises from
+the fact that every such element $g$ is counted twice, because of the
+symmetry between $h(x)$ and $\tilde h(x)$. 
+In more detail 
+\begin{eqnarray*}
+k_1 & = & {(q^{2n}-1)(q^{2n-1}-q)(q^{2n-2}-q^2)\cdots(q^{2n-m+1}-q^{m-1})\over
+(q^m-1)(q^m-q)(q^m-q^2)\cdots(q^m-q^{m-1})} \\                   
+k_2 & = & q^{(2n-m)+(2n-m-1)+(2n-m-2)+\cdots+(2n-2m+1)} \\
+k_3 & \sim  & q^m/m \\
+k_4 & = & {(q^m-1)(q^m-q)(q^m-q^2)\cdots(q^m-q^{m-1})\over q^m-1}\\
+k_5 & = & q^{(n-m)^2} \prod_{i = 1}^{n - m}(q^{2i}-1). 
+\end{eqnarray*}
+
+These results are obtained as follows. For $k_1$, we count the number of
+sequences of linearly  independent  elements $(e_1,e_2,\ldots)$  such
+that each is orthogonal to its predecessors, and divide by the order
+of $\GL(m,q)$. For $k_2$, we observe that there is a 1-1
+correspondence between the set of candidate subspaces for $V_1$ and
+the set of sequences $(f_1,f_2,\ldots,f_m)$ of elements of $V$ such that
+each $f_j$ satisfies $m$ linearly independent conditions
+$B(e_i,f_j)=0$ for $i \ne j$, and $B(e_j,f_j)=1$, and $B(f_k,f_j)=0$ for $k < j$.
+We observe that $k_3$ is the number of orbits of the Galois group of
+$\GF(q^m)$ over $\GF(q)$ acting on those $a \in \GF(q^m)$ that 
+do not lie
+in a proper subfield containing $\GF(q)$, and have the property that 
+the orbit of $a$ does not contain $a^{-1}$.  This last condition is equivalent to the
+statement that $h(x)\ne \tilde{h}(x)$.   Note that $h(x)=\tildeh(x)$ if and only if
+$m$ is even, and $a^{-1}=a^{q^{m/2}}$.
+A precise formula for $k_3$
+would be rather complex, so we obtain instead the following
+estimate. If we ignore this last condition, then
+Lemma \ref{monic} estimates $k_3$.
+Now it is clear that if $a\in\GF(q^m)$ satisfies the
+above equation then the norm of $a$ is 1. In other words, the
+constant term of $h(x)$ is $1$. But this is exactly the problem tackled in
+the proof of Lemma \ref{Lemma5.5}, so we find that, for some
+absolute constants $c_1$ and $c_2$, $k_3$ lies between $(1-c_2 /q)q^m/m$ and
+$(1-c_1 /q)q^m/m$. 
+
+But the product of the $k_i$ is
+$k_3\vert\Sp(2n,q)\vert/(q^m-1)$ and the result follows. 
+\end{proof}
+
+\begin{lemma}\label{Lemma5.9} Let $m\in(n/3,n/2]$. 
+Let $S_1$ denote the number of elements of $G:=\Sp(2n,q)$ whose characteristic polynomial
+has four distinct irreducible factors of degree $m$, of the form $h(x)$, $\tilde h(x)$,
+$k(x)$, and $\tilde k(x)$;
+ let $S_2$ denote the number
+of elements of $G$ whose characteristic polynomial has two distinct repeated factors of
+degree $m$, of the form $h(x)$ and $\tilde h(x)$; and let $S_3$ denote the number 
+of elements of $G$ whose characteristic
+polynomial has exactly two distinct irreducible factors of degree $m$,
+of the form $h(x)$ and $\tilde h(x)$. 
+Then $S_1={1\over8}\vert\Sp(2n,q)\vert m^{-2}(1+O(q^{-1}))$, and 
+$S_2=\vert\Sp(2n,q)\vert O(q^{-1})$, 
+and $S_3={1\over2}\vert\Sp(2n,q)\vert(m^{-1}-{1\over2}m^{-2})(1+O(q^{-1}))$,
+where the constants implied by the $O$ notation are absolute constants,
+independent of $n$.
+\end{lemma}
+\begin{proof} 
+The proof is similar to that of Lemma \ref{Lemma5.4}.  Care has to
+be taken with counting the number of times that elements of the analogue
+of $S_1$ are counted.  The characteristic polynomial of such an element
+$g$ now has four distinct irreducible factors $h(x)$, $\tilde h(x)$, $k(x)$,
+and $\tilde k(x)$ of degree $m$.  This leads to such elements being counted eight times.
+\end{proof}
+
+
+\noindent
+We now obtain the analogue of Theorem \ref{Theorem5.1}.
+\begin{theorem}\label{Theorem5.2}  
+For some absolute constant $c>0$, the proportion
+of elements $g \in \Sp(2n,q)$ of even order, such that a power of $g$
+is an involution with eigenspaces of dimensions in the range
+$(2n/3,4n/3]$, is at least $c/n$.
+\end{theorem}
+\begin{proof} 
+Given Lemmas \ref{Lemma5.8} and \ref{Lemma5.9}, the proof is 
+essentially the same as that of Theorem \ref{Theorem5.1}.   We
+adopt the notation of that proof.
+One
+must consider the contribution of $W_i$ to the eigen-spaces of $z$
+when the characteristic polynomial of $g$ restricted to $W_i$ is
+an irreducible polynomial $h(x)$ such that $h(x)=\tilde h(x)$.  But
+in this case if $\alpha$ is a zero of $h(x)$ then so is $\alpha^{-1}$,
+and $\alpha^{q^m}=\alpha^{-1}$, where $W_i$ has dimension $2m$, and the order of $g$
+divides $q^m+1$.  It is easy to see that if $i$ is even then $v_2(q^i+1)=1$,
+and if $i$ is odd then $v_2(q^i+1)=v_2(q+1)$.  Thus $W_i$ will
+contribute nothing to the dimension of the $-1$-eigen-space of $z$.
+The result follows.
+\end{proof}
+
+We finally turn to the unitary groups. 
+\begin{theorem}\label{Theorem5.3}  For some absolute constant $c>0$, 
+the proportion of elements $g\in \SU(d,q)$ that have even order, such that a power of $g$
+is an involution with eigenspaces of dimensions in the range
+$(d/3,2d/3]$, is at least $c/d $.
+\end{theorem}
+\begin{proof} 
+The analysis in this case is almost
+exactly the same as for the symplectic groups.  The only difference
+comes from the analysis of the restriction of $g$ to $W_i$ where
+now we require $h(x)$ to be the image of $\tilde h(x)$ under the Frobenius
+map $a\mapsto a^q$.  This now requires $W_i$ to have odd dimension
+$2t+1$, say, and then the order of $g$ will divide $q^{2t+1} +1$.
+\end{proof}
+
+In summary, Theorems \ref{Theorem5.1}, \ref{Theorem5.2} and \ref{Theorem5.3} 
+provide an estimate of the
+complexity of finding a strong involution of the type required 
+as $O(d(\xi + d^3 \log q))$ field operations. 
+%While, from a practical point of view, we regard this
+%as conservative estimate, from a theoretical point of view it is
+%adequate: there are other components of the main
+%algorithms with complexity bounded by $O(d^4 \log q)$ field operations. 
+
+\section{Involution with eigenspaces of equal dimension}\label{Equal}
+Our next objective is to describe and analyse an algorithm 
+to construct an involution in
+$\SX(d,q)$ with eigenspaces of equal dimension. This necessarily
+presupposes that $d$ is a multiple of $4$. 
+We use such an element in Algorithm {\tt TwoEven}. 
+
+We describe a recursive procedure to construct an 
+involution in $\SL(d, q)$ whose $-1$-eigenspace has a specified 
+even dimension $e$. 
+
+\begin{enumerate}
+\item 
+Search randomly for an element $g$ of even order
+that powers to an involution $h_1$
+satisfying the conditions of Theorem \ref{Theorem5.1}.
+
+\item Let $r$ and $s$ denote the ranks of the 
+$-1$- and $+1$-eigenspaces of $h_1$.
+
+\item If $r = e$ then $h_1$ is the desired involution.
+ 
+\item 
+Consider the case where $s \leq e < r$.
+Construct the centraliser of  $h_1$, and by powering, obtain 
+generators for the special linear group
+$S_-$ on the $-1$-space, where $S_-$ acts as the identity on the
+$+1$-eigenspace of $h_1$. 
+By recursion on $d$, an involution 
+can be found in $S_-$ whose $-1$-eigenspace    
+has dimension $e$. 
+
+\item 
+Consider the case where $e \leq \min(r, s)$.
+If $r \leq s$ then 
+construct the centraliser of  $h_1$, and by powering, obtain 
+generators for the special linear group
+$S_-$ on this $-1$-eigenspace,
+where $S_-$ acts as the identity on the $+1$-eigenspace.
+By recursion on $d$, an involution 
+can be found in $S_-$ whose $-1$-eigenspace    
+has dimension $e$. 
+Similarly, if $s < r$ then construct $S_+$,
+and search in $S_+$ for an involution
+whose $-1$-eigenspace has dimension $e$. 
+
+\item 
+Consider the case where $s \geq e > r$.
+Construct the centraliser of $h_1$, and obtain generators
+for the special linear group $S_+$ on the $+1$-eigenspace of $h_1$,
+where $S_+$ acts as the identity on the $-1$-eigenspace.
+Now an involution $h_2$ is found recursively in
+$S_+$ whose $-1$-eigenspace has dimension $e-r$. 
+Then $h_1h_2$ is an involution of the required type. 
+
+\item Finally consider the case where $e \geq \max(r, s)$.
+This is identical to the last case.
+
+\end{enumerate}
+The recursion is founded trivially with the case $d=4$.
+
+\begin{theorem}\label{Corollary5.2}  
+Using this algorithm, an involution in $\SL(d,q)$
+can be constructed with $O(d(\xi + d^3 \log q))$ field operations that has its
+$-1$-eigenspace of any even dimension in $[0,d]$.
+\end{theorem}
+\begin{proof}
+Corollary \ref{Corollary5.1} implies that $h_1$ can be constructed with at most 
+$O(d(\xi + d^3 \log q))$ field operations. We shall see in 
+Sections \ref{Bray} and 
+\ref{Pow} that  generators for $S_-$ and $S_+$ can be constructed
+with $O(d^4)$ field operations. Thus the above algorithm requires
+$O(d(\xi + d^3 \log q))$ field operations, plus the number of field operations
+required in the recursive call. Since the dimension of the matrices
+in a recursive call is at most $2d/3$, the total
+complexity is as stated.
+\end{proof}
+Similar results can be obtained for the other classical groups
+considered in this paper.
+
+\section{Constructing an involution centraliser}
+\label{Bray}
+
+The centraliser of an involution in a black-box group having an order
+oracle can be constructed using an algorithm of Bray \cite{Bray}. 
+Elements of the centraliser are constructed using the following result.
+\begin{theorem}
+\label{thm:bray}
+If $u$ is an involution in a group $G$, and $g$ is an arbitrary element of $G$,
+then $[u,g]$ either has odd order $2k+1$, in which case
+$g[u,g]^k$ commutes with $u$, or has even order $2k$, in which case
+both $[u,g]^k$ and $[u,g^{-1}]^k$ commute with $u$.
+\end{theorem}
+That these elements centralise $u$ follows from elementary
+properties of dihedral groups. 
+
+Bray \cite{Bray} also proves that if $g$ is uniformly
+distributed among the elements of $G$ for which $[u,g]$
+has odd order, then $g[u,g]^k$ is uniformly distributed among the
+elements of the centraliser of $u$. If the order of $g[u,g]^k$ is even, 
+then the elements returned are involutions; but if just
+one of these is selected, then the elements returned
+within a given conjugacy class of involutions {\it are independently
+and uniformly distributed within that class}. 
+
+Let $u \in \SL(d, q)$ and let $E_+$ and $E_-$ denote the 
+eigenspaces of $u$.
+We apply the Bray algorithm in the following contexts. 
+\begin{enumerate}
+\item 
+We wish to find a generating set for (a subgroup of) the centraliser 
+of $u$ that contains $\SL(E_+)\times \SL(E_-)$. 
+\item 
+The eigenspaces, $E_+$ and $E_-$ have the same dimension. 
+We wish to construct the projective centraliser of $u$.
+As we observed in Section \ref{cent}, the centraliser 
+of $u$ contains an element which interchanges the eigenspaces.
+\end{enumerate}
+The other contexts are similar, but with $\SL(d,q)$ 
+replaced by the other classical groups. 
+
+Parker \& Wilson \cite{PW05} prove that,
+in a simple classical group of odd characteristic and Lie rank $r$, 
+the probability of the Bray algorithm returning an odd 
+order element is at least $O(1/r)$. 
+More precisely they prove the following.
+\begin{theorem}\label{clasthm}
+There is an absolute constant $c$ such that if $G$ is a finite
+simple classical group, with natural module
+of dimension $d$ over a field of odd order,
+and $u$ is an involution in $G$, then $[u,g]$ has odd order
+for at least a proportion $c/d$ of the elements $g$ of $G$.
+\end{theorem}
+
+Our estimate of the efficiency of Bray's algorithm relies critically 
+on their result .
+
+When applying the Bray algorithm we always operate in $\PSL(d,q)$
+rather than in $\SL(d,q)$.  This has the effect that an element is
+treated as having odd order if its order is odd modulo scalars.
+Note that, if a subset of the centraliser of an involution generates
+the centraliser modulo involutions then it generates the centraliser.
+
+Hence, by a random search of length at most $O(d)$, we construct
+random elements of the centraliser of the involution. The results of 
+\cite{lish} imply that (the derived group of) the centraliser is generated 
+by a bounded number of elements.   We return to this point later.
+
+It remains to consider a stopping criterion: how can we tell when we
+have a subset of the centraliser that generates a sufficiently large
+subgroup?  %In the first of our two applications, 
+We apply the Niemeyer-Praeger algorithm \cite{NP} to 
+the projection of the centraliser onto
+each factor to deduce that this 
+contains a perfect classical group in its natural representation.
+This algorithm, when applied to a subgroup of $\GL(k,q)$,
+has complexity at most $O(k^3)$ group operations. If the factors have the
+same dimension, there is a small possibility that the given elements
+generate a group that contains a diagonal embedding of $\SL(d/2,q)$
+in $\SL(d/2,q)\times\SL(d/2,q)$ but does not contain the full direct product.
+This case is easily detected. A similar stopping criterion applies for the
+second application; we can readily detect when an element
+of the centraliser interchanges the eigenspaces.
+Again these remarks apply to the other classical groups.
+
+In its black-box application, 
+the involution-centraliser algorithm 
+assumes the existence of an order oracle.
+We do not require such an oracle for linear groups.
+If a multiplicative upper-bound $B$ for the
+order of $g \in G$ is available,
+then we can learn in polynomial time
+the {\it exact} power of $2$ (or of any specified prime)
+which divides $|g|$.
+By repeated division by 2, we write $B = 2^m b$ where
+$b$ is odd. Now we compute $h = g^{b}$, and determine
+its order by repeated squaring.
+In particular, we can determine whether $g$ has even order.
+The cost of exponentiating is discussed later.
+If $g \in \GL(d, q)$, then a multiplicative upper 
+bound of magnitude $O(q^d)$ can be obtained for $|g|$
+using the algorithms of \cite{Storjohann98}
+and \cite{CLG97} in at most $O(d^3 \log q)$
+field operations.  This is considered
+further in Section \ref{Pow}. 
+Further, as discussed in \cite{Ryba-paper},
+the construction of the centraliser
+of an involution requires only
+knowledge of such an upper bound.
+
+We conclude that our applications of the Bray algorithm have 
+complexity $O(d(\xi + d^3 \log q))$ field operations.
+
+\section{The base cases}
+\label{base}
+
+Consider the {\it base cases}: $\SX(d, q)$ where $d \leq 4$.
+We construct standard generating sets for these groups using
+specialised constructive recognition algorithms. 
+We summarise the general algorithm for the base cases
+and then consider its components in more detail.
+
+\begin{algorithm2e}[H] 
+\caption{\tt BaseCase$(X,{\it type}, Complete)$}
+\label{alg:base}
+\tcc{
+$X$ is a generating set for
+the perfect classical group $G$
+in odd characteristic, of type SL or Sp or SU, in dimension at most 4.
+If Complete = {\tt false} then 
+return standard generating set for a copy 
+of $\SL(2, q) \wr C_{2} \leq G$; 
+otherwise return standard generating set for $G$.
+Also return the 
+SLPs for the elements of the set, and the change-of-basis matrix.
+}
+\Begin{
+ $d$ := the rank of the matrices in $X$; 
+
+  $q$ := the size of the field over which these matrices are defined;   
+
+If {\it type} = SU then $q := q^{1/2}$;  
+
+  \eIf{$d = 2$}
+   {
+      Apply the SL2 algorithm to construct generating set;
+   }{
+   \eIf{type={\rm SL} and $d=3$}
+    {
+     Apply the SL3 algorithm to construct generating set;
+  
+    }{
+       Use centraliser-of-involution algorithm to  construct generating set;
+    }
+   }
+   return standard generating set, SLPs, and change-of-basis;
+}
+\end{algorithm2e}
+
+\begin{theorem}\label{ryba-alg}
+Subject to the availability of a discrete log oracle 
+for $\GF(q)$, the standard generators for $\SX(d, q)$ 
+for $d \leq 4$ can be constructed  
+in $O(\log q)$ field operations.
+\end{theorem}
+
+The base case encountered most frequently is $\SL(2,q)$ 
+in its natural representation.
+An algorithm to construct an element of $\SL(2,q)$ as an SLP  
+in an arbitrary generating set is described in \cite{Conderetal05}. 
+This algorithm requires $O(\log q)$ field operations, and the 
+availability  of discrete logarithms in $\GF(q)$.
+
+For $\SL(3,q)$ we use the algorithm of \cite{sl3q}
+to perform the same task. 
+It assumes the existence of an oracle
+to recognise constructively $\SL(2, q)$
+and its complexity is that of the oracle.
+
+\subsection{The involution-centraliser algorithm} 
+\label{ryba-base}
+We use the involution-centraliser algorithm of \cite{Ryba-paper}
+to construct SLPs for elements of $\SU(3,q)$  
+and $\SX(4, q)$. We briefly summarise 
+this algorithm.  
+
+Assume $G = \langle X \rangle$ is a black-box group
+with order oracle. We are given 
+$g \in G$ to  be expressed as an SLP in $X$.
+In this description  we say
+that an element of $G$  is ``found" if it is known as an SLP
+in $X$. First find by random search $h\in G$ such that
+$gh$ has even order $2\ell$, and $z:=(gh)^\ell$ is a non-central
+involution. Now  find, by random search and powering, an involution
+$x\in G$ such that $xz$ has even order $2m$, and $y:=(xz)^m$ is a
+non-central involution. Note that $x$ has been found, but, at this
+stage, neither $y$ nor $z$ has been found. 
+Observe that $x$, $y$ and $z$
+are non-central involutions. 
+We construct their centralisers using the Bray algorithm.
+We assume that we can  solve the explicit membership problem 
+in these centralisers.
+In particular, we find $y$ as an element of the centraliser of $x$, 
+and $z$ as an
+element of the centraliser of $y$, and $gh$ as an element of the
+centraliser of $z$. Having found $gh$, we have found $g$.
+
+In summary, this algorithm reduces the constructive
+membership test to three constructive membership  tests  in involution
+centralisers;  but  this is an imperfect recursion, since  the 
+algorithm may not be applicable to  these centralisers. 
+We do not rely on the recursion; instead we construct
+explicitly the desired elements of the centralisers, 
+since these are (direct products of) $\SL(2,q)$.
+In this context, its complexity is that stated
+in Theorem \ref{ryba-alg}.
+
+As presented, this is a black-box algorithm  requiring an order oracle.
+If $G$ is a linear group, the algorithm does not require 
+an order oracle, exploiting instead the multiplicative 
+bound for the order of an element which can
+be obtained in polynomial time as described in Section \ref{Bray}.
+
+It is instructive to see why this algorithm fails in the case of
+$\Sp(4,q)$. This group has only one conjugacy class of
+non-central involutions, namely the class consisting of elements with
+both the $+1$ and $-1$-eigenspaces being mutually orthogonal
+2-dimensional spaces. The centraliser of $x$ is isomorphic to
+$\SL(2,q)\times\SL(2,q)$, and this group contains only two non-central
+involutions, arising from the unique involution in $\SL(2,q)$. A
+similar remark applies, of course, to $z$. Thus, if $y$ is an
+involution that  commutes with $x$ and $z$, then $z=\pm x$, and the
+probability of this being the case is too low.
+Hence $x$ cannot be found efficiently by random search.
+
+In the case of $\SU(4,q)$ or $\SL(4,q)$, this problem does not arise.
+The centraliser of the involution $u$ whose matrix  with respect to a
+hyperbolic basis is
+$$\left(\matrix{-1&0&0&0\cr0&-1&0&0\cr0&0&1&0\cr0&0&0&1\cr}\right)$$
+contains many involutions: namely
+$$\left(\matrix{0&1&0&0\cr1&0&0&0\cr0&0&0&1\cr0&0&1&0\cr}\right)$$
+and its conjugates in the centraliser.
+
+To avoid the problem with $\Sp(4,q)$, we work in the projective
+group $\PSp(4,q)$. This gives rise to two cases. Suppose first that
+$q\equiv1\bmod 4$, so that $\GF(q)$ has a primitive 4-th root $\omega$ of 1.
+Then the projective centraliser of $u$ in $\Sp(4, q)$ contains 
+$$\left(\matrix{\omega&0&0&0\cr0&-\omega&0&0\cr0&0&
+\omega&0\cr0&0&0&-\omega\cr}\right)$$
+which has many conjugates in this centraliser. If $q\equiv3\bmod4$,
+then the projective centraliser of $u$ in $\Sp(4, q)$ contains the 
+projective involution
+$$u=\left(\matrix{0&1&0&0\cr-1&0&0&0\cr0&0&0&1\cr0&0&-1&0\cr}\right).$$
+
+%which acts irreducibly on two blocks of dimension 2. Thus the
+%centraliser of $u$ in $\Sp(4,q)$ is contained in $\SL(2,q^2)$, and is
+%$\SL(2,q^2)\cap\Sp(4,q)$. It is easy to see that the symplectic
+%form  defined  over $\GF(q)$ that is preserved by $\Sp(4,q)$ is a
+%hermitian form  when $V$  is regarded as a module over the copy of
+%$\GF(q^2)$ in the ring of $4\times4$  matrices over $\GF(q)$ that
+%centralise $\SL(2,q^2)$, so the centraliser of $u$ in $G$ is
+%$\SU(2,q)=\SL(2,q)$. The centraliser of the image $u$ in $G$ will
+%also contain elements represented by matrices that conjugate $u$ to
+%its inverse, and hence is $\PSL(2,q).C_2$.
+%HAVE I LOST A $C_2$ ALONG THE WAY?
+%{\tt PARA NEEDS ATTENTION}
+
+%For an analysis of the general algorithm, we refer to \cite{Ryba};
+%in these specialised cases, we deduce the following result.  
+%\begin{lemma}\label{ryba-alg}
+%Subject to the availability of a discrete log oracle 
+%for $\GF(q)$, the standard generators for $\SX(4, q)$ 
+%for $d \leq 4$ can be constructed  
+%in $O(\log q)$ field operations.
+%\end{lemma}
+
+\subsection{The glue element}
+In executing either Algorithm {\tt OneMain} or {\tt TwoMain}, 
+each pair of recursive calls generates
+an instance of the following problem.
+
+\begin{problem}
+Let $V$ be the natural module of  $G=\SX(4,q)$, and let
+$(e_1,f_1,e_2,f_2)$ be a hyperbolic basis for $V$. Given a generating
+set for $X$, and the involution $u$, where $u$ maps $e_1$ to $-e_1$
+and $f_1$ to $-f_1$, and centralises the other basis
+elements, construct the involution  $j$  that permutes the basis
+elements, interchanging $e_1$ with $e_2$, and $f_1$ with $f_2$.
+\end{problem}
+
+Of course, $j$ is the permutation matrix used
+in each algorithm to ``glue" $v_1$ and $v_2$ together to 
+form $v$, the long cycle. 
+(See for example l.\ 16 of {\tt OneEven}.)
+
+We use the following algorithm to construct this element. 
+\begin{enumerate}
+\item 
+Construct the projective
+centraliser $H$ of $u$ in $\SX(4,q)$, using the Bray algorithm. 
+
+\item 
+Since $H$ lies between $\SL(2,q)\wr C_2$ and
+$\GL(2,q) \wr C_2$, we find $h\in\SL(2,q)\wr C_2$ that
+interchanges the spaces $\langle e_1,f_1\rangle$ and $\langle
+e_2,f_2\rangle$. 
+
+\item Then $jh$ lies in $\SL(2,q)\times\SL(2,q)$.  By the
+powering algorithm described in Section \ref{Pow}, 
+we construct the two direct factors, solve in each
+direct factor for the projection of $jh$ and so 
+construct $jh$ as an SLP. We can now solve for $j$.
+\end{enumerate}
+This algorithm requires $O(\log q)$ field operations.
+
+\subsection{The final step}\label{final-step}
+We must also perform the final step 
+of Algorithm {\tt OneMain} or Algorithm {\tt TwoMain}:
+namely, obtain an additional element. 
+
+Consider first the case where $d$ is even. 
+For $\SL(d, q)$, the additional element $a$ allows
+us to construct the $d$-cycle from two smaller cycles; 
+in the other cases, we construct the additional element $t$.
+This additional element is found in $\SX(4, q)$.
+
+If $d$ is odd and $G = \SU(d, q)$, 
+then we must also find the element
+$t$ in $\SU(3, q)$. 
+
+In all cases, we employ the involution-centraliser algorithm described 
+in Section \ref{ryba-base}. Theorem \ref{ryba-alg} again applies.
+
+\section{Exponentiation}
+\label{Exp}
+
+A frequent step in our algorithms is computing the 
+power $g^n$ for some $g\in \GL(d,q)$ and integer $n$.
+
+Sometimes we raise an element to a high power in order to construct an
+involution, and we may be able to write down
+this involution without performing the calculation. However, if, for example, 
+we want to construct elements of one direct factor of a direct product 
+of two groups by exponentiation, then we must explicitly
+compute the required power. 
+
+The value of $n$ may be as large as $O(q^d)$. We
+could construct $g^n$ with $O(\log(n))$ multiplications using the familiar
+black-box squaring technique, 
+Instead, we describe the following faster algorithm to perform this task.
+\begin{enumerate}
+\item 
+Construct the Frobenius normal form of $g$ and record
+the change-of-basis matrix. 
+
+\item 
+ From the Frobenius normal form, 
+we read off the minimal polynomial
+$h(x)$ of $g$, and factorise $h(x)$ 
+as a product of irreducible polynomials.
+
+\item 
+This form determines a multiplicative upper bound
+to the order of $g$. 
+If $\{f_i(x):i\in I\}$ is the set of distinct
+irreducible factors of $h(x)$, and if $d_i$ is the degree of
+$f_i(x)$, then the order of the semi-simple part of $g$ divides
+$\prod_iq^{d_i}-1$, and the order of the idempotent part of $g$ can be
+read off directly. The product of these two factors  gives the
+required upper bound $m$. 
+
+\item If $n>m$ we replace $n$ by $n\bmod m$. 
+By repeated squaring we calculate $x^n\bmod h(x)$ 
+as a polynomial of degree $d$. 
+
+\item This polynomial is evaluated in $g$ to give $g^n$. 
+
+\item Conjugate $g^n$ by the inverse of the change-of-basis 
+matrix to return to the original basis.
+\end{enumerate}
+
+We now consider the complexity of this algorithm.
+\begin{lemma}Let $g\in\GL(d,q)$ and let $0\le n<q^d$. Then
+$g^n$ can be computed using the above algorithm
+with $O(d^3 + d^2 \log d \log \log d \log q)$ field operations.
+\end{lemma}
+\begin{proof}
+The Frobenius normal form of $g$ can be computed with
+$O(d^3)$ field operations \cite{Storjohann98}
+and provides the minimal polynomial.
+The minimal polynomial can be factored in 
+in $O(d^2 \log q)$ field operations \cite[Theorem 14.14]{vzg}.
+Calculating $x^n \bmod h(x)$ requires $O(\log(n))$
+multiplications in $\GF(q)[x]/(h(x))$, 
+at most $O(d^2 \log d \log \log d \log q)$ 
+field operations \cite{vzg}. Evaluating the resultant polynomial in $g$ requires
+$O(d)$ matrix multiplications;  but multiplying by   
+$g$ only costs $O(d^2)$ field operations, since $g$ is sparse when 
+in Frobenius normal form. Finally, conjugating $g$ by the inverse of 
+the change-of-basis matrix costs a further $O(d^3)$ field operations.
+\end{proof}
+
+One should consider the cost of
+dividing $m$ by $n$, even though this does not 
+contribute to the number of field operations. 
+However, for our applications, the exponent $n$ 
+is always less than $q^d$, so
+reducing $m$ modulo $n$ is unnecessary.
+
+There is no need to prefer one normal form for $g$ to another,
+provided that the normal form can be computed in at most $O(d^3)$ field
+operations, the form is sparse, and the minimum polynomial
+and multiplicative upper bound for the order of $g$
+can be determined readily from the normal form.
+
+This algorithm is similar to 
+that of \cite{CLG97} to determine 
+the order of an element of $\GL(d, q)$.
+
+\section{Decomposing direct products and computing derived subgroups}\label{Pow}
+Given a generating set $X$ of $G=\SX(e,q)\times\SX(d-e,q)$ we
+wish to construct a generating set for one or both of the direct factors.
+Also, given a generating set for $H$ where $\SX(e,q)\le H\le
+\GX(e,q)$ we wish to construct a generating set for the derived
+subgroup of $H$.
+
+We solve both problems in the same style, and base our analysis on [NP LMS] and
+[NPJAMS].
+
+We start by solving the derived subgroup problem.  
+
+The algorithm of [NP LMS] is a one-sided Monte-Carlo
+algorithm, with running time approximately $O(d^3\log^2d\log q)$ 
+field operations (for a precise statement see [Bath paper])
+[Check Bath paper].
+that takes
+as input a subset $Y$ of $\GX(d,q)$ and endeavours to prove that
+$G:=\langle Y\rangle$ contains $\SX(d,q)$, given that
+$G$ is an irreducible subgroup of $\GX(d,q)$ that does not
+preserve any bilinear or quadratic form not preserved by $\GX(d,q)$.
+Their algorithm
+carries out a random search, looking for certain test elements of $G$.  If it
+finds a suitable set of test elements then the group generated by these test elements
+must contain $\SX(d,q)$.  
+In general, the criterion for an element of $G$ to be a test
+element is that its order be divisible by a prime satisfying certain conditions.
+These primes do not divide $q-1$ (or $q^2-1$ in the case of $\SU(d,q)$), and
+so they remain test elements when raised to the power $n$, where $n=q-1$
+in the case of $\GL(d,q)$, and is $q+1$ in the case of $\GU(d,q)$.
+Thus the $n$-th
+powers of the test elements  generate either $\SX(d,q)$, or a reducible group,
+or a group that preserves some form not preserved by $\GX(d,q)$.  The number
+of test elements required in practice is at most 4.  [Check this].
+To find a suitable set of test elements, the expected number of
+random elements to be examined is asymptotically
+$O(\log\log d)$; see Proposition 7.5, and Theorem 7.6 of [NP LMS].
+
+As a first approximation to computing the derived subgroup of $G$ we may thus
+use the N-P algorithm to prove that $G$ contains $\SX(d,q)$, take the set of
+test elements that were found, and set $H$ to be the group generated by
+the $n$-th powers of the test elements.  Then any subgroup of $\SX(d,q)$ that contains
+$H$ is either $\SX(d,q)$, or is reducible, or preserves a form not preserved
+by $\SX(d,q)$.
+
+Before dealing with these possibilities we look more closely at the test elements. 
+A {\it primitive prime divisor} of $q^e-1$ is a prime divisor of
+$q^e-1$ that does not divide $q^i-1$ for any positive integer $i<e$.  Note
+that this involves an abuse of notation, in that $q$ cannot be unambiguously
+determined by $q^e-1$, but only from its representation in this form.  If
+$r$ is a primitive prime divisor of $q^e-1$ then $r\equiv 1\bmod e$, and so
+$r\ge e+1$.  $r$ is defined to be a {\it large primitive prime divisor} of
+$q^e-1$ if $r$ is a primitive prime divisor of $q^e-1$, and either $r>e+1$
+or $r^2$ divides $q^e-1$.  Finally, $r$ is defined to be a {\it basic}
+primitive prime divisor of $q^e-1$ if $r$ is a primitive prime divisor of 
+$p^{ae}-1$ where $p$ is prime and $q=p^a$.  The fact that this a stronger 
+condition than being simply a primitive prime divisor of $q^e-1$ points to
+the above mentioned abuse of notation.  A {\it ppd}$(d,q;e)$ element of
+$G$ is one whose order is a multiple of a primitive prime divisor of
+$q^e-1$, and the set of test elements will in general contain two elements
+$h_1$ and $h_2$ that are ppd$(d,q;e_i)$ elements where $e_1\ne e_2$,
+and $e_i>d/2$ for $i=1,2$.  Thus our supposed generating set for $G'$ contains
+two elements $k_1$ and $k_2$, powers of $h_1$ and $h_2$, that are
+ppd$(d,q;e_i)$ elements, and thus act irreducibly on subspaces $W_1$ and $W_2$
+of $V$ of dimensions $e_1$ and $e_2$.  These subspaces are readily computed.
+In general they will span $V$; but if not then $k_1$ may be replaced by a
+suitable $G$-conjugate of $k_1$ so that this condition is satisfied.  Then
+$H$ acts irreducibly on $V$.  It remains to see whether $H$ preserves
+some form not preserved by $\SX(d,q)$.  In the present context the only
+issue is to whether the supposed generators of $\SL(d,q)$ preserve a 
+non-degenerate form.
+If $\SL(d,q)<G\le\GL(d,q)$ and $d>2$ then the proportion of elements of $G$ that, when
+raised to the power $q-1$, give an element that does not preserve a 
+non-degenerate form is of the form $1+O(1/q)$, and is always positive, 
+and the condition may be checked by considering its characteristic
+polynomial of the exponentiated element.  Thus we can easily impose the conditions that our supposed generators of $\SL(d,q)$ generate an irreducible subgroup of $\GL(d,q)$ that 
+preserves no non-degenerate bilinear form, and hence, by applying the
+analysis of N-P, hope to be able to assert that the given elements do
+indeed generate $\SL(d,q)$; and similarly for $\SU(d,q)$, where the
+question of an additional  form being preserved does not apply.
+
+Unfortunately the set of test elements required by the N-P algorithm is not always
+quite as simple as this.  In [NP LMS] p.159, Case 1, they discuss the
+problem of distinguishing subgroups of $Z\times \PGL(2,7)$ from $\SL(3,q)$ when
+$q=3.2^s-1$ for some $s\ge2$.  This they do by observing that
+$\SL(3,q)$ contains many elements of order a multiple of 8, and $Z\times\PGL(2,7)$
+contains none.  But $\GL(3,11)$ contains no element of order 16, so we cannot
+find an element of $\SL(3,11)$ of order 8 by raising an element of $\GL(3,11)$
+to the power 10.  Also, in [N-P JAMS] p. 248, Table 8, the set of test elements
+for $\SU(3,3)$ and $\SU(3,5)$ include a test element of even order, and
+elements of the type required cannot be obtained from the corresponding
+general unitary groups by raising to the power 4 (in the first case) or 6 (in the
+second).  These appear to be the only problem cases in the present context,
+which presumes that $q$ is odd, and that we are dealing with the linear and
+unitary groups.
+
+A further minor issue is the case $d=2$.  In this case we can find by random
+search an element that powers up to an element $g_1$ of determinant 1 
+and order $q+1$, take a conjugate $g_2$ of this element that does not
+commute with $g_1$, and, if $q=5$, take an element $g_3$ of order 5.  Then these
+elements will generate $\SL(d,q)$, and can easily be found;
+$g_3$ is needed to exclude the possibility that the elements in question generate
+$2.A_4$.
+
+We have proved, subject to a very careful reading of [NP LMS] and
+[NP JAMS], and a little more analysis, the following theorem.
+
+\begin {theorem}
+Let $Y$ be a subset of $\GX(d,q)$, and let $G=\langle Y\rangle$.  Then a generating set
+for the derived group of $G$ can be constructed at the cost of (up to a
+constant multiple)  of the [NP] algorithm.
+\end{theorem}
+
+\begin{proof}
+We have seen that, in general, we require one application of the N-P algorithm in $G$,
+but in a few cases we need a second application to check the correctness of the result.
+We also need up to four exponentiations, the exponent being $q-1$ or $q+1$.  We
+also may need to compute one or more characteristic polynomials to exclude the possibility
+that we have constructed a group that preserves a form, and to compute the spaces
+$W_1$ and $W_2$. Let $h_1$ have characteristic polynomial $f(x)$.  Then $f(x)=u(x)w(x)$, where $u$ is irreducible of degree $e$ for some $e>d/2$, and $W_1$ is the image of $w(g)$.  Let $w(x) = a_0+a_1x+\cdots+x^{d-e)$, and compute $y := v.w(g)$ in $O(d^3)$ field operations.  
+Then $y\in W_1$,
+and the probability that $y$ is zero is $1:q^{d-e}$.  If $y$ is non-zero, spin up $y$ under $h_1$
+to obtain a basis for $W_1$.  Given the  factorisation of $f(x)$ the total Las Vegas time for 
+computing $W_1$ is thus $O(d^3)$.  The same applies to computing $W_2$.  To determine
+whether or not $W_1+W_2=V$ costs $O(d^3)$ field operations.  If this is not the case, it is easy
+to see that we can replace $k_1$ by a random conjugate and try again in $O(d^3)$ steps.  Or
+since the probability that this will occur is less than $1/(q-1)$, we can simply start again.
+Computing and factorising characteristic polynomials is part of the [NP] algorithm, and
+hence is allowed within the costing of the theorem.
+\end{proof}
+
+We now turn to decomposing a direct product.  That is to say, we have a generating set
+$X$ for $\SX(e,q)\times\SX(d-e,q)$, and wish to construct generating sets for the
+direct factors.
+
+We use essentially the same algorithm as for constructing the derived group of $\GX(d,q)$.
+We construct an element of $\SX(e,q)$ by taking an element $(g_1,g_2)$ of $G=\langle X\rangle$, and raise this element to the power $n$, where now $n$ is the order of $g_2$.  We need to
+check the probability of our obtaining in this way a test element for $\SX(e,q)$.  In general
+a test element be a test element by virtue of having an order that is a multiple of some prime, and we need to assess the probability that the order of $g_2$ will not be a multiple of this prime.
+Babai, Palfy and Saxl \cite{BPS} prove the following.
+\begin{theorem}\label{bps}
+Let $C$ be a finite simple classical group,
+with natural module of dimension $d$.
+For a prime $p$, the proportion
+of $p$-regular elements
+of $C$ is greater than $1/{2d}$.
+\end{theorem}
+However, if our prime is, in a natural sense, large, we can do better than this.
+If $p$ is a primitive prime divisor of $q^e-1$, and $e>d/2$, then by  
+\ref{Lemma5.5} the proportion of 
+elements of $\SX(e,q)$ of order a multiple of $p$ is $1/e+O(1/q)$.
+On occasion the [NP] algorithm calls for elements test elements that are
+required to be multiples of primes (or even non-primes) that are not
+captured by \ref{Lemma5.5}.  But in these cases $d$ will be small,
+and so we can rely on \ref{bps} in these cases.
+
+Another problem arises, in that we now have to consider symplectic groups, as
+well as linear and unitary groups.
+
+
+\subsection{Bounded rank}
+Babai, Palfy and Saxl \cite{BPS} prove the following.
+\begin{theorem}\label{bps}
+Let $C$ be a finite simple classical group,
+with natural module of dimension $d$.
+For a prime $p$, the proportion
+of $p$-regular elements
+of $C$ is greater than $1/{2d}$.
+\end{theorem}
+
+This result underpins a black-box Monte Carlo polynomial-time
+algorithm of Babai \& Beals \cite[Claim 5.3]{BabaiBeals99}
+to obtain one of the direct factors of a semisimple group.
+
+In our limited context, we can readily convert this
+to a Las Vegas algorithm which we now summarise. 
+We repeat the following step at most $O(d)$ times.  
+For a random element $g \in G$, construct
+$B$, a multiplicative upper bound for $|g|$.
+For primes $p|B$, construct $h = g^{B/p}$ 
+and $N=\langle h \rangle^G$. If $N$ acts
+irreducibly on a composition factor of the underlying 
+vector space of the appropriate dimension, then decide 
+using the algorithm of \cite{NP} whether or not $N$ is the 
+appropriate classical group.
+
+\begin{lemma}
+If $G=\SX(e,q)\times\SX(d-e,q)$, then
+we can construct one of its
+direct factors in at most Las Vegas 
+$O(d^4)$ group operations.
+\end{lemma}
+Useful only if $d$ is bounded.
+
+\subsection{Using primitive prime divisors}
+
+Given a generating set $X$ for $G$, where $SX(d,q)\le G\le GX(d,q)$ we need
+an efficient algorithm to construct a generating set for $SX(d,q)=G'$ as
+a straight line program in $X$.  This is done by taking random elements of
+$G$, and raising them to the power $q-1$.
+[This is wrong except for the case of $\GL(d,q)$.  Thus for unitary
+groups we raise to the power $q+1$.]
+ We need to estimate the number
+of random elements of $G$ needed.  We deal first with the case of generic
+parameters in the sense of \cite{NP}.  
+This excludes a few small values of $d$,
+see {\it ibidem} Theorem 3.6.  
+
+We reproduce some of the definitions of that
+paper.  
+ If $G$ is given as a subgroup of
+$GX(d,q)$ then $G$ is said to have parameters $(\X,d,q)$. The critical
+definition is then as follows.
+
+\begin{definition}
+Definition 3.2 of [NP].  Let $G\le GL(d,q)$, and suppose that $G$
+acts irreducibly on the underlying vector space $V$, and that $G$ has
+parameters $(\X,d,q)$.
+\begin{enumerate}
+\item[(a)] If the following conditions hold, we shall say that $G$ has {\it generic
+parameters}:
+\begin{enumerate}
+\item[ (i)] there are integers $e_1$ and $e_2$ with $d/2<e_1<e_2\le d$
+such that $SX(d,q)$ contains both a ppd$(d,q;e_1)$-element and a
+$ppd(d,q;e_2)$-element;
+\item[(ii)] there is an integer $e$ with $d/2<e\le d$ such that $SX(d,q)$
+contains a large ppd$(d,q,e)$;
+\item[(iii)] there is an integer $e$ with $d/2<e\le d$ such that $SX(d,q)$
+contains a basic ppd$(d,q;e)$-element.
+\end{enumerate}
+If at least one of the conditions (i)--(iii) fails we shall say that
+$G$ has {\it non-generic parameters}.
+
+\item[(b)] Further, if conditions (a) (i)--(iii) hold, with the group $G$
+replacing $\SX(d,q)$, we shall say that $G$ is a {\it generic subgroup}
+of $\GL(d,q)$.
+\end{enumerate}
+
+\end{definition}
+
+It is a running hypothesis of the paper in question that the type \X of
+$G$ has been determined.  Thus if $G$ preserves no non-trivial form
+modulo scalars then $G$ is of linear type, and if $G$ does preserve a form then
+$G$ is of general symplectic, unitary, or one of the orthogonal types.  Since
+$G$ is assumed to be irreducible this goes not give rise to any
+ambiguity.
+
+We now quote a simplified version of Theorem 4.8 of \cite{NP}.
+
+\begin{theorem}
+Suppose that $G$ has parameters $(\X,d,q)$,
+so that $G\le\GX(d,q)$.  Suppose also that $d\ge3$ and $G$ acts irreducibly
+on the underlying vector space $V$.  If $G$ is a generic subgroup then one of 
+the following holds.
+\begin{enumerate}
+\item[(a)] Classical examples, $G\ge SX(d,q)$.
+\item[(b)] Extension field examples: there is a prime $b$ such that $b$ divides $d$
+and $G$ is conjugate to a subgroup of $\GL(d/b,q^b).b$.
+\item[(c)] Nearly simple examples: $G$ belongs to a small class of almost simple
+groups.
+\end{enumerate}
+\end{theorem}
+
+The theorem has been simplified as follows.  In case (b) further information
+about $b$ is given in the original paper.  In case (ii) the various possibilities for 
+$G'$ are
+given explicitly.  These derived groups are all simple or central
+extensions of simple groups.  For any particular value of $(d,q)$ there
+are at most three possibilities for $G'$, this bound being reached in
+the case of $(d,q)=(11,2)$, when $G'$ could be $M_{23}$ or $M_{24}$ or
+$\PSL(2,23)$.
+
+The critical point now is that if $\SX(d,q)\le G\le\GX(d,q)$, where
+these parameters are generic, and if $N$ independent random elements of
+$G$ are taken, then the probability that this set does not contain
+two ppd$(d,q,e_i)$-
+elements for some $(e_1,e_2)$ where $d/2<e_1<e_2\le d$, one of these
+being a large ppd element and one being a basic ppd element, is
+bounded above by a function of $d$ and $N$, independent of $q$, that
+is monotonic decreasing as a function of $d$, and that tends exponentially
+to 0 as a function of $N$ if $d>3$.  This information is extracted from
+Corollary 6.3, Theorem 6.4 and Lemma 6.5 of \cite{NP} except that some orthogonal
+cases are excluded, except in so far as they are covered by the observation
+`Since the proof is so technical, we will assume that we are not in the case 
+$\O^0$ or $\O^-$.  However, a bound for these cases can be derived analogously'.
+
+We now prove that if we take $N$ random elements of $G$, where
+$\SX(d,q)\le G\le\GX(d,q)$, the probability of these elements, when
+raised to the power $q-1$, generating $\SX(d,q)$ is bounded above by a 
+function with the above properties, provided that $d$ is big enough.
+
+The requirement that $d$ is to big enough allows us to assume that
+$G$ has generic parameters.  We may also assume that the set of
+random elements contains two ppd elements with the above properties.
+Let $H$ denote the subgroup of $G$ generated by the powers in question.
+
+We first prove that $H$ is probably irreducible.
+
+$H$ contains two ppd elements, say $h_1$ and $h_2$, that act irreducibly on
+submodules of $V$ of dimensions $e_1$ and $e_2$, where $e_i>d/2$.  Since
+$h_1$ and $h_2$ were chosen independently these spaces probably span the
+whole of $V$, in which case it follows easily that $V$ will be an irreducible
+$H$-module.  By `probably' we mean `with probability bounded away from 0 by a positive
+absolute constant', though a much stronger result would obviously hold.
+
+We now need to consider the probability of $H$ lying in one of the
+non-classical groups in cases (b) and (c) of the above theorem.
+In this case $H$ lies in the centraliser of one of a small number of
+explicitly defined proper subgroups of $SX(d,q)$, and it is easy to
+see that if $h$ is a random element of $H$, chosen according to a
+probability distribution that is constant on conjugacy classes then
+$h$ will probably centralise none of these groups, with the same meaning
+of `probably'.  This proves the following result.
+
+\begin{theorem}
+ Let $\SX(d,q)\le G\le\GX(d,q)$, and let $\GX(d,q)/\SX(d,q)$
+have order $k$.  Take $N$ uniformly distributed random elements of
+$G$ and raise them to the power $k$.  There is a function $f_\X(N,d)$,
+independent of $q$, such that $f_\X(N,d)$ is monotonic decreasing as a
+function of $d$, and converges exponentially fast to 0 (for $d>3$) as a
+function of $N$; and the probability that the above $k$-th powers
+fail to generate $SX(d,q)$ is less than $f_X(N,q)$.
+\end{theorem}
+
+In exactly the same way we can can find a generating set for
+$H=\SX(e,q)$ from a generating set of $G=\SX(e,q)\times\SX(d-e,q)$ if $e$
+is not too small; that is to say, is greater than some absolute
+constant.  Thus we take $N$ random elements $(h_i,k_i)$ if $G$, and raise
+each to the order of $k_i$.  If $h_i$ is a ppd$(d,q;a)$ element for
+some $a$ then so is $h_i$ raised to the power of the order of $k_i$
+provided that the prime in question does not divide the order of $k_i$,
+and the property of being a large or primitive ppd element will also
+not be destroyed in this case.  But the prime in question is unlikely
+to divide the order of $k_i$ as we shall see.  A simplified version
+of Theorem 5.7 of \cite{NP} is as follows:
+
+\begin{theorem}
+ Let $\SX(d,q)\le G\le\GX(d,q)$ where we are not in an
+orthogonal case, and let $e$ be even in the symplectic case and be odd
+in the unitary case.  Then the proportion ppd$(G,e)$ of ppd$(d,q;e)$ elements
+of $G$ satisfies $1/(e+1)\le {\rm ppd}(G,e)\le 1/e$.
+\end{theorem}
+
+The theorem has been simplified by omitting the case of orthogonal groups.
+
+It follows that the probability of the ppd property in question being destroyed
+by powering is less than $2/d$, as required.  Note also that this remains the
+case if we raise $(h_i,k_i)$ to the power given by the over order of $k_i$
+rather than the order of $k_i$, thus avoiding problems with integer factorisation.
+
+Seress \cite[Theorem 2.3.9]{Seress03} presents 
+a Monte Carlo polynomial time
+algorithm to construct a generating set for the 
+derived group of a black-box group. 
+
+Remark: There is a problem about only looking for ppd$(q,d;e)$ elements for
+odd $e$ when in the unitary case that I need to understand.
+
+
+\section{Complexity of the algorithms} 
+\label{Analysis}
+We now analyse the principal
+algorithms, and in the next section estimate the length of the SLPs
+that express the canonical generators as words in  the given
+generators. The time analysis is based on counting the number of
+field operations, and the number of calls to 
+the discrete logarithm oracles. Use of discrete
+logarithms in a given field requires first the setting up of certain
+tables, and these tables are consulted for each application. The
+time spent in the discrete logarithm algorithm, and the space that it
+requires, are  not proportional to the number of applications in a
+given field.
+
+We first consider the costs associated with tasks 
+not previously discussed.
+
+Babai \cite{Babai91} presented a Monte Carlo algorithm to
+construct in polynomial time nearly uniformly distributed 
+random elements of a finite group.  An alternative is the 
+{\it product replacement algorithm} of Celler
+{\it et al.\ }\cite{Celleretal95}.
+That this is also polynomial time was
+established by Pak \cite{Pak00}.
+For a discussion of both algorithms, we refer
+the reader to \cite[pp.\ 26-30]{Seress03}.
+
+
+We now complete our analysis of the main algorithms.
+\begin{theorem}\label{Theorem1}  
+The number of field operations carried out in
+Algorithm {\tt OneEven} is at most  
+$O(d (\xi + d^3 \log q)$.
+\end{theorem}
+\begin{proof} 
+The construction of a hyperbolic basis for a vector space with a given
+symplectic or hermitian form, as in line 5, can be carried out
+in $O(d^3)$ field operations \cite[Chapter 2]{Grove02}.
+
+The proportion of elements of $G$ with the required property in line 6
+is at least $k/d$ for some absolute constant $k$, as proved in Section
+\ref{Involution}.
+
+The number of field operations required in lines 8 and 14 is 
+$O(d(\xi + d^3 \log q))$,
+as proved in Section \ref{Bray}.
+
+The recursive calls in  lines 10 and 11 are to cases of dimension at
+most $2d/3$, and hence they increase only a constant factor 
+the number of field operations. 
+
+The number of field operations required in lines 9 and 13 is at most 
+$O(d^3\log q)$, as proved in Section \ref{Pow}. 
+
+The result follows.
+\end{proof}
+
+The algorithm is Las Vegas. Thus a more precise statement
+would be that the probability of $kd^4$ field operations proving
+insufficient tends to zero exponentially as a function of $k$. 
+The field operations counted are the operations of elementary
+arithmetic. 
+
+We record the number of calls to the $\SL(2, q)$ construct
+recognition algorithm and the associated discrete logarithm oracle.
+\begin{theorem}\label{Theorem2} 
+Algorithm {\tt OneEven} generates at most $4d$ calls to 
+the discrete logarithm oracle for $\GF(q)$.
+\end{theorem}
+\begin{proof}
+{\tt Needs consideration.} 
+Each call to the constructive recognition oracle for SL2 generates 
+three calls to the discrete logarithm oracle for $\GF(q)$ \cite{Conderetal05}.
+Let $f(e) =  \alpha\cdot e - 6$ denote the number
+of calls generated by applying {\tt OneEven} to $\SL(e, q)$, 
+where $\alpha$ is some positive constant.  
+Then $f(d) = f(e) + f(d - e) + 2 \cdot 3 = \alpha d - 6$.
+There are 9 calls to the discrete log oracle for degree 4.
+Hence the number of calls is at most $4d$.
+\end{proof}
+Similar results hold for Algorithm {\tt OneOdd} and so 
+Algorithm {\tt OneMain} also has this complexity.
+
+The results of the analysis of Algorithm {\tt TwoMain} are 
+qualitatively similar; however it generates at most $d-1$ calls to the 
+constructive recognition algorithm for $\SL(2,q)$.  
+
+\section{Straight Line Programs}\label{SLP}
+
+We now consider the length of the straight line programs (or SLPs) for
+the standard generators for $\SX(d, q)$ constructed by our algorithms.
+
+In its simplest form, 
+an SLP on a subset $X$ of a group $G$ is a
+string, each of whose entries is either a pointer to an element of $X$, 
+or a pointer to a previous
+entry of the string, or an ordered pair of pointers to not necessarily 
+distinct previous entries.
+Every entry of the string defines an element of $G$.  An 
+entry that points to an element of
+$X$ defines that element.  An entry that points to a previous entry defines 
+the inverse of the element defined by that entry.  An entry that points to 
+two previous entries defines the
+product, in that order, of the elements defined by those entries.
+
+Such a simple SLP defines an element 
+of $G$, namely the element defined by the last entry, and this element 
+can be obtained by computing in turn
+the elements for successive entries.
+The SLP is primarily used by replacing the elements 
+$X$ of $G$ by the elements $Y$ of some group
+$H$, where $X$ and $Y$ are in one-to-one correspondence, and then evaluating 
+the element of $H$ that the SLP then defines.
+
+It is easy to arrange for our algorithms to 
+construct SLPs for the standard generators of 
+$\SX(d,q)$ on the given generating set $X$ for $G$.
+
+%The reason for using SLPs rather than words in $X$ is that, as successive
+%multiplications are carried out, the length of the corresponding words in 
+%$X$ can grow exponentially as a function of the number of multiplications 
+%performed, whereas the SLP will only
+%grow linearly.
+
+We now identify other desirable features of SLPs. 
+\begin{enumerate}
+\item 
+We need to replace the second type of node, that defines the 
+inverse of a previously defined element, by a type of node with two fields, 
+one pointing to a previous entry, and one containing 
+a possibly negative integer.  The element defined is then the 
+element defined by the entry to which
+the former field points, raised to the power defined by 
+the latter field.  This reflects the fact that we
+raise group elements to very large powers, and have 
+an efficient algorithm for performing this.
+Of course it may be convenient to have nodes corresponding 
+to other group-theoretic constructions such as commutators.
+
+\item 
+We should regard an SLP as defining a number of elements of $G$,
+and not just one element, so a sequence of nodes may be specified as 
+giving rise to elements
+of $G$.  Thus we wish to return a single straight line program that defines 
+all the standard generators of $\SX(d,q)$, rather than one straight line 
+program for each of these elements.
+This avoids duplication when two or more of the standard generators 
+rely on common calculations.
+
+%\item 
+%In order to preserve space the structure of an SLP needs to 
+%be enhanced to ensure that, when the
+%SLP is evaluated in some other group, the element defined by a 
+%node is only calculated when it
+%will be needed later, and is discarded when it it is no longer needed.  
+%Discarding the element of $H$ defined by a node when it is no longer 
+%required in an evaluation ensures that the space complexity of evaluating 
+%an SLP is at worst proportional to the space complexity of the space 
+%required to construct the corresponding element (or elements) of $G$ 
+%in the first place, given a bound to the space required to store 
+%an element of $H$.
+
+\item 
+A critical concern is how the number of trials in a random search for 
+a group element effects the length of an SLP that defines that element.  
+This requires an
+assumption as to the nature of the random process.  We assume that this 
+random process
+is a stochastic process taking place in a graph whose vertices 
+are defined by a seed, the seed
+consisting of an array of elements of the group.  We refer to this 
+array as {\it the seed}.  
+We assume that a random number generator now determines which 
+edge adjoining the current vertex in the graph will be followed in 
+the stochastic process.
+If no effort is made to improve the situation, then the length of the SLP will 
+then be increased by a constant
+amount for every trial, successful or unsuccessful. This constant can, 
+in effect, be regarded as 1 by testing all the group elements constructed in 
+updating the seed.  However, this is not good enough for our purposes.  
+We propose the following solution to the problem.  {\it When embarking on a 
+search that is
+expected to require approximately $d$ trials, we record the value 
+of the seed, and repeatedly carry
+out a random search, using our random process, but returning, after 
+every $c\log d$ steps, for some suitable constant $c$, to the 
+stored value of the seed, until we succeed.}  If the vertices in the graph
+have valency at least $v$ then $c$ should be chosen so that  
+$c\log d$ is significantly less than $\log_v(d)$.  
+\end{enumerate}
+
+%With simple versions of product replacement this 
+%valency will be at least 50, so in practice
+%the number of steps taken before returning to the stored 
+%seed may be taken as a small constant.
+
+We now turn to our analysis of the SLPs, which we assume 
+have these additional features. 
+
+Both algorithms rely on a divide-and-conquer strategy. The first
+algorithm produces recursive calls to $\SX(e,q)$ and to  $\SX(d-e,q)$
+where $e$ is approximately $d/2$. The second algorithm reduces to the
+case when $d$ is a multiple of 4, and then has a single recursive call
+to $\SX(d/2,q)$. Since the time complexity of the algorithm is greater
+than $O(d^3)$, for fixed $q$, the cost in time of the recursive calls
+is unimportant. This is not the case with the length of the
+SLPs. The algorithm expends most of its time in
+random searches; ignoring the construction and testing of
+random elements that fail to pass the required test,
+the number of group
+operations outside  recursive calls, including exponentiation as a
+single operation, becomes constant in the first main algorithm, and 
+$O(\log d)$ in
+the second, where the involution with eigenspaces of equal dimension 
+that is used when $d=4n$ is constructed as a product of $O(\log d)$ involutions.
+
+Thus in Algorithm {\tt OneMain}, where the number of recursive calls 
+is $O(d)$, the SLP in question has length approximately $O(d)$.   
+In Algorithm {\tt TwoMain}, 
+where the number of recursive calls 
+is $O(\log d)$, the length of the SLP is approximately $O(\log^2 d)$.  
+However, in each case there
+are random searches of length $O(d)$ that multiply these estimates 
+by another factor of $\log d$.
+
+%XXXX  Small point.  In the SLP section we argue for a single SLP to describe 
+%all the standard generators.  Do we want to use SLP here in the singular 
+%or in the plural?
+
+We thus arrive at the following result.
+\begin{theorem} 
+%Counting exponentiation as a single operation, 
+Subject to the properties specified above, the lengths of 
+the SLP for the standard generators produced by 
+{\tt OneMain} is $O(d\log d)$; the length produced by {\tt TwoMain}
+is $O(\log^3 d)$.
+\end{theorem}
+
+\section{An implementation}
+Our implementation of these algorithms is publicly available in {\sc Magma}.
+It uses:
+\begin{itemize}
+\item 
+the product replacement algorithm \cite{Celleretal95}
+to generate random elements; 
+\item our implementations of Bray's algorithm \cite{Bray}
+and the involution-centraliser algorithm \cite{Ryba-paper}.
+\item our implementations of the algorithm of \cite{Conderetal05}
+and \cite{sl3q}.
+\end{itemize}
+
+The computations reported in Table \ref{table1} were carried out
+using {\sc Magma} V2.13 on a Pentium IV 2.8 GHz processor.
+The input to the algorithm is $\SX (d, q)$.
+In the column entitled ``Time", we list the CPU time in seconds
+taken to construct the standard generators.
+
+\begin{table}[h]
+\caption{Performance of implementation for a sample of groups}
+\label{table1}
+\begin{center}
+\begin{tabular}
+{|c|r|} \hline
+Input  &   Time  \rule{0cm}{2.5ex}\\
+\hline
+$SL_3(11)$ & $2.1$      \rule{0cm}{2.5ex}\\ \hline
+$SL_6(2)$  & 13.1 \rule{0cm}{2.5ex}\\ \hline
+$Sp(10,5^{10})$ & 55.4 \rule{0cm}{2.5ex}\\ \hline
+$Sp(40,5^{10})$ & 2980.4 \rule{0cm}{2.5ex}\\ \hline
+$SU_{8}(3^{16})$ & 22.6 \rule{0cm}{2.5ex}\\ \hline
+$SU_{20}(5^{12})$ & 47.6 \rule{0cm}{2.5ex}\\ \hline
+$SU_{70}(5^2)$ & 191.3 \rule{0cm}{2.5ex}\\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{thebibliography}{10}
+
+\bibitem{Babai91}
+L\'aszl\'o Babai,  
+Local expansion of vertex-transitive graphs and
+  random generation in finite groups,  {\it Theory of Computing}, (Los
+  Angeles, 1991), pp.\ 164--174. Association for Computing Machinery, 
+New York, 1991.
+
+\bibitem{BabaiSzemeredi84}
+L\'aszl\'o Babai and Endre Szemer\'edi.
+\newblock On the complexity of matrix group problems, {I}.
+\newblock In {\em Proc.\ $25$th IEEE Sympos.\ Foundations Comp.\ Sci.}, pages
+  229--240, 1984.
+
+\bibitem{BabaiBeals99}
+L. Babai and R.M. Beals,
+\newblock A polynomial-time theory of black-box groups. {I}.
+\newblock In {\em Groups St. Andrews 1997 in Bath, I}, volume 260 of {\em
+  London Math. Soc. Lecture Note Ser.}, pages 30--64, Cambridge, 1999.
+  Cambridge Univ. Press.
+
+\bibitem{BPS} L. Babai, P.\ P{\'a}lfy and J.\ Saxl, On the number
+of $p$-regular elements in simple groups, preprint.
+
+
+\bibitem{Bray} J.N. Bray, An improved method of finding
+the centralizer of an involution, {\it Arch. Math. (Basel)}
+{\bf 74} (2000), 241--245.
+
+\bibitem{Magma}
+Wieb Bosma, John Cannon, and Catherine Playoust,
+\newblock The {\sc Magma} algebra system I: The user language,
+\newblock {\em J.\ Symbolic Comput.}, {\bf 24}, 235--265, 1997.
+
+\bibitem{Brooksbank03}
+P.A. Brooksbank,
+\newblock Constructive recognition of classical groups
+in their natural representation.
+\newblock {\em J. Symbolic Comput.} {\bf 35} (2003), 195--239.
+
+\bibitem{Celleretal95}
+Frank Celler, Charles R.\ Leedham-Green, Scott H.\ Murray, Alice C.\
+  Niemeyer and E.A.\ O'Brien, Generating random elements of a 
+finite group, {\it Comm.\ Algebra}, {\bf 23} (1995), 4931--4948.
+
+\bibitem{CLG97}
+Frank Celler and C.R.\ Leedham-Green,
+\newblock Calculating the order of an invertible matrix,
+\newblock In {\em {Groups and Computation {II}}}, volume~28 of {\em Amer.\
+  Math.\ Soc.\ DIMACS Series}, pages 55--60. (DIMACS, 1995), 1997.
+
+
+\bibitem{CellerLeedhamGreen98}
+F.~Celler and C.R. Leedham-Green.
+\newblock A constructive recognition algorithm for the special linear group.
+\newblock In {\em The atlas of finite groups: ten years on (Birmingham, 1995)},
+  volume 249 of {\em London Math. Soc. Lecture Note Ser.}, pages 11--26,
+  Cambridge, 1998. Cambridge Univ. Press.
+
+%\bibitem{CMT}
+%Arjeh M.\ Cohen, Scott H.\ Murray, and D.E.\ Taylor.
+%\newblock Computing in groups of Lie type.
+%\newblock {\em Math. Comp.\ }{\bf73}, 1477-1498, 2003.
+
+%\bibitem{ConderLeedhamGreen01}
+%Marston Conder and Charles~R. Leedham-Green.
+%\newblock Fast recognition of classical groups over large fields.
+%\newblock In {\em Groups and Computation, III (Columbus, OH, 1999)}, volume~8
+%  of {\em Ohio State Univ. Math. Res. Inst. Publ.}, pages 113--121, Berlin,
+%  2001. de Gruyter.
+
+\bibitem{Conderetal05}
+M.D.E. Conder, C.R. Leedham-Green, and E.A. O'Brien.
+\newblock Constructive recognition of PSL$(2, q)$.
+\newblock {\em Trans.\ Amer.\ Math.\ Soc.} {\bf 358}, 1203--1221, 2006.
+
+\bibitem{FNP}
+Jason Fulman, Peter M. Neumann, and Cheryl E. Praeger.
+A Generating Function Approach to the Enumeration
+of Matrices in Classical Groups over Finite Fields.
+Mem. Amer. Math. Soc. {\bf 176}, no.\ 830, 2005.
+
+\bibitem{GLS3}
+Daniel Gorenstein, Richard Lyons, and  Ronald Solomon.
+The classification of the finite simple groups. Number 3. Part I,
+American Mathematical Society, Providence, RI, 1998. 
+
+\bibitem{Grove02}
+Larry C. Grove. Classical Groups and Geometric Algebra.
+AMS Graduate Studies in Math.\ {\bf 39}.
+
+\bibitem{GuralnickLubeck01}
+R.M. Guralnick\ and\ F. L\"ubeck.
+ On $p$-singular elements in Chevalley groups in characteristic $p$.
+\newblock In {\em Groups and Computation, III (Columbus, OH, 1999)}, volume~8
+  of {\em Ohio State Univ. Math. Res. Inst. Publ.}, pages 113--121,
+Berlin, 2001. de Gruyter.
+
+\bibitem{HoltEickOBrien05}
+Derek~F.\ Holt, Bettina Eick, and Eamonn~A.\ O'Brien.
+\newblock {\em Handbook of computational group theory}.
+\newblock Chapman and Hall/CRC, London, 2005.
+
+\bibitem{Ryba-paper} P.E. Holmes, S.A. Linton, E.A. O'Brien, A.J.E. Ryba and
+R.A. Wilson, Constructive membership testing in black-box
+groups, preprint.
+
+\bibitem{KantorSeress01}
+William~M. Kantor and {\'A}kos Seress.
+\newblock Black box classical groups.
+\newblock {\em Mem. Amer. Math. Soc.}, {\bf 149}, 2001.
+                             
+%\bibitem{LG01}
+%Charles R.\ Leedham-Green,
+%The computational matrix group project, in
+%{\it Groups and Computation}, III (Columbus, OH, 1999), 229--247, Ohio
+%State Univ. Math. Res. Inst. Publ., {\bf 8}, de Gruyter, Berlin, 2001.
+                                                                                
+%\bibitem{LiebeckOBrien05}
+%Martin~W. Liebeck and E.A.\ O'Brien.
+%\newblock Finding the characteristic of a group of Lie type.
+%\newblock Preprint, 2005.
+
+\bibitem{lish} M.W. Liebeck and A. Shalev. The probability of generating
+a finite simple group, {\it Geom. Ded.} {\bf 56} (1995), 103--113.
+
+\bibitem{sl3q}
+F.\ L{\"u}beck, K.\ Magaard, and E.A. O'Brien. 
+Constructive recognition of $\SL_3(q)$.
+Preprint 2005.
+
+\bibitem{Huppert67}
+B.\ Huppert.
+\newblock {\em {E}ndliche {G}ruppen {I}}, volume 134 of {\em Grundlehren Math.\
+  Wiss.}
+\newblock Springer-Verlag, Berlin, Heidelberg, New York, 1967.
+
+\bibitem{NeumannPraeger92}
+Peter~M.\ Neumann and Cheryl~E.\ Praeger.
+\newblock A recognition algorithm for special linear groups.
+\newblock {\em Proc.\ London Math.\ Soc.\ $(3)$}, 65:555--603, 1992.
+
+\bibitem{NP} A.C. Niemeyer and C.E. Praeger.
+A recognition algorithm for classical groups over finite fields,
+{\it Proc. London Math. Soc.} {\bf 77} (1998), 117--169.
+
+\bibitem{NP2}
+Alice~C. Niemeyer and Cheryl~E. Praeger.
+\newblock Implementing a recognition algorithm for classical groups.
+\newblock In {\em Groups and Computation, II (New Brunswick, NJ, 1995)},
+  volume~28 of {\em DIMACS Ser. Discrete Math. Theoret. Comput. Sci.}, pages
+  273--296, Providence, RI, 1997. Amer. Math. Soc.
+
+\bibitem{OBrien05}
+E.A. O'Brien. Towards effective algorithms for linear groups.
+{\it Finite Geometries, Groups and Computation},
+(Colorado), pp. 163-190. De Gruyter, Berlin, 2006.
+
+\bibitem{Pak00}
+Igor Pak. The product replacement algorithm is polynomial.
+In {\it 41st Annual Symposium on Foundations of Computer Science
+(Redondo Beach, CA, 2000)}, 476--485,
+IEEE Comput. Soc. Press, Los Alamitos, CA, 2000.
+
+\bibitem{PW05}
+C.W. Parker and R.A. Wilson.
+Recognising simplicity in black-box groups. 
+Preprint 2005.
+
+\bibitem{Seress03}
+{\'A}kos Seress.
+\newblock {\em Permutation group algorithms}, volume 152 of {\em Cambridge
+  Tracts in Mathematics}.
+\newblock Cambridge University Press, Cambridge, 2003.
+
+\bibitem{Storjohann98}
+Arne Storjohann.
+An $O(n\sp 3)$ algorithm for the Frobenius normal form. In
+{\em Proceedings of the 1998 International Symposium on Symbolic
+and Algebraic Computation} (Rostock), 101--104, ACM, New York, 1998.
+
+\bibitem{vzg}
+Joachim von zur Gathen and J\"urgen Gerhard,
+{\it Modern Computer Algebra}, Cambridge University Press, 2002.
+\end{thebibliography}
+
+\begin{tabbing}
+\=\hspace{70mm}\=\kill
+\>School of Mathematical Sciences \>Department of Mathematics    \\
+\>Queen Mary, University of London \>Private Bag 92019, Auckland \\
+\>London E1 4NS, United Kingdom   \>University of Auckland     \\
+\>United Kingdom                  \> New Zealand     \\
+\> C.R.Leedham-Green@qmul.ac.uk   \> obrien@math.auckland.ac.nz
+\end{tabbing}
+
+\vspace*{2mm}
+\noindent 
+Last revised July 2006
+
+\end{document}
+

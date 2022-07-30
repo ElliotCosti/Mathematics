@@ -1,0 +1,28 @@
+load "/home/obrien/Matrix/recurse/code/start";
+// load "/home/obrien/intersect/class-int/basics.m";
+load "/home/obrien/Matrix/classical/basics.m";
+load "/home/obrien/Matrix/classical/sl/odd/gen.m";
+load "/home/obrien/Matrix/classical/sl/odd/sl.m";
+load "/home/obrien/Matrix/classical/sl/odd/projective.m";
+
+// Attach ("/home/obrien/Matrix/classical/form.m");
+// Attach ("/home/obrien/Matrix/classical/correct_form.m");
+// Attach("/home/obrien/Matrix/classical/correct_orth.m");
+load "/home/obrien/Matrix/classical/conjugate.m";
+load "/home/obrien/Matrix/classical/sp/odd/sp.m";
+
+load "/home/obrien/Matrix/classical/su/odd/su.m";
+
+load "/home/obrien/Matrix/classical/orthogonal/odd/so-product.m";
+load "/home/obrien/Matrix/classical/orthogonal/odd/involution.m";
+load "/home/obrien/Matrix/classical/orthogonal/odd/dp.m";
+load "/home/obrien/Matrix/classical/orthogonal/odd/soplus.m";
+load "/home/obrien/Matrix/classical/orthogonal/odd/soplus-special.m";
+
+load "/home/obrien/Matrix/classical/orthogonal/odd/sominus.m";
+load "/home/obrien/Matrix/classical/orthogonal/odd/sominus-6.m";
+load "/home/obrien/Matrix/classical/orthogonal/odd/sominus-special.m";
+
+load "/home/obrien/Matrix/classical/orthogonal/odd/so.m";
+load "/home/obrien/Matrix/classical/orthogonal/odd/so-5.m";
+load "/home/obrien/Matrix/classical/orthogonal/odd/so-special.m";

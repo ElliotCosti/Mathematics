@@ -1,0 +1,119 @@
+load "C:/Users/Elliot/Documents/Mathematics/standard.m";
+load "C:/Users/Elliot/Documents/Mathematics/sl.m";
+load "C:/Users/Elliot/Documents/Mathematics/MatrixPGroup9.txt";
+
+/* THIS CODE ACTS AS A TEST TO CHECK THAT MATRIXPGROUP IS WORKING */
+
+/* Preparing the input */
+
+for d in [10] do 
+for p in [7] do
+for e in [1..16] do
+for i in [1..1] do 
+
+G := SL(d, p^e);
+
+q := #BaseRing(G);
+
+Q := SLChosenElements(G);
+QQ := [ExteriorSquare(Q[i]) : i in [1..#Q]];
+
+n := Degree(QQ[1]);
+P := RandomProcess(GL(n, q));
+A := Random(P);
+n, p, e, i;
+
+/* conjugating everything by a random matrix to make the exterior square 
+   look random */
+_, a1 := WordInGen(G, Q[1]);
+_, a2 := WordInGen(G, Q[2]);
+_, a3 := WordInGen(G, Q[3]);
+_, a4 := WordInGen(G, Q[4]);
+Q := [Evaluate(a1, QQ)^A, Evaluate(a2, QQ)^A, Evaluate(a3, QQ)^A, Evaluate(a4, QQ)^A];
+
+E := sub<GL(n, q)|Q>;
+
+
+   q := #BaseRing(Q[1]);
+   w := PrimitiveElement(GF(q));
+   M := KMatrixSpace(GF(q), d, d);
+   b := Basis(M);
+   G := SL(d, q);
+   n := Degree(E);
+
+   /* creating H. H is the subgroup of G that fixes the first basis element of 
+      the natural module. As this has a p-local subgroup, it affords a 
+      1-dimensional submodule in the natural dimension. */
+
+   QG := SLChosenElements(SL(d-1, q));
+
+   HQ := [G!InsertBlock(Id(G), QG[i], 2, 2) : i in [1..#QG]];
+   Htt := M!Id(G) + b[d+1]; Htt := G!Htt;
+   Append(~HQ, Htt);
+   Hplus := M!Id(G) -b[1] -b[d+2] + w*b[1] + (w^-1)*b[d+2];
+      Hplus := G!Hplus;
+   /* the element that will make H q^(d-1):GL(d, q) as opposed to
+      q^(d-1):SL(d, q) */
+   Append(~HQ, Hplus);
+
+   /* H := sub<GL(d, q)|HQ>;
+      H here is q^(d-1):GL(d, q) and q^(d-1) is the normal p-sg */
+
+   /* we now map H to the non-natural representation. */
+
+   v := Q[2];
+
+   HEQ := [];
+   for i in [1..#HQ] do
+      _, word := WordInGen(G, HQ[i]);
+      Append(~HEQ, Evaluate(word, Q));
+   end for;
+
+   HE := sub<GL(n, q)| HEQ>;
+   /* is reducible as it contains a p-local subgroup */
+   VPH := GModule(HE);
+   flag, U, Uhat := IsIrreducible(VPH);
+   /* U above is a non-trivial submodule */
+
+   /* we now create an elementary abelian p-group K. The generators of K 
+      consist of those elements with some power of the primitive element
+      in the top row (excluding the first position), 1s down the leading
+      diagonal and 0s everywhere else
+   */
+
+   ee := Factorization(q)[1][2];
+   S := [];
+   for j in [1..ee] do
+      for i in [2..d] do
+         Append(~S, SL(d, q)!(M!Id(G) + (w^(j-1))*b[i]));
+      end for;
+   end for;
+
+   /* K := sub<SL(d, q)|gg>;
+      Isomorphic to (C_q)^(d-1) */
+
+   /* mapping K to the non-natural representation */
+
+   kk := [];
+   for i in [1..d-1] do
+      _, word := WordInGen(G, S[i]);
+      Append(~kk, Evaluate(word, Q));
+   end for;
+
+   KE := sub<GL(n, q)|[kk[i] : i in [1..d-1]]>;
+
+P := RandomProcess(KE);
+A := Random(P);
+time word := MatrixPGroupWordInGen (A, KE); 
+
+W, phi := WordGroup (KE);
+if #S ne 0 then
+   assert Evaluate(word, kk) eq A;
+else
+   assert word eq W!1;
+end if;
+
+end for;
+end for;
+end for;
+end for;

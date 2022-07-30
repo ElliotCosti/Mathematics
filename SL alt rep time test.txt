@@ -1,0 +1,34 @@
+for d in [4..22] do
+
+q := 7^3;
+
+G := SL(d, q);
+
+Q := SLChosenElements(G);
+QQ := [ExteriorSquare(Q[i]) : i in [1..#Q]];
+n := Degree(QQ[1]);
+A := Random(GL(n, q));
+
+/* conjugating everything by a random matrix to make the exterior square 
+   look random */
+_, a1 := WordInGen(G, Q[1]);
+_, a2 := WordInGen(G, Q[2]);
+_, a3 := WordInGen(G, Q[3]);
+_, a4 := WordInGen(G, Q[4]);
+Q := [Evaluate(a1, QQ)^A, Evaluate(a2, QQ)^A, Evaluate(a3, QQ)^A, Evaluate(a4, QQ)^A];
+
+E := sub<GL(n, q)|Q>;
+
+P := RandomProcess(E);
+
+n, q; 
+
+A := Random(P);
+time flag, scalar, word := SLAltRepWordInGen(E, Q, A, d, q);
+assert flag;
+
+A := Random(P);
+time flag, scalar, word := SLAltRepWordInGen(E, Q, A, d, q);
+assert flag;
+
+end for; 

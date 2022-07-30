@@ -1,0 +1,45 @@
+load "C:/Users/Elliot/Documents/Mathematics/UnitaryOddChar2 - 2.txt";
+
+for d in [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25] do
+for p in [2] do
+for e in [1..5] do
+
+G := SU(d, p^e);
+P := RandomProcess(G);
+CB := ChangeOfBasis(G);
+Q := SUChar2ChosenElements(G);
+
+/*
+for i in [1..#Q] do
+d, p, e, "Q[", i, "]";
+
+A := Q[i];
+flag, word := UnitaryOddChar2WordInGen(G, A^(CB^-1));
+
+assert flag eq Id(G);
+assert A eq Evaluate(word, Q);
+
+end for;
+
+d, p, e, "xv";
+A := Evaluate(GetXVTranspose(GF(p^e), SLPGroup(#Q)), Q);
+flag, word := UnitaryOddChar2WordInGen(G, A^(CB^-1));
+
+assert flag eq Id(G);
+assert A eq Evaluate(word, Q);
+*/
+
+for i in [1..10] do 
+d, p, e, i; 
+
+A := Random(P);
+
+flag, word := UnitaryOddChar2WordInGen(G, A);
+
+assert flag eq Id(G); 
+assert A^CB eq Evaluate(word, Q);
+
+end for;
+end for; 
+end for; 
+end for; 

@@ -1,0 +1,51 @@
+/* March 2005 version */
+load "/home/obrien/Matrix/recurse/code/start";
+
+Attach ("spec.m");
+load "kill-factor.m";
+load "basis.m";
+load "formula.m";
+load "construct.m";
+load "pretty.m";
+load "involution.m";
+load "linear.m";
+load "fixedpoint.m";
+// load "solve-sl3.m";
+load "solve-sl4.m";
+load "solve-sl5.m";
+load "main.m";
+load "../odd/Steinberg.m";
+
+SetVerbose ("User1", 0);
+
+/* 
+d := 6; q:=4;
+G := SL (d, q);
+
+E, W, CB := SolveEvenSL (G);
+Verify (G, E, W, CB);
+
+*/
+
+// other pieces 
+/* 
+d := 6; q:=4;
+G := SL (d, q);
+g,  w := ConstructInvolution (G: Scalars := true);
+CB := InvolutionBaseChange(G, g);
+d :=7; q:=8;
+G := SL (d, q);
+g,  w := ConstructInvolution (G: Scalars := true);
+I := InvolutionBaseChange(G, g);
+d :=12; q:=8;
+G := SL (d, q);
+g,  w := ConstructInvolution (G: Scalars := true);
+I := InvolutionBaseChange(G, g);
+d :=23; q:=8;
+G := SL (d, q);
+g,  w := ConstructInvolution (G: Scalars := true);
+I := InvolutionBaseChange(G, g);
+
+E, W, CB := Main (G: Scalars := true);
+Verify (G, E, W, CB);
+*/

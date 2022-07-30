@@ -1,0 +1,46 @@
+Hi Charles,
+
+As Eamonn probably told you, my version of Ruth2 had a bug in it. I'm only able to correct the bug by introducing the p factor to two of the four places where the p factor was originally.
+
+This is the code for one of the functions with the p factor in it:
+
+SpaceMultiple := function (p, u, depths, subU, h, i)
+    beta := 0;
+    u := EcheloniseVector (u, depths, subU);
+    F := BaseRing(u);
+    _, incl:= VectorSpace(F, PrimeField(F));
+    while Eltseq(u[i[1]])[i[2]] ne 0 do
+       u := u * h;
+       beta +:= 1;
+       if beta gt p then error "error in SpaceMultiple"; end if;
+       u := EcheloniseVector (u, depths, subU);
+    end while;
+
+    return beta, u;
+
+end function;
+
+Now, I modified this function incorrectly for the following reason. I worked out v0 = u*h - u. Everytime you multiply u by h, it has the effect of adding v0 on. So you work out the multiple of v0 needed to kill the required entry in u. However, this is wrong because at each iteration in the original function, you are echelonizing u*h. So after, let's say the third iteration, instead of having u*h^3, you have this:
+
+u*h^3 - (a_11*u_1 + a_1m * u_m)*h^2 - (a_21*u_1 + a_2m * u_m)*h - - (a_31*u_1 + a_3m * u_m),
+
+where the u_i are vectors in the so far canonised subspace subU (as shown as an input to the algorithm above).
+
+So now, there is no way of working out v0. Because u changes as the iterations go on. Do you see the problem I've got? I tried considering how you would solve the longer formula above but with so many variables, it seems impossible.
+
+UNITARY CODE
+
+I have a couple of queries with regards to the unitary in even dimension. Were you intending that the code will work for even characteristic? For the generating set, you define matrices containing the field element alpha = w^((q+1)/2), where w is the primitive element. In even char, I took this to mean that you get w^(q+1) and calculate its square root. Is this correct?
+
+I've got a problem with the Unitary code where the field is of very high degree (e.g. GF(7^24)) that I'm trying to fix. It's to do with the choice of primitive element that magma uses. I've got an idea how to fix that, though that I'm intending to implement.
+
+On another note, the Omega Minus code appears to be working. I've given it to Derek and I think he's happy with it. Do you remember that time we were talking about it and I said that we might need Ruth2 to kill some of the entries? Well, my algorithm for Omega Minus at the moment DOES use Ruth2 to do this. I'm looking at a way to get round this - I've got a cunning plan that I think will work. I'll talk to you more about this when you get back.
+
+I've also made a start on doing the Omega Plus code for the non-natural rep.
+
+When you get back, can we go over the generators for Omega Odd? I've done some reading on the theory of this and I believe it will work in a similar way to the Omega Minus case. Am I right in thinking that Omega(2d+1, q) has as a subgroup OmegaPlus(2d, q)?
+
+Sorry for the long e-mail, I'll see you when you get back!
+
+Best Wishes,
+Elliot

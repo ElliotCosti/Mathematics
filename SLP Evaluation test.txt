@@ -1,0 +1,84 @@
+/* this test shows that there is no correlation between number of    
+   generators and time taken to evaluate a word on said generating set.
+*/
+
+for n in [1..10] do
+
+   G := GL(65, 7^10);
+   Q := [Random(G) : i in [1..n]];
+   S := SLPGroup(n);
+   R := RandomProcess(S);
+   w := Random(R);
+   n, #w;
+   time g := Evaluate(w, Q);
+
+end for;
+
+load "C:/Users/Elliot/Documents/Mathematics/sl.m";
+load "C:/Users/Elliot/Documents/Mathematics/SymplecticClean5.txt";
+load "C:/Users/Elliot/Documents/Mathematics/Unitary7.txt";
+load "C:/Users/Elliot/Documents/Mathematics/Orthogonal8.txt";
+
+/* This test shows that for large dimension, the words for Sp and SU    
+   are considerably longer than that for SL and O+.
+*/
+
+GSL := SL(100, 7^2);
+GSp := Sp(100, 7^2);
+GSU := SU(100, 7);
+GOP := OmegaPlus(100, 7);
+
+RSL := RandomProcess(GSL);
+RSp := RandomProcess(GSp);
+RSU := RandomProcess(GSU);
+ROP := RandomProcess(GOP);
+
+ASL := Random(RSL);
+ASp := Random(RSp);
+ASU := Random(RSU);
+AOP := Random(ROP);
+
+flag, wordSL := WordInGen(GSL, ASL);
+flag, wordSp := SymplecticWordInGen(GSp, ASp);
+flag, wordSU := UnitaryWordInGen(GSU, ASU);
+flag, wordOP := OmegaPlusWordInGen(GOP, AOP);
+
+#wordSL, #wordSp, #wordSU, #wordOP;
+
+/* This test shows that for large field degree, the words for SL are
+   considerably longer than that for Sp, SU and OP.
+*/
+
+GSL := SL(10, 7^40);
+GSp := Sp(10, 7^40);
+GSU := SU(10, 7^20);
+GOP := OmegaPlus(10, 7^40);
+
+RSL := RandomProcess(GSL);
+RSp := RandomProcess(GSp);
+RSU := RandomProcess(GSU);
+ROP := RandomProcess(GOP);
+
+ASL := Random(RSL);
+ASp := Random(RSp);
+ASU := Random(RSU);
+AOP := Random(ROP);
+
+flag, wordSL := WordInGen(GSL, ASL);
+flag, wordSp := SymplecticWordInGen(GSp, ASp);
+flag, wordSU := UnitaryWordInGen(GSU, ASU);
+flag, wordOP := OmegaPlusWordInGen(GOP, AOP);
+
+#wordSL, #wordSp, #wordSU, #wordOP;
+
+/* Evaluating an SLP on the generators of O+ takes twice the length
+   of time as evaluating an SLP of the same length in Sp.
+*/
+
+QSp := [Random(RSp) : i in [1..8]];
+QOP := [Random(ROP) : i in [1..8]];
+
+#wordSp, #wordOP;
+time g := Evaluate(wordSp, QSp);
+time g := Evaluate(wordOP, QOP);
+time g := Evaluate(wordSp, QOP);

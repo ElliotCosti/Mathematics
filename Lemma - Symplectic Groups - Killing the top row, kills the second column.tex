@@ -1,0 +1,88 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\usepackage[algo2e,ruled,linesnumbered]{algorithm2e} % for algorithms
+\hoffset -25truemm
+\usepackage{latexsym}
+\oddsidemargin=30truemm             %%
+\evensidemargin=25truemm            %% inner margin 30mm, outer margin 25mm
+\textwidth=155truemm                %%
+\voffset -25truemm
+\topmargin=25truemm                 %% top margin of 25mm
+\headheight=0truemm                 %% no head
+\headsep=0truemm                    %% no head
+\textheight=220truemm               
+\renewcommand{\thefootnote}{}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{problem}[definition]{Problem}
+\newenvironment{proof}{\normalsize {\sc Proof}:}{{\hfill $\Box$ \\}}
+
+\def\SL{{\rm SL}}
+\def\GL{{\rm GL}}
+\def\U{{\rm U}}
+\def\PSL{{\rm PSL}}
+\def\PSp{{\rm PSp}}
+\def\Stab{{\rm Stab}}
+\def\PSU{{\rm PSU}}
+\def\GF{{\rm GF}}
+\def\Sp{{\rm Sp}}
+\def\SU{{\rm SU}}
+\def\SX{{\rm SX}}
+\def\PX{{\rm PX}}
+\def\GX{{\rm GX}}
+\def\PSX{{\rm PSX}}
+\def\PGL{{\rm PGL}}
+\def\q{\quad}
+\def\centreline{\centerline}
+
+\begin{document}
+
+\title{Symplectic Lemma} 
+\author{Elliot Costi}
+\date{December 2006}
+\maketitle
+
+\section{}
+\label{}
+
+\begin{lemma} \label{main}
+Let the symplectic form of a matrix group be given by the matrix:
+
+$$J = \left(\matrix{ 0 & 1 & 0 & 0 &  \ldots & 0 & 0 \cr 
+                  -1 & 0 & 0 & 0 &  \ldots & 0 & 0 \cr 
+                   0 & 0 & 0 & 1 & \ldots & 0 & 0 \cr
+                   0 & 0 & -1 & 0 & \ldots & 0 & 0 \cr 
+              \ldots  & \ldots    & \ldots & \ldots   & \ldots \cr
+                   0 & 0 & 0 & 0 & \ldots & 0 & 1 \cr 
+                   0 &  0 & 0 &  0 & \ldots & -1 & 0 \cr 
+}
+\right)\quad$$
+
+If the top row of a symplectic matrix with respect to this form is $\left(\matrix{1 & 0 & 0 & \ldots & 0 \cr}\right)$, then the second column of the matrix is $\left(\matrix{0 & 1 & 0 & \dots & 0\cr}\right)$.
+
+\end{lemma}
+
+\begin{proof} \label{main}
+Let a matrix $A \in \SL(2n, q)$ have top row $\left(\matrix{1 & 0 & 0 & \ldots & 0 \cr}\right)$. Then $A^{-1}$ still has the same top row and hence $(A^{-1})^T$, the transpose of the inverse of A, has $\left(\matrix{1 & 0 & 0 & \ldots & 0 \cr}\right)$ as its first column.
+
+If you multiply $A$ by $J$ on the right, it has the effect of swapping each column in pairs whilst negating the the second column in each pair, i.e. the second column becomes negated and is swapped with the first, the fourth column is negated and is swapped with the third, etc.
+
+$$J^{-1} = \left(\matrix{ 0 & -1 & 0 & 0 &  \ldots & 0 & 0 \cr 
+                  1 & 0 & 0 & 0 &  \ldots & 0 & 0 \cr 
+                   0 & 0 & 0 & -1 & \ldots & 0 & 0 \cr
+                   0 & 0 & 1 & 0 & \ldots & 0 & 0 \cr 
+              \ldots  & \ldots    & \ldots & \ldots   & \ldots \cr
+                   0 & 0 & 0 & 0 & \ldots & 0 & -1 \cr 
+                   0 &  0 & 0 &  0 & \ldots & 1 & 0 \cr 
+}
+\right)\quad$$
+Multiplying $A$ by $J^{-1}$ on the left has the same effect on the rows of $A$. So, the second row becomes negated and is swapped with the first, the fourth row is negated and is swapped with the third, etc. Hence, if you perform $A^J$, the second row of the resulting matrix will be $\left(\matrix{0 & 1 & 0 & \ldots & 0 \cr}\right)$.
+Now, if $A$ is a symplectic matrix, $A^J = (A^{-1})^T$. This means that the first column of $A^J$ is $\left(\matrix{1 & 0 & 0 & \ldots & 0 \cr}\right)$, meaning that the second column of A must be $\left(\matrix{0 & 1 & 0 & \ldots & 0 \cr}\right)$.
+
+\end{proof}
+
+\end{document}
+

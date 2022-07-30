@@ -1,0 +1,428 @@
+
+
+for p in [2, 3, 5, 7, 11, 13] do
+for e in [1..3] do
+
+q := p^e;
+F := GF(q^2);
+w := PrimitiveElement(F);
+q;
+count := 0;
+for i in [1..#F] do
+   if (w^i + (w^i)^q) in GF(q) then
+      count := count + 1;
+   end if;
+end for;
+
+assert count eq #F;
+
+end for;
+end for;
+
+
+
+for p in [3,5,7,11] do
+for e in [1..3] do
+
+q := p^e;
+F := GF(q^2);
+w := PrimitiveElement(F);
+q^2;
+p, 2*e;
+count := 0;
+P := PolynomialRing(F);
+
+for i in [1..(#F-1)] do
+   py := -(1/4)*(w^i + P.1)*((w^i)^q + P.1) - 1 - P.1;
+   yy := Roots(py)[1, 1];
+   if yy in GF(q) then
+      count := count + 1;
+   end if;
+end for;
+
+   /* the zero case */
+   py := -(1/4)*(P.1)*(P.1) - 1 - P.1;
+   yy := Roots(py)[1, 1];
+   if yy in GF(q) then
+      count := count + 1;
+   end if;
+
+print "count is ", count;
+print "formula is ", (q*(q+1))/2;
+// print "formula is ", (q^2 - 1)/2 + q;
+print "";
+
+end for;
+end for;
+
+
+
+for p in [7] do
+for e in [1..6] do
+
+q := p^e;
+F := GF(q^2);
+w := PrimitiveElement(F);
+q^2;
+p, 2*e;
+count := 0;
+P := PolynomialRing(F);
+
+for i in [1..(#F-1)] do
+   py := -(1/4)*(w^i + P.1)*((w^i)^q + P.1) - 1 - P.1;
+   yy := Roots(py)[1, 1];
+   if yy notin GF(q) then
+      print i;
+   end if;
+end for;
+
+   /* the zero case */
+   py := -(1/4)*(P.1)*(P.1) - 1 - P.1;
+   yy := Roots(py)[1, 1];
+   if yy notin GF(q) then
+      print i;
+   end if;
+
+print "count is ", count;
+print "formula is ", (q*(q+1))/2;
+print "";
+
+end for;
+end for;
+
+
+
+
+for p in [2] do
+for e in [1..10] do
+
+q := p^e;
+F := GF(q^2);
+w := PrimitiveElement(F);
+q^2;
+p, 2*e;
+count := 0;
+P := PolynomialRing(F);
+
+   P := PolynomialRing(F);
+   py2 := P.1^q + P.1 + 1;
+   phi := Roots(py2)[1, 1];
+
+
+for i in [1..(#F-1)] do
+   py := phi^2*(w^i + P.1)^(q+1) + 1 + P.1;
+   rr := Roots(py);
+   if #rr ne 0 then
+      count := count + 1;
+   end if;
+end for;
+
+   py := phi^2*(P.1)^(q+1) + 1 + P.1;
+   rr := Roots(py);
+   if #rr ne 0 then
+      count := count + 1;
+   end if;
+
+print "count is ", count;
+print "formula is ", (q*(q+1))/2;
+print "";
+
+end for;
+end for;
+
+
+
+
+
+
+
+
+
+for p in [7] do
+for e in [1..6] do
+
+q := p^e;
+F := GF(q^2);
+w := PrimitiveElement(F);
+q^2;
+p, 2*e;
+
+bcount := 0;
+ccount := 0;
+ucount := 0;
+vcount := 0;
+bothcount := 0;
+bcountmingfq := 0;
+
+P := PolynomialRing(F);
+
+for i in [1..(#F-1)] do
+   b := (w^i)^q + w^i;
+   c := (w^i)^(q+1);
+   u := GF(q)!(b^2 - 4*c);
+   v := GF(q)!(b^2 - 8*b - 4*c);
+
+
+   if IsSquare(u) eq false then
+      ucount := ucount + 1;
+   end if;
+
+   if IsSquare(v) eq true then
+      vcount := vcount + 1;
+   end if;
+
+   if IsSquare(v) and (IsSquare(u) eq false) then
+      bothcount := bothcount + 1;
+      if w^i notin GF(q) then
+         bcountmingfq := bcountmingfq + 1;
+      end if;
+   end if;
+
+end for;
+
+print "ucount is ", ucount;
+print "formula is ", q^2 - q;
+print "";
+
+print "vcount is ", vcount;
+print "";
+
+print "bothcount is ", bothcount;
+print "formula is ", (q^2-1)/2;
+print "";
+
+print "bcountmingfq is ", bcountmingfq;
+print "";
+
+end for;
+end for;
+
+
+
+
+for p in [7] do
+for e in [1] do
+
+q := p^e;
+F := GF(q^2);
+w := PrimitiveElement(F);
+q^2;
+p, 2*e;
+
+bcount := 0;
+ccount := 0;
+ucount := 0;
+vcount := 0;
+bothcount := 0;
+
+P := PolynomialRing(F);
+
+for i in [1..(q-1)] do
+   j := i * (q+1);
+   b := (w^j)^q + w^j;
+   c := (w^j)^(q+1);
+   u := GF(q)!(b^2 - 4*c);
+   v := GF(q)!(b^2 - 8*b - 4*c);
+
+
+   if IsSquare(u) eq false then
+      ucount := ucount + 1;
+   end if;
+
+   if IsSquare(v) eq true then
+      vcount := vcount + 1;
+      w^j;
+   end if;
+
+   if IsSquare(v) and (IsSquare(u) eq false) then
+      bothcount := bothcount + 1;
+   end if;
+
+end for;
+
+b := 0;
+c := 0;
+u := GF(q)!(b^2 - 4*c);
+v := GF(q)!(b^2 - 8*b - 4*c);
+
+   if IsSquare(u) eq false then
+      ucount := ucount + 1;
+   end if;
+
+   if IsSquare(v) eq true then
+      vcount := vcount + 1;
+      0;
+   end if;
+
+   if IsSquare(v) and (IsSquare(u) eq false) then
+      bothcount := bothcount + 1;
+   end if;
+
+
+print "ucount is ", ucount;
+print "formula is ", (q-1)/2;
+print "";
+
+print "vcount is ", vcount;
+print "formula is ", (q+1)/2;
+print "";
+
+print "bothcount is ", bothcount;
+print "";
+
+end for;
+end for;
+
+
+
+
+
+
+
+for p in [3] do
+for e in [1..6] do
+
+q := p^e;
+F := GF(q^2);
+w := PrimitiveElement(F);
+q^2;
+p, 2*e;
+
+bcount := 0;
+ccount := 0;
+ucount := 0;
+vcount := 0;
+
+P := PolynomialRing(F);
+
+
+for l in [1..Root(#F, 2)] do
+for k in [1..Root(#F, 2)] do
+for j in [1..Root(#F, 2)] do
+for i in [1..Root(#F, 2)] do
+   b := w^(i * (q+1));
+   c := w^(j * (q+1));
+   u := w^(k * (q+1));
+   v := w^(l * (q+1));
+
+   if (b in GF(q)) and (c in GF(q)) and
+      (u in GF(q)) and (v in GF(q)) then
+      if IsSquare(u) eq false then
+         ucount := ucount + 1;
+      end if;
+
+      if IsSquare(v) eq true then
+         vcount := vcount + 1;
+      end if;
+   end if;
+
+end for;
+end for;
+end for;
+end for;
+
+print "ucount is ", ucount;
+print "formula is ", (q-1)/2;
+print "";
+
+print "vcount is ", vcount;
+print "formula is ", (q+1)/2;
+print "";
+
+end for;
+end for;
+
+
+
+
+
+
+
+G := SU(3, 7^2);
+
+t := G![0, 0, -1, 0 ,-1, 0,-1, 0, 0];
+
+FFF := sub<F|w^(q-2)>;
+
+py2 := FFF!(A[d, 1]/A[1, 1]);
+xxv := Evaluate(xv, Q);
+y := Q[7];
+
+((xxv^(y^-(1-1))) ^-Z!Eltseq(py2)[1]) * ((xxv^(y^-(2-1))) ^-Z!Eltseq(py2)[2]) * ((xxv^(y^-(3-1))) ^-Z!Eltseq(py2)[3]) * ((xxv^(y^-(4-1))) ^-Z!Eltseq(py2)[4]) * A;
+
+   py2 := FFF!(A[1, d]/A[1, 1]);
+    x := Q[6];
+    v := Q[2];
+    A* (((x^v)^(y^(1-1))) ^-Z!Eltseq(py2)[1]) * (((x^v)^(y^(2-1))) ^-Z!Eltseq(py2)[2]) * (((x^v)^(y^(3-1))) ^-Z!Eltseq(py2)[3]) * (((x^v)^(y^(4-1))) ^-Z!Eltseq(py2)[4]);
+
+
+beta := FFF!((1 - A[1, 1])/A[2, 1]);
+
+x^Z!Eltseq(py2)[1] * (x^(y^1))^Z!Eltseq(py2)[2] * (x^(y^2))^Z!Eltseq(py2)[3] * (x^(y^3))^Z!Eltseq(py2)[4] ;
+
+
+
+
+
+
+   UsingT := procedure(~A, ~S1, ~S2);
+
+      FFF := sub<F|a>;
+      py2 := FFF!(A[1, 2]/A[1, 1]);
+      for z in [1..(#(Eltseq(py2)) div 2)] do
+         /* A := A*((t^((y^v)^-(z-1)))^-Z!Eltseq(py2)[2*z -1]); */
+         AddColumn(~A, -Eltseq(py2)[2*z]*a^(2*z-1), 1, 2);
+         S2 := S2*((SLP.3^((SLP.7^SLP.2)^-(z-1)))^-Z!Eltseq(py2)[2*z]);
+      end for;
+
+   end procedure;
+
+
+FFF := sub<F|a>;
+beta := FFF!((1 - A[1, 1])/A[2, 1]);
+
+t^3 * A;
+
+(t^(y^-1))^6 * A;
+
+
+
+
+
+
+
+Dim3GetAOne := function(~A, ~S1, ~S2)
+
+   P := PolynomialRing(F);
+   py := A[1, 1] + P.1^(q-2) * A[3, 1]
+      - ((1/2) * P.1^(q^2 -1 -q-1))*A[2, 1] - 1;
+   lambda := Roots(py)[1, 1];
+
+   FF := sub<F|w^(q-2)>;
+   v := Eltseq(FF!(lambda^(q-2)));
+   x := Q[6];
+   y := Q[7];
+   t := Q[3];
+
+   blob := Id(G);
+   for i [1..e] do
+      blob := (x^(y^(i-1)))^Z!v[i];
+      BLOB := (SLP.6^(SLP.7^(i-1)))^Z!v[i];
+   end for;
+
+   c := blob[1, 2] + (1/2)*lambda^(-q-1);
+
+   FF := sub<F|a>;
+   v := Eltseq(FF!c);
+
+   blob2 := Id(G);
+   for i [1..(e div 2)] do
+      blob2 := (t^(y^-(i-1)))^Z!v[2*i];
+      BLOB2 := (SLP.3^(SLP.7^-(i-1)))^Z!v[2*i];
+   end for;
+   
+   A := blob*blob2^-1 * A;
+
+end function;
+
+

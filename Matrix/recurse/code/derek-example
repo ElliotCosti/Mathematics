@@ -1,0 +1,78 @@
+load "../examples/ex16";
+
+SetEchoInput (true);
+
+/* set up comp tree for G */
+T := CompositionTree (G);
+
+/* non-trivial leaf nodes; each node has identifier, parent;
+   a / b is order of G; b is order of scalars */
+X, a, b := TreeFactors (T);
+
+X;
+
+/* examine a composite leaf */
+node := X[5];
+H := GroupOfNode (node);
+H`CompSeries;
+
+/* for each term of comp series associated with a leaf node, 
+   compute preimages of user-generators;
+   work up the comp series, storing only generators for 
+   the section modulo the lower term */
+
+W := PreimagesOfFactors (T);
+
+/* length of comp series associated with each non-trivial leaf */
+[#w : w in W];
+
+/* number of composition factors */
+&+[#w : w in W];
+
+/* corresponding nodes */
+[[W[i][j][2]: j in [1..#W[i]]] : i in [1..#W]];
+
+/* compare data here with that stored in X, which
+   is in one-to-one-correspondence */
+
+/* indices for terms of composition series in each node */
+[[W[i][j][3]: j in [1..#W[i]]] : i in [1..#W]];
+
+/* number of user generators  stored for each subgroup 
+   in comp series of node */
+[[#W[i][j][1]: j in [1..#W[i]]] : i in [1..#W]];
+
+/* for each SLP construct its corresponding matrix */
+Y := [[G`SLPGroupHom (w[1]): w in x]: x in W];
+
+/* set up decreasing comp series */
+d := Degree (G); F := BaseRing (G);
+CS := [sub < GL(d, F) | &cat(&cat[Y[i]: i in [#Y..j by -1]])>: j in [#Y..1 by -1]];
+Reverse (~CS);
+
+RandomSchreier (CS[#CS]);
+#CS, FactoredOrder (CS[#CS]);
+
+for i in [#CS - 1 .. 1 by -1] do
+   RandomSchreier (CS[i]);
+   i, FactoredOrder (CS[i]);
+   assert IsNormal (CS[i], CS[i + 1]);
+end for;
+
+if #CS gt 1 then
+   index := #CS - 1;
+   g := Random (CS[index]);
+   g in CS[index + 1];
+else
+   index := #CS;
+   g := Random (CS[index]);
+end if;
+
+flag, w, id := WriteAsSLP (T, T[1], g);
+G`SLPGroupHom (w) eq g;
+
+/* identify first non-trivial image in leaf by node number n,
+   and index number j where image in j-th term but not in
+   (j - 1)-th of comp series stored for each leaf node */
+
+id;

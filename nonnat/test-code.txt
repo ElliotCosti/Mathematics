@@ -1,0 +1,60 @@
+AttachSpec ("C:/Users/Elliot/Documents/Mathematics/classical/classical");
+AttachSpec ("C:/Users/Elliot/Documents/Mathematics/nonnat/nonnat.txt");
+load "C:/Users/Elliot/Documents/Mathematics/nonnat/conjugate.m";
+load "C:/Users/Elliot/Documents/Mathematics/nonnat/eob-gens.m";
+SetEchoInput (true);
+
+for d in [4..10] do
+for q in [2,3,4,5,7,8,9,11,13,16,17,19,23,25, 64, 81, 128, 243] do
+
+G := SL(d, q);
+
+Q := SLChosenElements(G);
+QQ := [ExteriorSquare(Q[i]) : i in [1..#Q]];
+n := Degree(QQ[1]);
+A := Random(GL(n, q));
+
+/* conjugating everything by a random matrix to make the exterior
+   square look random
+*/
+_, a1 := SLWordInGen(G, Q[1]);
+_, a2 := SLWordInGen(G, Q[2]);
+_, a3 := SLWordInGen(G, Q[3]);
+_, a4 := SLWordInGen(G, Q[4]);
+Q := [Evaluate(a1, QQ)^A, Evaluate(a2, QQ)^A, Evaluate(a3, QQ)^A, Evaluate(a4, QQ)^A];
+
+E := sub<GL(n, q)|Q>;
+P := RandomProcess(E);
+
+for i in [1..10] do 
+n, q, i; 
+
+A := Random(P);
+flag, scalar, word := SLAltRepWordInGen(E, Q, A, d, q);
+
+assert scalar eq 1;
+assert flag;
+
+end for; 
+end for; 
+end for; 
+
+
+/*
+import "C:/Users/Elliot/Documents/Mathematics/classical/rewriting/symplectic.mag": SymplecticCBM;
+
+for d in [4..8 by 2] do 
+for q in [2, 3,4,5,7, 8, 9, 25, 27] do 
+G:=Sp (d, q);
+for n in [1..NmrElts] do 
+g:=Random (G);
+flag, w := SymplecticWordInGen (G, g);
+CB := SymplecticCBM (G);
+G:=Sp (d, q);
+X := SpChosenElements (G);
+assert CB * Evaluate (w, X) *CB^-1 eq g;
+end for;
+end for;
+end for;
+*/
+

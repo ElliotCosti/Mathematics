@@ -1,0 +1,52 @@
+load "C:/Users/Elliot/Documents/Mathematics/SLAltRep4.txt";
+
+ConjugateMatrix := function(A);
+
+   F := BaseRing(A);
+   d := Degree(A[1]);
+   M := KMatrixSpace(F, d, d);
+   Z := M.1 - M.1;
+   pq := Characteristic(F)^(Degree(F) div 2);
+   
+   for i in [1..d] do
+      for j in [1..d] do
+         Z[i, j] := A[i, j]^pq;
+      end for;
+   end for;
+
+   return Z;
+
+end function;
+
+/* preparing the input */
+
+d := 2;
+
+for q in [3,5,7,9,11,13,17,19,23,25,81,243] do
+
+G := SL(2, q^2);
+
+d, q;
+
+QQ := SLChosenElements(G);
+QQ := [GL(4, q^2)!TensorProduct(QQ[i], ConjugateMatrix(QQ[i])) : i in [1..#QQ]];
+
+   gamma := PrimitiveElement(GF(q^2));
+   alpha := gamma^IntegerRing()!((q+1)/2);
+
+   C := GL(4, GF(q^2))![1, 0, 0, 0, 0, alpha, 1, 0, 0, -alpha, 1, 0,
+   0, 0, 0, 1];
+   C := Transpose(C);
+   CC := GL(4, GF(q^2))![1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0,
+   0, 1, 0, 0];
+
+Q := [GL(4, q)!((QQ[i]^(C^-1))^(CC^-1)) : i in [1..#QQ]];
+
+E := sub<GL(4, q)|Q>;
+P := RandomProcess(E);
+g := Random(P);
+
+time flag, scalar, word := SLAltRepWordInGen(E, Q, g, d, q^2);
+assert flag;
+
+end for;

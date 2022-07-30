@@ -1,0 +1,16 @@
+/* May 2007 version */
+
+load "/home/obrien/Matrix/recurse/code/start";
+load "gen.m";
+load "sl.m";
+load "projective.m";
+// load "new-grey.m";
+// load "Steinberg.m";
+SetVerbose ("User1", 0);
+
+/* 
+d := 6; q:=5;
+G := SL (d, q);
+E, W, CB := SolveSL (G);
+Verify (G, E, W, CB);
+*/

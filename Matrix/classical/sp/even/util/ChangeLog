@@ -1,0 +1,145 @@
+MAGMA Util package ChangeLog
+
+2005-09-01 12:54   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util.mag:
+
+	Can get random element of pseudo order
+
+2005-08-15 22:02   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util.mag:
+
+	Bugfixes
+
+2005-08-15 22:02   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util:
+
+	Added SLP code
+
+2005-08-11 08:11   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* slp.mag:
+
+	Text cleanup
+
+2005-08-11 07:57   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* slp.mag:
+
+	Code cleanup
+
+2005-08-11 07:48   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* slp.mag:
+
+	New MAGMA SLP code
+
+2005-08-09 00:50   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* Manifest, util:
+
+	SL2 code now in Magma
+
+2005-07-29 21:43   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util.mag:
+
+	Removed Monte-Carlo SL2 check
+
+2005-07-12 22:26   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util.mag:
+
+	Bugfix in Bray algorithm
+
+2005-07-08 13:25   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util.mag:
+
+	Added dihedral trick
+
+2005-07-06 21:21   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util.mag:
+
+	Changed Bray trick
+
+2005-07-06 10:35   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util.mag:
+
+	Moved Bray trick etc to Util
+
+2005-06-17 18:03   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* Makefile, Manifest, util.mag:
+
+	Added necessary files for distribution
+
+2005-06-17 17:58   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* AUTHORS, sl2q/sl2.m:
+
+	Added author list
+
+2005-06-09 15:58   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util.mag:
+
+	Added upper limit to the number of tries when searching for random
+	elements.
+
+2005-06-07 00:42   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util.mag:
+
+	Generalised involution finder
+
+2005-06-06 11:52   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util.mag:
+
+	Changed diagonalisation behaviour
+
+2005-06-06 11:51   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* sl2q/decompose.m:
+
+	Should be GrpMatElt
+
+2005-06-06 11:51   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* sl2q/large-to-small.m:
+
+	Added code from Eamonn
+
+2005-05-16 11:33   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util, util.mag, sl2q/decompose.m, sl2q/issympower.m,
+	sl2q/large-to-small.m, sl2q/ldu.m, sl2q/natural.m, sl2q/sl2.m,
+	sl2q/symmetric-power.m:
+
+	SL2 code fixed
+
+2005-05-02 22:30   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util.mag, util, sl2q/attributes.m, sl2q/gamma.m, sl2q/ldu.m,
+	sl2q/sl2.m, sl2q/basics.m, sl2q/stand-alone, sl2q/README,
+	sl2q/construct.m, sl2q/decompose.m, sl2q/examples,
+	sl2q/intrinsics.m, sl2q/issympower.m, sl2q/large-to-small.m,
+	sl2q/natural.m, sl2q/special-cases.m, sl2q/symmetric-power.m:
+
+	Initial import
+
+2005-05-02 22:30   Henrik B‰‰rnhielm, <h.baarnhielm@qmul.ac.uk>
+
+	* util.mag, util, sl2q/attributes.m, sl2q/gamma.m, sl2q/ldu.m,
+	sl2q/sl2.m, sl2q/basics.m, sl2q/stand-alone, sl2q/README,
+	sl2q/construct.m, sl2q/decompose.m, sl2q/examples,
+	sl2q/intrinsics.m, sl2q/issympower.m, sl2q/large-to-small.m,
+	sl2q/natural.m, sl2q/special-cases.m, sl2q/symmetric-power.m:
+
+	Initial revision
+

@@ -1,0 +1,332 @@
+/******************************************************************************
+ *
+ *    trick.mag   Sp(4, q) trick
+ *
+ *    File      : $RCSfile: trick.mag,v $
+ *    Author    : Henrik Bäärnhielm
+ *    Dev start : 2005-09-09
+ *
+ *    Version   : $Revision: 1.1.1.1 $
+ *    Date      : $Date: 2005/09/09 08:21:07 $
+ *    Last edit : $Author: hb $
+ *
+ *    @(#)$Id: trick.mag,v 1.1.1.1 2005/09/09 08:21:07 hb Exp $
+ *
+ *****************************************************************************/
+
+//freeze;
+/*****************************************************************************/
+/* DECLARATIONS                                                              */
+/*****************************************************************************/
+
+declare verbose SymplecticTrick, 10;
+
+MatSLP := recformat<mat : GrpMatElt, slp : GrpSLPElt>;
+
+forward getInterpolationValues, solveEquations, interpolate, EvenOrderTrick,
+    getSymplecticDiagonalAlt, OrderSymplecticDiagonal;
+
+/*****************************************************************************/
+/* TEST AND BENCHMARK FUNCTIONS                                              */
+/*****************************************************************************/
+
+intrinsic testSymplecticTrick(q :: RngIntElt) -> BoolElt
+    { }
+    
+    G := Sp(4, q);
+    SetVerbose("SymplecticTrick", 6);
+
+    elements := EvenOrderElement(G);
+    return elements;
+    print [Trace(e[1]) : e in elements];
+    
+    return true;
+end intrinsic;
+
+/*****************************************************************************/
+/* MAIN INTRINSICS                                                           */
+/*****************************************************************************/
+
+intrinsic EvenOrderElement(G :: GrpMat : Element :=
+    rec<MatSLP | mat := Identity(G), slp := Identity(WordGroup(G))>,
+    Randomiser := RandomProcessWithWords(G : WordGroup := WordGroup(G)))
+    -> {}, RngIntElt, RngIntElt
+    { Find element of even order in G = Sp(4, q) }
+	local order, diagonaliser, total_time, g, slp, field, q, m, t,
+	d, conj;
+    
+    field := CoefficientRing(G);
+    q := #field;
+    m := (Degree(CoefficientRing(G)) - 1) div 2;
+    t := 2^(m + 1);
+    
+    if not assigned G`RandomProcess then
+	G`RandomProcess := Randomiser;
+    end if;
+
+    if Characteristic(field) gt 2 or Degree(G) gt 4 then
+	error "Must have Sp(4, q) with q a power of 2";
+    end if;
+    
+    diagonaliser := func<lambda, mu |
+	DiagonalMatrix(getSymplecticDiagonalAlt(lambda, mu))>;
+
+    repeat
+	// Get random cyclic group 
+	g, slp := RandomElementOfOrder(G, (q - 1) :
+	    Randomiser := G`RandomProcess);
+	
+	// Diagonalise and order eigenvalues properly
+	d, conj := SymplecticDiagonalisation(g);
+	assert d^conj eq g;
+
+	// Find k and b s.t. g^k * b * Element`mat has even order
+	flag, elements, total_time, log_time :=
+	    EvenOrderTrick(G, g, d, conj, slp, Element, diagonaliser);
+    until flag;
+    
+    return elements, total_time, log_time;
+end intrinsic;
+
+/*****************************************************************************/
+/* AUXILIARY FUNCTIONS                                                       */
+/*****************************************************************************/
+
+// Find element of even order in G = Sp(4, q)
+function EvenOrderTrick(G, g, d, conj, slp, element, diagonaliser)
+    local field, q, m, t, P, MA, A, B, k, nonZeroField, inc, R, terms,
+	b, w, coeffs, polys, polys2, var_change, denoms, eqns, roots, diag,
+	order, total_time, log_time, base, total_log_time;
+    
+    field := CoefficientRing(G);
+    q := #field;
+
+    assert assigned G`RandomProcess;
+    
+    vprint SymplecticTrick, 1: "Entering Symplectic Trick";
+    total_time := Cputime();
+    total_log_time := 0;
+    
+    // Create diagonal matrix with indeterminates
+    P<lambda, mu> := PolynomialAlgebra(field, 2);
+    R := FieldOfFractions(P);
+    MA := MatrixAlgebra(R, Degree(G));
+
+    A := MA ! diagonaliser(lambda, mu);
+    base := rec<MatSLP | mat := g, slp := slp>;
+    
+    // Create monomials for interpolation
+    terms := [];
+    for i in [-1 .. 1] do
+	for j in [-1 .. 1] do
+	    Append(~terms, (R ! lambda)^i * (R ! mu)^j);
+	end for;
+    end for;
+
+    nonZeroField, inc := MultiplicativeGroup(field);
+    k := 0;
+
+    b, w := Random(G`RandomProcess);
+    assert Parent(w) cmpeq Parent(element`slp);
+    element`mat := b * element`mat;
+    element`slp := w * element`slp;
+    
+    vprint SymplecticTrick, 4: "Find char poly using interpolation";
+    B := conj * element`mat * conj^(-1);
+    coeffs := interpolate(nonZeroField, inc, terms, B, diagonaliser);
+
+    // Get characteristic polynomial
+    polys<alpha> := PolynomialAlgebra(R);
+    char_poly := polys ! coeffs;
+    
+    // Change variables instead of taking derivatives
+    // We want all first k derivatives to be zero, since we want root of
+    // multiplicity k, and this is equivalent to that the k lowest
+    // coefficients of the new polynomial vanish
+    polys2<beta> := PolynomialAlgebra(R);
+    var_change := hom<polys -> polys2 | beta + 1>;
+    
+    // Get zeros of coefficient polynomials
+    // We want zero of multiplicity 2
+    coeffs := Coefficients(var_change(char_poly));
+    denoms := &*[Denominator(coeffs[i]) : i in [1 .. 2]
+	| not IsZero(coeffs[i])];
+    eqns := [P ! (coeffs[i] * denoms) : i in [1 .. 2]];
+
+    vprint SymplecticTrick, 4: "Solve coefficient equations";
+    roots := solveEquations(P, eqns);
+    vprint SymplecticTrick, 4: "Roots:", roots;
+
+    elements := {};
+    for root in roots do
+	diag := Generic(G) ! diagonaliser(root[1], root[2]);
+	order := Order(diag^conj * element`mat : Proof := false);
+	vprint SymplecticTrick, 4: "Order:", order;
+	
+	if IsEven(order) then
+	    vprint SymplecticTrick, 3: "Candidate found!",
+		diag^conj * element`mat;
+	    vprint SymplecticTrick, 2: "Candidate order",  order;
+	    
+	    vprint SymplecticTrick, 2: "Apply discrete log";
+	    log_time := Cputime();
+	    k := Log(d[1, 1], root[1]);
+	    log_time := Cputime(log_time);
+	    total_log_time +:= log_time;
+	    
+	    vprint SymplecticTrick, 2: "Discrete log done", k;
+	    if  diag^conj eq base`mat^k then
+		assert order eq Order(base`mat^k * element`mat :
+		    Proof := false);
+		assert k gt 0;
+
+		Include(~elements, <base`mat^k * element`mat,
+		    base`slp^k * element`slp>);
+	    end if;
+	end if;
+    end for;
+
+    if IsEmpty(elements) then
+	return false, _, _, _;
+    end if;
+	
+    total_time := Cputime(total_time);
+    vprint SymplecticTrick, 1: "Leaving Symplectic Trick";
+    return true, elements, total_time, total_log_time;
+end function;
+
+function interpolate(nonZeroField, inc, terms, B, diagonaliser)
+    local interpolation_points, interpolation_values, x, y,
+	interpolation_matrix, sols, nulls, values, coeffs;
+
+    interpolation_points := [];
+    interpolation_values := [];
+    
+    vprint SymplecticTrick, 8: "Nof terms:", #terms;
+    for i in [1 .. #terms] do
+	x := inc(Random(nonZeroField));
+	y := inc(Random(nonZeroField));
+
+	// Get explicit field coefficients
+	Append(~interpolation_points,
+	    [Evaluate(Evaluate(term, 1, x), 2, y) : term in terms]);
+	
+	vprint SymplecticTrick, 8: "Get interpolation values", i;
+	Append(~interpolation_values, getInterpolationValues(x, y, B,
+	    diagonaliser));
+    end for;
+	
+    interpolation_matrix := Transpose(Matrix(Codomain(inc),
+	interpolation_points));
+    values := [Vector(Codomain(inc), row) :
+	row in RowSequence(Transpose(Matrix(interpolation_values)))];
+
+    // Perform interpolation
+    sols, nulls := Solution(interpolation_matrix, values);
+    
+    // Get coefficients of characteristic polynomial
+    coeffs := [&+[sol[i] * terms[i] : i in [1 .. Degree(sol)]] : sol in sols];
+    return coeffs;
+end function;
+
+function getInterpolationValues(lambda, mu, b, diagonaliser)
+    local A, MA, coeffs;
+
+    // Get element of coset
+    MA := MatrixAlgebra(CoefficientRing(b), Degree(b));
+    A := MA ! diagonaliser(lambda, mu);
+    M := A * (MA ! b);
+
+    // Get characteristic polynomial
+    coeffs := Coefficients(CharacteristicPolynomial(M));
+
+    // Pad coefficients if necessary
+    while #coeffs lt Degree(b) + 1 do
+	Append(~coeffs, 0);
+    end while;
+
+    return coeffs;
+end function;
+
+function solveEquations(P, eqns)
+    local id, roots, equations, sols, polys, roots2, poly, lambda, mu;
+
+    field := CoefficientRing(P);
+    lambda := P.1;
+    mu := P.2;
+
+    vprint SymplecticTrick, 7: "Equations:", eqns, #eqns;
+    eqns := &join{@ {@ e @} : e in eqns | not IsZero(e) @};
+    
+    vprint SymplecticTrick, 7: "Equations:", eqns, #eqns;
+    vprint SymplecticTrick, 4: "Factorise equations";
+    equations := &join{@ {@ e[1] : e in Factorization(eqn) @} : eqn in eqns |
+	not IsZero(eqn) @};
+
+    vprint SymplecticTrick, 7: "Equations:", equations, #equations;
+    vprint SymplecticTrick, 4: "Compute resultants";
+
+    // Calculate resultants and thus remove mu
+    resultants := &cat[[UnivariatePolynomial(Resultant(equations[i],
+	equations[j], mu)) : i in [j + 1 .. #equations]] :
+	j in [1 .. #equations - 1]];
+    
+    vprint SymplecticTrick, 7: "Resultants:", resultants;
+
+    vprint SymplecticTrick, 4: "Find resultant roots for lambda";
+
+    // Get possible values for lambda
+    roots := &join{{r[1] : r in Roots(p) | not IsZero(r[1])} :
+	p in resultants | not IsZero(p)};
+
+    vprint SymplecticTrick, 7: "Lambda roots:", roots;
+    
+    sols := {};
+    for r in roots do
+	vprint SymplecticTrick, 4: "Evaluate equations at", r;
+	
+	// Get polynomials in mu only
+	polys := [UnivariatePolynomial(Evaluate(eqns[i], lambda, r))
+	    : i in [1 .. #eqns]];
+
+	vprint SymplecticTrick, 7: "Polys:", polys;
+	vprint SymplecticTrick, 4: "Find roots for mu";
+	
+	// Get possible values for mu
+	roots2 := &join{{s[1] : s in Roots(p) | not IsZero(s[1])} :
+	    p in polys | not IsZero(p)};
+	
+	for s in roots2 do
+	    Include(~sols, <r, s>);
+	end for;
+    end for;
+    
+    return sols;
+end function;
+
+intrinsic SymplecticDiagonalisation(g :: GrpMatElt) -> GrpMatElt, GrpMatElt
+    { Diagonalise g in Sp(4, q) }
+    local m, d, k, G;
+
+    G := Generic(Parent(g));
+    m := (Degree(CoefficientRing(g)) - 1) div 2;
+    t := 2^(m + 1);
+    
+    // Diagonalise and order eigenvalues properly
+    d, k := DiagonaliseMatrix(g : OrderEigenvalues := OrderSymplecticDiagonal);
+    return G ! d, G ! k;
+end intrinsic;
+
+function OrderSymplecticDiagonal(diagonal)
+    diag := SequenceToMultiset(diagonal);
+    if not exists(a){<x, y> : x in diagonal, y in diagonal | diag eq
+	SequenceToMultiset(getSymplecticDiagonalAlt(x, y))} then
+	error "Wrong diagonal type";
+    end if;
+
+    return getSymplecticDiagonalAlt(a[1], a[2]);
+end function;
+
+function getSymplecticDiagonalAlt(lambda, mu)
+    return [lambda, 1 / lambda, mu, 1 / mu];
+end function;

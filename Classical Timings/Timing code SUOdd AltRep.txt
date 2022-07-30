@@ -1,0 +1,65 @@
+load "C:/Users/Elliot/Documents/Mathematics/AlternativeRep.txt";
+load "C:/Users/Elliot/Documents/Mathematics/Unitary Odd ALTREP.txt";
+
+for e in [1, 2, 3, 4, 5, 6, 7, 8] do
+
+   d := 5;
+   p := 7;
+   q := p^e;
+   QQ := SUChosenElements(SU(d, q));
+   QQ := [GL(d, q^2)!QQ[i] : i in [1..#QQ]];
+   Q := [ExteriorSquare(QQ[i]) : i in [1..#QQ]];
+   n := Degree(Q[1]);
+   P := RandomProcess(GL(n, q^2));
+   A := Random(P); 
+   Q := [Q[i]^A : i in [1..#Q]];
+   E := sub<GL(n, q^2)|Q>;
+   P := RandomProcess(E);
+   g := Random(P);
+   d, p, e;
+   time word, scalar, flag := UnitaryOddAltRepWordInGen(Q, g, d);
+   assert flag eq true;
+
+end for;
+
+for p in [11, 19, 31, 41, 53, 61, 97, 643, 1063] do
+
+   d := 5;
+   e := 1;
+   q := p^e;
+   QQ := SUChosenElements(SU(d, q));
+   QQ := [GL(d, q^2)!QQ[i] : i in [1..#QQ]];
+   Q := [ExteriorSquare(QQ[i]) : i in [1..#QQ]];
+   n := Degree(Q[1]);
+   P := RandomProcess(GL(n, q^2));
+   A := Random(P); 
+   Q := [Q[i]^A : i in [1..#Q]];
+   E := sub<GL(n, q^2)|Q>;
+   P := RandomProcess(E);
+   g := Random(P);
+   d, p, e;
+   time word, scalar, flag := UnitaryOddAltRepWordInGen(Q, g, d);
+   assert flag eq true;
+
+end for;
+
+for d in [5, 7, 9, 11, 13, 15, 17, 19, 21, 23] do
+
+   e := 1;
+   p := 7;
+   q := p^e;
+   QQ := SUChosenElements(SU(d, q));
+   QQ := [GL(d, q^2)!QQ[i] : i in [1..#QQ]];
+   Q := [ExteriorSquare(QQ[i]) : i in [1..#QQ]];
+   n := Degree(Q[1]);
+   P := RandomProcess(GL(n, q^2));
+   A := Random(P); 
+   Q := [Q[i]^A : i in [1..#Q]];
+   E := sub<GL(n, q^2)|Q>;
+   P := RandomProcess(E);
+   g := Random(P);
+   d, p, e;
+   time word, scalar, flag := UnitaryOddAltRepWordInGen(Q, g, d);
+   assert flag eq true;
+
+end for;

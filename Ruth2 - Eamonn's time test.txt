@@ -1,0 +1,31 @@
+[ PowerStructure(ModTupFld) | 
+sub<VectorSpace(GF(7), 8) | 
+[ GF(7) | 1, 4, 5, 4, 5, 0, 4, 5 ], 
+[ GF(7) | 2, 1, 1, 0, 2, 2, 0, 2 ], 
+[ GF(7) | 4, 6, 0, 0, 6, 4, 1, 1 ], 
+[ GF(7) | 2, 0, 5, 0, 4, 2, 4, 3 ] 
+>, 
+sub<VectorSpace(GF(7), 8) | 
+[ GF(7) | 4, 3, 1, 0, 2, 6, 1, 1 ], 
+[ GF(7) | 4, 0, 4, 1, 6, 3, 2, 5 ], 
+[ GF(7) | 5, 3, 5, 5, 1, 3, 4, 0 ] 
+> 
+] 
+; 
+S := $1; 
+U:=sub<VectorSpace(GF(7), 8) | 
+[ GF(7) | 2, 2, 3, 6, 3, 4, 5, 6 ], 
+[ GF(7) | 0, 5, 5, 0, 5, 1, 2, 5 ] 
+> 
+; 
+A,B := StabiliserOfSpaces (S); 
+SetSeed (1); 
+d:=8; 
+q:=7; 
+H := sub < GL(d, q) | B>; 
+RandomSchreier (H); 
+#H; 
+FactoredOrder (H); 
+time X := UnipotentStabiliser (H, U:ComputeBase := false);
+#X; 
+X; 

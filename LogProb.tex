@@ -1,0 +1,131 @@
+\documentclass[12pt]{article}
+\usepackage{amssymb}
+\hoffset -25truemm
+\usepackage{latexsym}
+\usepackage{float}
+\usepackage[algo2e,ruled,linesnumbered]{algorithm2e}
+\oddsidemargin=27truemm             %%
+\evensidemargin=25truemm            %% inner margin 30mm, outer margin 25mm
+\textwidth=157truemm                %%
+\voffset -25truemm
+\topmargin=22truemm                 %% top margin of 25mm
+\headheight=0truemm                 %% no head
+\headsep=0truemm                    %% no head
+\textheight=240truemm               
+\renewcommand{\thefootnote}{}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{problem}[definition]{Problem}
+\newenvironment{proof}{\normalsize {\sc Proof}:}{{\hfill $\Box$ \\}}
+
+\usepackage{setspace} 
+\doublespacing
+
+\def\SL{{\rm SL}}
+\def\GL{{\rm GL}}
+\def\U{{\rm U}}
+\def\PSL{{\rm PSL}}
+\def\PSp{{\rm PSp}}
+\def\Stab{{\rm Stab}}
+\def\PSU{{\rm PSU}}
+\def\GF{{\rm GF}}
+\def\Sp{{\rm Sp}}
+\def\SU{{\rm SU}}
+\def\SO{{\rm SO}}
+\def\SX{{\rm SX}}
+\def\PX{{\rm PX}}
+\def\GX{{\rm GX}}
+\def\PSX{{\rm PSX}}
+\def\PGL{{\rm PGL}}
+\def\q{\quad}
+\def\centreline{\centerline}
+
+\begin{document}
+
+$${\rm Omega Minus char 2}$$
+
+We are considering the natural representation only. We wish to kill an arbitrary element of $\Omega^-(d, q)$, where $q$ is even. In order to do this, we wish to embed $\Omega^+(d-2, q)$ into it. That is to say write the generators of $\Omega^+(d-2, q)$ in terms of those of $\Omega^-(d, q)$. There is only one generator of $\Omega^+(d-2, q)$ that we need to consider and that is $t$:
+
+$$\left(\matrix{1&0&0&1\cr0&1&0&0\cr0&1&1&0\cr0&0&0&1}\right).$$
+
+The following is the proof in the thesis of how to create this element. Can you think of any way of finding out $z$ without using logarithms? One of the problems I have here is that I don't have $\gamma + \gamma^q$ as a power of $\omega$ (notation explained below).
+
+\begin{lemma}
+Let $B(h) = (h^{v^2})^{-1} ({(h^\delta)^v}) h^{v^2}$ and let $\omega^z$ be (4, 1) entry of $B(h)$, where $v$ and $\delta$ are generators for $\Omega^-(2d, q)$ as they appear in the above table, $h$ is some other generator and $\omega$ is the primitive element of the ground field. Then for even characteristic:
+\begin{itemize}
+\item $t \in \Omega^+(2d-2, q)$ is formed by $({t^v} B(t))^{\delta^z} \in \Omega^-(2d, q)$;
+\item $r \in \Omega^+(2d-2, q)$ is formed by $({r^v} B(r))^{\delta^z} \in \Omega^-(2d, q)$;
+\item $t^\prime \in \Omega^+(2d-2, q)$ is formed by $(({t^v} B(t))^{\delta^z})^s \in \Omega^-(2d, q)$;
+\item $r^\prime \in \Omega^+(2d-2, q)$ is formed by $(({r^v} B(r))^{\delta^z})^s \in \Omega^-(2d, q)$;
+\end{itemize}
+
+\end{lemma}
+
+\begin{proof}
+Firstly, consider $({t^v})^{\delta}$. This gives a matrix of the following form:
+
+$$\left(\matrix{1 & \omega^{-2} & 0 & 0 & 0 & \ldots & 0 & * & * \cr
+0 & 1 & 0 & 0 & 0 & \ldots & 0 & 0 & 0 \cr
+0 & 0 & 1 & 0 & 0 & \ldots & 0 & 0 & 0 \cr
+0 & 0 & 0 & 1 & 0 & \ldots & 0 & 0 & 0 \cr
+0 & 0 & 0 & 0 & 1 & \ldots & 0 & 0 & 0 \cr
+\vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots \cr
+0 & 0 & 0 & 0 & 0 & \ldots & 1 & 0 & 0 \cr
+0 & * & 0 & 0 & 0 & \ldots & 0 & 1 & 0 \cr
+0 & * & 0 & 0 & 0 & \ldots & 0 & 0 & 1 \cr
+}\right),$$
+where the asterisks represent arbitrary elements of GF($q$).
+
+Now we conjugate by $t^{v^2}$, which only affects the top left 4 $\times$ 4 block. A simple calculation shows that this gives the following matrix:
+
+$$B(t) = (t^{v^2})^{-1} ({t^v})^{\delta} t^{v^2} = \left(\matrix{1 & \omega^{-2} & 0 & x & 0 & \ldots & 0 & * & * \cr
+0 & 1 & 0 & 0 & 0 & \ldots & 0 & 0 & 0 \cr
+0 & x & 1 & 0 & 0 & \ldots & 0 & 0 & 0 \cr
+0 & 0 & 0 & 1 & 0 & \ldots & 0 & 0 & 0 \cr
+0 & 0 & 0 & 0 & 1 & \ldots & 0 & 0 & 0 \cr
+\vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots \cr
+0 & 0 & 0 & 0 & 0 & \ldots & 1 & 0 & 0 \cr
+0 & * & 0 & 0 & 0 & \ldots & 0 & 1 & 0 \cr
+0 & * & 0 & 0 & 0 & \ldots & 0 & 0 & 1 \cr
+}\right),$$
+where $x$ is an element of GF($q$) and the asterisks represent the same arbitrary elements of GF($q$) as in the first step.
+
+We now need to work out how to set the (1, 2) entry to 0. By direct calculation, we can see that conjugating the above matrix by $\delta^{-1}$ gives:
+
+$$\left(\matrix{1 & 1 & 0 & y & 0 & \ldots & 0 & 1 & 0 \cr
+0 & 1 & 0 & 0 & 0 & \ldots & 0 & 0 & 0 \cr
+0 & y & 1 & 0 & 0 & \ldots & 0 & 0 & 0 \cr
+0 & 0 & 0 & 1 & 0 & \ldots & 0 & 0 & 0 \cr
+0 & 0 & 0 & 0 & 1 & \ldots & 0 & 0 & 0 \cr
+\vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots \cr
+0 & 0 & 0 & 0 & 0 & \ldots & 1 & 0 & 0 \cr
+0 & 0 & 0 & 0 & 0 & \ldots & 0 & 1 & 0 \cr
+0 & \gamma + \gamma^q & 0 & 0 & 0 & \ldots & 0 & 0 & 1 \cr
+}\right),$$
+where $y \in$ GF($q$) and $\gamma$ is the primitive element of GF($q^2$). As the asterisked entries were not changed by conjugating by $t^{v^2}$, the portion of the matrix outside the $4 \times 4$ block will look like $t^v$, since ${t^v}^{\delta \delta^{-1}} = t^v$.
+
+Pre-multiplying by $t^v$ then gives:
+
+$$\left(\matrix{1 & 0 & 0 & y & 0 & \ldots & 0 & 0 & 0 \cr
+0 & 1 & 0 & 0 & 0 & \ldots & 0 & 0 & 0 \cr
+0 & y & 1 & 0 & 0 & \ldots & 0 & 0 & 0 \cr
+0 & 0 & 0 & 1 & 0 & \ldots & 0 & 0 & 0 \cr
+0 & 0 & 0 & 0 & 1 & \ldots & 0 & 0 & 0 \cr
+\vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots \cr
+0 & 0 & 0 & 0 & 0 & \ldots & 1 & 0 & 0 \cr
+0 & 0 & 0 & 0 & 0 & \ldots & 0 & 1 & 0 \cr
+0 & 0 & 0 & 0 & 0 & \ldots & 0 & 0 & 1 \cr
+}\right).$$
+
+Hence conjugating the above element by $\delta^z$ gives the required matrix and so we're done.
+
+The other three equations can be shown to hold by a similar method.
+\end{proof}
+
+
+
+\end{document}
+

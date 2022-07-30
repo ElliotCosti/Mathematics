@@ -1,0 +1,202 @@
+load "C:/Users/Elliot/Documents/Mathematics/standard.m";
+load "C:/Users/Elliot/Documents/Mathematics/UnitaryOddChar2gens.txt";
+load "C:/Users/Elliot/Documents/Mathematics/OMinus Char2 generators.txt";
+
+ClassicalCase := function(G, type);
+
+   case type:
+      when "SL":
+         Q := SLChosenElements(G);
+      when "Sp":
+         Q := SpChosenElements(G);
+      when "SU":
+         if IsOdd(#BaseRing(G)) then
+            Q := SUChosenElements(G);
+         else
+            Q := SUChar2ChosenElements(G);
+         end if;
+      when "O+":
+         Q := PlusChosenElements(G);
+      when "O-":
+         if IsOdd(#BaseRing(G)) then
+            Q := MinusChosenElements(G);
+         else
+            Q := MinusChar2Elements(G);
+         end if;
+      when "Oo":
+         Q := SOChosenElements(G);
+      else
+         Q := SLChosenElements(G);
+   end case;
+
+   return Q;
+
+end function;
+
+ClassicalExteriorPower := function(G, string, power)
+
+   d := Dimension(G);
+   F := BaseRing(G);
+   M := MatrixAlgebra(F, d);
+
+   Q := ClassicalCase(G, string);
+
+   Q := [M!Q[i] : i in [1..#Q]];
+   QQ := [ExteriorPower(Q[i], power) : i in [1..#Q]];
+   n := Nrows(QQ[1]);
+   G := GL(n, F);
+   A := Random(G);
+
+   /* conjugating everything by a random matrix to make the exterior
+      power look random */
+   Q := [(G!QQ[i])^A : i in [1..#QQ]];
+   E := sub<G|Q>;
+
+   return Q, E;
+
+end function;
+
+ClassicalSymmetricPower := function(G, string, power)
+
+   d := Dimension(G);
+   F := BaseRing(G);
+   M := MatrixAlgebra(F, d);
+
+   Q := ClassicalCase(G, string);
+
+   Q := [M!Q[i] : i in [1..#Q]];
+   QQ := [SymmetricPower(Q[i], power) : i in [1..#Q]];
+   n := Nrows(QQ[1]);
+   G := GL(n, F);
+   A := Random(G);
+
+   /* conjugating everything by a random matrix to make the exterior
+      power look random */
+   Q := [(G!QQ[i])^A : i in [1..#QQ]];
+   E := sub<G|Q>;
+   VE := GModule(E);
+   flag, U := IsIrreducible(VE);
+   while flag eq false do
+      E := ActionGroup(U);
+      Q := [E.i : i in [1..Ngens(E)]];
+      VE := GModule(E);
+      flag, U := IsIrreducible(VE);
+   end while;
+
+   return Q, E;
+
+end function;
+
+GammaLMatrix := function (x, n)
+                                                                                
+   G := Parent (x);
+   G := GL (Degree (G), BaseRing (G));
+   e := Eltseq (x);
+   ee := [y^n : y in e];
+   return G!ee;
+                                                                                
+end function;
+
+/* construct V \otimes V^\delta where delta means
+   apply Frobenius of order p */
+
+ConstructDelta := function (G, string)
+
+   d := Dimension(G);
+   F := BaseRing(G);
+   p := Characteristic (F);
+   G := GL(d, F);
+   Q := ClassicalCase(G, string);
+   X := [G!Q[i] : i in [1..#Q]];
+   Y := [GammaLMatrix (X[i], p): i in [1..#X]];
+   Z := [TensorProduct (X[i], Y[i]): i in [1..#X]];
+
+   E := sub < GL (d^2, F) | Z>;
+   VE := GModule(E);
+   flag, U := IsIrreducible(VE);
+   while flag eq false do
+      E := ActionGroup(U);
+      Z := [E.i : i in [1..Ngens(E)]];
+      VE := GModule(E);
+      flag, U := IsIrreducible(VE);
+   end while;
+
+   return Z, E;
+
+end function;
+
+ConstructDual := function (G)
+
+   M := GModule (G);
+   U := Dual (M);
+   T := TensorProduct (U, M);
+   A := ActionGroup (T);
+   return A;
+
+end function;
+
+/* irreducible factor from V \otimes Dual (V) */
+DualRepresentation := function (G, string)
+
+   d := Dimension(G);
+   F := BaseRing(G);
+   Q := ClassicalCase(G, string);
+   G := sub<GL(d, F)|Q>;
+   G := ConstructDual (G);
+   M := GModule (G);
+   CF := CompositionFactors (M);
+   flag := exists(k){ k: k in [1..#CF] | Dimension (CF[k]) 
+                  in {d^2 - 1, d^2 - 2}};
+   assert flag;
+   return ActionGroup (CF[k]);
+
+end function;
+
+ArbitraryRepresentation := function(G, string, num)
+
+   d := Dimension(G);
+   F := BaseRing(G);
+   Q := ClassicalCase(G, string);
+   G := sub<GL(d, F)|Q>;
+   M := MatrixAlgebra(F, d);
+
+   Q := [M!Q[i] : i in [1..#Q]];
+   for i in [1..num] do
+      QQ := [];
+      for j in [1..#Q] do
+         blob := Q[j];
+         blob := TensorProduct(blob, Q[j]);
+         Append(~QQ, blob);
+      end for;
+      n := Nrows(QQ[1]);
+      GG := GL(n, F);
+      E := sub<GG|QQ>;
+      VE := GModule(E);
+      flag, U := IsIrreducible(VE);
+      while flag eq false do
+         E := ActionGroup(U);
+         VE := GModule(E);
+         flag, U := IsIrreducible(VE);
+      end while;
+      Q := [E.i : i in [1..Ngens(E)]]; 
+   end for;
+
+   n := Nrows(Q[1]);
+   G := GL(n, F);
+   A := Random(G);
+
+   Q := [(G!Q[i])^A : i in [1..#Q]];
+   E := sub<G|Q>;
+
+   return Q, E;
+
+end function;
+
+
+
+
+
+
+
+
+
